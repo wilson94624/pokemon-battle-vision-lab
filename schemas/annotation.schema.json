@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.pokemon-battle-vision/annotation.schema.json",
+  "title": "Milestone 1 human-correctable screen annotation",
+  "type": "object",
+  "required": ["schema_version", "video_sha256", "segments"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "video_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/screenSegment"
+      }
+    }
+  },
+  "$defs": {
+    "screenState": {
+      "enum": [
+        "TEAM_PREVIEW",
+        "PLAYER_FOUR_CONFIRMED",
+        "MOVE_SELECTION_PLAYER_LEFT",
+        "MOVE_SELECTION_PLAYER_RIGHT",
+        "BATTLE_TEXT",
+        "RESULT",
+        "UNKNOWN"
+      ]
+    },
+    "screenSegment": {
+      "type": "object",
+      "required": ["start_sec", "end_sec", "state"],
+      "additionalProperties": false,
+      "properties": {
+        "start_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "end_sec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "state": {
+          "$ref": "#/$defs/screenState"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+

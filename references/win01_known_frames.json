@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1.0",
+  "dataset_id": "pokemon_champions_win01_known_frames",
+  "video": {
+    "project_source_filename": "win-01.mp4",
+    "expected_original_resolution": {
+      "width": 2868,
+      "height": 1320,
+      "aspect_ratio": 2.172727272727273
+    },
+    "expected_language": "zh-TW",
+    "game": "Pokémon Champions",
+    "format": "Doubles",
+    "coverage_requirement": "完整賽前選隊到勝負結算"
+  },
+  "scope_constraints": [
+    "第一版只支援 2868×1320 與相同 UI 縮放。",
+    "第一版只支援繁體中文介面。",
+    "第一版只支援 Pokémon Champions 雙打。",
+    "第一版要求影片包含完整賽前、選隊、回合選招、戰鬥敘述與結算。",
+    "第一版不支援裁切影片、直式錄影、字幕遮擋或不同 UI 縮放。"
+  ],
+  "known_frames": [
+    {
+      "id": "kf_team_preview",
+      "timestamp_sec": 15.0,
+      "state": "TEAM_PREVIEW",
+      "reference_image": "samples/screenshots/team_preview.jpeg",
+      "description": "雙方六隻隊伍預覽；建立雙方候選陣容。",
+      "timestamp_tolerance_sec": 2.0
+    },
+    {
+      "id": "kf_selected_four",
+      "timestamp_sec": 39.0,
+      "state": "PLAYER_FOUR_CONFIRMED",
+      "reference_image": "samples/screenshots/selected_four.jpeg",
+      "description": "我方確認四隻；1、2 為先發，3、4 為後排。",
+      "timestamp_tolerance_sec": 2.0
+    },
+    {
+      "id": "kf_battle_text",
+      "timestamp_sec": 79.0,
+      "state": "BATTLE_TEXT",
+      "reference_image": "samples/screenshots/battle_text.jpeg",
+      "description": "中央戰鬥敘述文字框出現。",
+      "timestamp_tolerance_sec": 1.5
+    },
+    {
+      "id": "kf_move_selection_player_right",
+      "timestamp_sec": 493.0,
+      "state": "MOVE_SELECTION_PLAYER_RIGHT",
+      "reference_image": "samples/screenshots/move_selection_player_right.jpeg",
+      "description": "我方右側場上寶可夢正在選招；左下右側狀態框發亮。",
+      "timestamp_tolerance_sec": 1.5
+    },
+    {
+      "id": "kf_move_selection_player_left",
+      "timestamp_sec": 533.0,
+      "state": "MOVE_SELECTION_PLAYER_LEFT",
+      "reference_image": "samples/screenshots/move_selection_player_left.jpeg",
+      "description": "我方左側場上寶可夢正在選招；左下左側狀態框發亮。",
+      "timestamp_tolerance_sec": 1.5
+    },
+    {
+      "id": "kf_result",
+      "timestamp_sec": 588.0,
+      "state": "RESULT",
+      "reference_image": "samples/screenshots/result.jpeg",
+      "description": "勝負結算畫面；分析流程終止。",
+      "timestamp_tolerance_sec": 3.0
+    }
+  ],
+  "notes": [
+    "時間點是第一支 baseline 影片的人工錨點，不是全影片完整 ground truth。",
+    "Codex 應允許人工修正時間點，不可把時間寫死為通用規則。",
+    "實際使用的專案原始影片應保留 2868×1320；若經平台壓縮，需先偵測並明確報告解析度不符。"
+  ]
+}

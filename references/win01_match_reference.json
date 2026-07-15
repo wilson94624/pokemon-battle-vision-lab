@@ -1,0 +1,437 @@
+{
+  "schema_version": "0.1.0",
+  "dataset_id": "pokemon_champions_win01_reference",
+  "purpose": "Codex/CV prototype baseline for the uploaded Pokémon Champions battle video.",
+  "scope": {
+    "game": "Pokémon Champions",
+    "battle_format": "Doubles",
+    "team_selection_rule": "6 choose 4",
+    "notes": [
+      "Player slots 1 and 2 are leads.",
+      "Player slots 3 and 4 are backline.",
+      "Gender and PP are intentionally excluded.",
+      "Actual used moves and targets must be derived from the central battle text, not from cursor position.",
+      "Move effectiveness shown in the UI is an observed hint only; target-specific interpretation belongs to a later inference layer."
+    ]
+  },
+  "sources": {
+    "player_team_details": "Uploaded team-detail screenshot",
+    "team_preview": "Uploaded 6v6 team-preview screenshot",
+    "selected_four": "Uploaded 4-Pokémon confirmation screenshot",
+    "canonical_species_types": "Pokémon Showdown canonical data / manual verification",
+    "confidence_policy": {
+      "screenshot_text": "high when clearly legible",
+      "species_icon_match": "requires CV confidence score",
+      "type_based_species_inference": "supporting evidence only; not unique in all cases"
+    }
+  },
+  "player_team": [
+    {
+      "team_slot": 1,
+      "species": {
+        "zh_tw": "賽富豪",
+        "en": "Gholdengo",
+        "showdown_id": "gholdengo"
+      },
+      "types": [
+        "Steel",
+        "Ghost"
+      ],
+      "ability": {
+        "zh_tw": "黃金之軀",
+        "en": "Good as Gold"
+      },
+      "item": {
+        "zh_tw": "生命寶珠",
+        "en": "Life Orb"
+      },
+      "moves": [
+        {
+          "zh_tw": "守住",
+          "en": "Protect",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "淘金潮",
+          "en": "Make It Rain",
+          "type": "Steel"
+        },
+        {
+          "zh_tw": "暗影球",
+          "en": "Shadow Ball",
+          "type": "Ghost"
+        },
+        {
+          "zh_tw": "十萬伏特",
+          "en": "Thunderbolt",
+          "type": "Electric"
+        }
+      ]
+    },
+    {
+      "team_slot": 2,
+      "species": {
+        "zh_tw": "熾焰咆哮虎",
+        "en": "Incineroar",
+        "showdown_id": "incineroar"
+      },
+      "types": [
+        "Fire",
+        "Dark"
+      ],
+      "ability": {
+        "zh_tw": "威嚇",
+        "en": "Intimidate"
+      },
+      "item": {
+        "zh_tw": "文柚果",
+        "en": "Sitrus Berry"
+      },
+      "moves": [
+        {
+          "zh_tw": "守住",
+          "en": "Protect",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "閃焰衝鋒",
+          "en": "Flare Blitz",
+          "type": "Fire"
+        },
+        {
+          "zh_tw": "拍落",
+          "en": "Knock Off",
+          "type": "Dark"
+        },
+        {
+          "zh_tw": "拋下狠話",
+          "en": "Parting Shot",
+          "type": "Dark"
+        }
+      ]
+    },
+    {
+      "team_slot": 3,
+      "species": {
+        "zh_tw": "勾魂眼",
+        "en": "Sableye",
+        "showdown_id": "sableye"
+      },
+      "types": [
+        "Dark",
+        "Ghost"
+      ],
+      "ability": {
+        "zh_tw": "惡作劇之心",
+        "en": "Prankster"
+      },
+      "item": {
+        "zh_tw": "廣角鏡",
+        "en": "Wide Lens"
+      },
+      "moves": [
+        {
+          "zh_tw": "求雨",
+          "en": "Rain Dance",
+          "type": "Water"
+        },
+        {
+          "zh_tw": "鬼火",
+          "en": "Will-O-Wisp",
+          "type": "Fire"
+        },
+        {
+          "zh_tw": "再來一次",
+          "en": "Encore",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "定身法",
+          "en": "Disable",
+          "type": "Normal"
+        }
+      ]
+    },
+    {
+      "team_slot": 4,
+      "species": {
+        "zh_tw": "巨鉗螳螂",
+        "en": "Scizor",
+        "showdown_id": "scizor"
+      },
+      "types": [
+        "Bug",
+        "Steel"
+      ],
+      "ability": {
+        "zh_tw": "技術高手",
+        "en": "Technician"
+      },
+      "item": {
+        "zh_tw": "達人帶",
+        "en": "Expert Belt"
+      },
+      "moves": [
+        {
+          "zh_tw": "守住",
+          "en": "Protect",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "子彈拳",
+          "en": "Bullet Punch",
+          "type": "Steel"
+        },
+        {
+          "zh_tw": "急速折返",
+          "en": "U-turn",
+          "type": "Bug"
+        },
+        {
+          "zh_tw": "近身戰",
+          "en": "Close Combat",
+          "type": "Fighting"
+        }
+      ]
+    },
+    {
+      "team_slot": 5,
+      "species": {
+        "zh_tw": "蚊香蛙皇",
+        "en": "Politoed",
+        "showdown_id": "politoed"
+      },
+      "types": [
+        "Water"
+      ],
+      "ability": {
+        "zh_tw": "降雨",
+        "en": "Drizzle"
+      },
+      "item": {
+        "zh_tw": "羅子果",
+        "en": "Rindo Berry"
+      },
+      "moves": [
+        {
+          "zh_tw": "守住",
+          "en": "Protect",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "氣象球",
+          "en": "Weather Ball",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "滅亡之歌",
+          "en": "Perish Song",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "幫助",
+          "en": "Helping Hand",
+          "type": "Normal"
+        }
+      ]
+    },
+    {
+      "team_slot": 6,
+      "species": {
+        "zh_tw": "巨沼怪",
+        "en": "Swampert",
+        "showdown_id": "swampert"
+      },
+      "types": [
+        "Water",
+        "Ground"
+      ],
+      "ability": {
+        "zh_tw": "激流",
+        "en": "Torrent"
+      },
+      "item": {
+        "zh_tw": "巨沼怪進化石",
+        "en": "Swampertite"
+      },
+      "moves": [
+        {
+          "zh_tw": "守住",
+          "en": "Protect",
+          "type": "Normal"
+        },
+        {
+          "zh_tw": "波動衝",
+          "en": "Wave Crash",
+          "type": "Water"
+        },
+        {
+          "zh_tw": "十萬馬力",
+          "en": "High Horsepower",
+          "type": "Ground"
+        },
+        {
+          "zh_tw": "快速折返",
+          "en": "Flip Turn",
+          "type": "Water"
+        }
+      ]
+    }
+  ],
+  "opponent_team_preview": [
+    {
+      "preview_slot": 1,
+      "species": {
+        "zh_tw": "熾焰咆哮虎",
+        "en": "Incineroar",
+        "showdown_id": "incineroar"
+      },
+      "types": [
+        "Fire",
+        "Dark"
+      ]
+    },
+    {
+      "preview_slot": 2,
+      "species": {
+        "zh_tw": "巨鉗螳螂",
+        "en": "Scizor",
+        "showdown_id": "scizor"
+      },
+      "types": [
+        "Bug",
+        "Steel"
+      ]
+    },
+    {
+      "preview_slot": 3,
+      "species": {
+        "zh_tw": "烈咬陸鯊",
+        "en": "Garchomp",
+        "showdown_id": "garchomp"
+      },
+      "types": [
+        "Dragon",
+        "Ground"
+      ]
+    },
+    {
+      "preview_slot": 4,
+      "species": {
+        "zh_tw": "風妖精",
+        "en": "Whimsicott",
+        "showdown_id": "whimsicott"
+      },
+      "types": [
+        "Grass",
+        "Fairy"
+      ]
+    },
+    {
+      "preview_slot": 5,
+      "species": {
+        "zh_tw": "仙子伊布",
+        "en": "Sylveon",
+        "showdown_id": "sylveon"
+      },
+      "types": [
+        "Fairy"
+      ]
+    },
+    {
+      "preview_slot": 6,
+      "species": {
+        "zh_tw": "姆克鷹",
+        "en": "Staraptor",
+        "showdown_id": "staraptor"
+      },
+      "types": [
+        "Normal",
+        "Flying"
+      ]
+    }
+  ],
+  "player_selected_four": [
+    {
+      "selection_slot": 1,
+      "battle_role": "lead_left",
+      "species_id": "sableye",
+      "species_zh_tw": "勾魂眼"
+    },
+    {
+      "selection_slot": 2,
+      "battle_role": "lead_right",
+      "species_id": "scizor",
+      "species_zh_tw": "巨鉗螳螂"
+    },
+    {
+      "selection_slot": 3,
+      "battle_role": "backline_1",
+      "species_id": "politoed",
+      "species_zh_tw": "蚊香蛙皇"
+    },
+    {
+      "selection_slot": 4,
+      "battle_role": "backline_2",
+      "species_id": "swampert",
+      "species_zh_tw": "巨沼怪"
+    }
+  ],
+  "cv_recognition_rules": {
+    "species_identification_evidence_priority": [
+      "team-side candidate roster",
+      "species icon match",
+      "type-combination match",
+      "display-name OCR as supporting evidence only",
+      "previous/next battle-state consistency"
+    ],
+    "nickname_rule": "Displayed names may be custom nicknames and must not be treated as canonical species identity.",
+    "type_inference_rule": "Type combinations may narrow candidates, but cannot always uniquely identify a species.",
+    "turn_selection_rule": "During move selection, detect which player status panel is highlighted to identify whether the left or right active Pokémon is being operated.",
+    "move_menu_rule": {
+      "record": [
+        "controlled player slot",
+        "four move names if not already supplied by team data",
+        "displayed move type icons",
+        "displayed effectiveness hints"
+      ],
+      "ignore": [
+        "PP",
+        "gender",
+        "cursor position",
+        "assumed final selected move",
+        "assumed target"
+      ]
+    },
+    "battle_text_rule": {
+      "source_of_truth": true,
+      "required_fields": [
+        "actor",
+        "action_or_move",
+        "target_or_targets_when inferable",
+        "result",
+        "raw_text",
+        "timestamp"
+      ],
+      "event_pattern": "who -> used/did what -> affected whom -> result"
+    }
+  },
+  "labels": {
+    "screen_states": [
+      "TEAM_PREVIEW",
+      "PLAYER_FOUR_CONFIRMED",
+      "MOVE_SELECTION_PLAYER_LEFT",
+      "MOVE_SELECTION_PLAYER_RIGHT",
+      "BATTLE_TEXT",
+      "RESULT",
+      "UNKNOWN"
+    ],
+    "effectiveness_hints": [
+      "super_effective",
+      "effective",
+      "not_very_effective",
+      "no_effect",
+      "not_shown"
+    ]
+  }
+}
