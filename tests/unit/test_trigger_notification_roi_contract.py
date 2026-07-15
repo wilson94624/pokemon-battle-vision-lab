@@ -81,5 +81,8 @@ def test_trigger_notification_overlay_manifest_preserves_provisional_gate():
         "positive_example_verified_count": 1,
         "provisional_unverified_count": 1,
     }
-    assert not (MANIFEST_PATH.parent / "roi_approval.json").exists()
-    assert not (MANIFEST_PATH.parent.parent / "checkpoint-1b").exists()
+    approval_path = MANIFEST_PATH.parent / "roi_approval.json"
+    approval = json.loads(approval_path.read_text(encoding="utf-8"))
+    assert approval["status"] == "approved"
+    assert approval["roi_config_sha256"] == sha256_file(CONFIG_PATH)
+    assert approval["overlay_manifest_sha256"] == sha256_file(MANIFEST_PATH)

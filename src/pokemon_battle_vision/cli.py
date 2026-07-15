@@ -1,4 +1,4 @@
-"""Checkpoint 1A 與獨立人工 ROI approval command。"""
+"""Checkpoint 1A、ROI approval 與 Checkpoint 1B 本地端 commands。"""
 
 import argparse
 import sys
@@ -8,12 +8,13 @@ from typing import List, Optional
 from .errors import CheckpointError
 from .pipeline import run_checkpoint_1a
 from .roi import create_roi_approval
+from .scanner import run_checkpoint_1b
 
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pokemon-battle-vision",
-        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A",
+        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A/1B",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -39,6 +40,16 @@ def _parser() -> argparse.ArgumentParser:
     approval_parser.add_argument("--overlay-manifest", type=Path, required=True)
     approval_parser.add_argument("--approved-by", required=True)
     approval_parser.add_argument("--output", type=Path, required=True)
+
+    scan_parser = subparsers.add_parser(
+        "checkpoint-1b", help="使用 Frozen ROI Baseline，以固定 10 Hz 掃描全片並建立事件候選"
+    )
+    scan_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    scan_parser.add_argument("--video", type=Path, required=True)
+    scan_parser.add_argument("--roi-config", type=Path, required=True)
+    scan_parser.add_argument("--checkpoint-1a-dir", type=Path, required=True)
+    scan_parser.add_argument("--roi-approval", type=Path, required=True)
+    scan_parser.add_argument("--output", type=Path, required=True)
     return parser
 
 
@@ -76,6 +87,19 @@ def main(argv: Optional[List[str]] = None) -> int:
             )
             print("ROI 核准紀錄已寫入：{}".format(args.output))
             return 0
+        if args.command == "checkpoint-1b":
+            report = run_checkpoint_1b(
+                project_root=args.project_root,
+                video_path=args.video,
+                roi_config_path=args.roi_config,
+                checkpoint1a_dir=args.checkpoint_1a_dir,
+                roi_approval_path=args.roi_approval,
+                output_dir=args.output,
+            )
+            print("Checkpoint 1B 已完成：{}".format(args.output / "events.json"))
+            print("10 Hz sampled frames：{}".format(report["counts"]["sampled_frames"]))
+            print("event candidates：{}".format(report["counts"]["event_candidates"]))
+            return 0
         parser.error("未知 command")
     except CheckpointError as exc:
         print("錯誤：{}".format(exc), file=sys.stderr)
@@ -85,4 +109,3 @@ def main(argv: Optional[List[str]] = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

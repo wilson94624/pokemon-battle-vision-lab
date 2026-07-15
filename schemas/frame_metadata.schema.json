@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/frame_metadata.schema.json",
+  "title": "Checkpoint 1B Sampled Frame Metadata",
+  "type": "object",
+  "required": [
+    "sample_index",
+    "frame_index",
+    "target_time",
+    "pts",
+    "timestamp",
+    "roi_available",
+    "ui_state",
+    "visible_rois",
+    "frame_hash",
+    "candidate_scores"
+  ],
+  "properties": {
+    "sample_index": {"type": "integer", "minimum": 0},
+    "frame_index": {"type": "integer", "minimum": 0},
+    "target_time": {"type": "number", "minimum": 0},
+    "pts": {"type": "number", "minimum": 0},
+    "timestamp": {"type": "string"},
+    "roi_available": {"type": "boolean"},
+    "ui_state": {
+      "enum": [
+        "UNKNOWN",
+        "TEAM_PREVIEW",
+        "SELECTED_FOUR",
+        "MOVE_MENU",
+        "BATTLE_TEXT",
+        "TRIGGER_NOTIFICATION",
+        "RESULT"
+      ]
+    },
+    "visible_rois": {"type": "array", "items": {"type": "string"}},
+    "frame_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "candidate_scores": {
+      "type": "object",
+      "required": [
+        "TEAM_PREVIEW",
+        "SELECTED_FOUR",
+        "MOVE_MENU",
+        "BATTLE_TEXT",
+        "TRIGGER_NOTIFICATION",
+        "RESULT"
+      ],
+      "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+    }
+  },
+  "additionalProperties": false
+}

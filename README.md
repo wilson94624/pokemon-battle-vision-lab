@@ -1,8 +1,8 @@
 # Pokémon Battle Vision Lab
 
-本 repository 是本地端 Python Computer Vision 研究型 prototype。目前只實作 **Milestone 1 — Checkpoint 1A**：環境與媒體 preflight、ffprobe metadata／PTS、OpenCV 順序解碼 baseline、known anchors、固定間隔 contact sheets，以及 raw-video ROI calibration overlays。
+本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A/1B**：1A 建立並核准 ffprobe PTS、rotation 與 raw-video ROI Frozen Baseline；1B 以固定 10 Hz 掃描全片、記錄 frame metadata 並建立 UI event candidates。
 
-本專案不是網站、即時助手、完整 OCR、Battle Parser 或戰術分析工具。Checkpoint 1B、10 Hz feature analysis、segmentation、annotation draft 與 OCR 都不在目前範圍。
+本專案不是網站、即時助手、OCR、Battle Parser 或戰術分析工具。Checkpoint 1B 只判斷 UI 候選狀態與時間區段，不辨識任何文字、招式、特性或道具名稱。
 
 ## 唯一支援 profile
 
@@ -80,7 +80,7 @@ outputs/checkpoint-1a/
 
 ## ROI 人工核准 gate
 
-`configs/roi_2868x1320.json` 是由 design-reference screenshots 推導的 normalized 初稿，不是 ground truth。主流程把 ROI 映射到 rotation 後 raw video anchors，產生六張 overlays，然後以 `pending_human_approval` 停止。
+`configs/roi_2868x1320.json` 是由 design-reference screenshots 推導的 normalized 初稿，不是 ground truth。主流程把 ROI 映射到 rotation 後 raw video anchors，產生六張 anchor overlays，另有一張 trigger notification 正例 overlay；核准集合共七張。產生流程仍會先以 `pending_human_approval` 停止，只有獨立 approval command 能建立核准紀錄。
 
 請人工逐張檢查：
 
@@ -101,7 +101,33 @@ outputs/checkpoint-1a/
 
 approval 會重新驗證 video、ROI config、manifest 及每張 overlay 的 SHA-256。任一內容改變都必須重產 overlays 並重新核准。
 
-**本次交付不會執行上述 approval command，也不會開始 Checkpoint 1B。**
+Checkpoint 1B 啟動前會 read-only 重驗 video、ROI config、manifest、全部 overlays 與 approval hashes；任一 Frozen Baseline 證據改變都會拒絕掃描。
+
+## 執行 Checkpoint 1B
+
+Checkpoint 1B 的 sampling rate 固定為 `10 Hz`，CLI 沒有 adaptive sampling 或 rate override：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1b \
+  --project-root . \
+  --video samples/videos/win-01.mp4 \
+  --roi-config configs/roi_2868x1320.json \
+  --checkpoint-1a-dir outputs/checkpoint-1a \
+  --roi-approval outputs/checkpoint-1a/roi_approval.json \
+  --output outputs/checkpoint-1b
+```
+
+Scanner 會順序讀完整影片，以 Checkpoint 1A 的 `ffprobe.best_effort_timestamp_time` index 為時間權威，為每個 0.1 秒 target 選最近的實際 frame。主要輸出：
+
+```text
+outputs/checkpoint-1b/
+├── frames.jsonl
+├── events.json
+├── detector_report.json
+└── checkpoint_1b_report.json
+```
+
+`frames.jsonl` 每列至少包含 source `frame_index`、`pts`、格式化 `timestamp`、`roi_available`、`ui_state`、`visible_rois` 與 deterministic `frame_hash`。`events.json` 只包含 `TEAM_PREVIEW`、`SELECTED_FOUR`、`MOVE_MENU`、`BATTLE_TEXT`、`TRIGGER_NOTIFICATION`、`RESULT` candidates 與 start/end/duration/confidence，不做 OCR。
 
 ## 測試
 
@@ -111,10 +137,10 @@ approval 會重新驗證 video、ROI config、manifest 及每張 overlay 的 SHA
 .venv/bin/python -m pytest -m 'not slow'
 ```
 
-實際 `win-01.mp4` 全片順序解碼 smoke test：
+實際 `win-01.mp4` 全片順序解碼與 10 Hz Checkpoint 1B integration tests：
 
 ```bash
 .venv/bin/python -m pytest -m slow -s
 ```
 
-slow test 會使用暫存輸出目錄，驗證完整 frame count 對齊、六個 anchors、contact sheets、raw-video overlays 及 ROI gate 仍為 pending；不產生任何 Checkpoint 1B 產物。
+slow tests 會使用暫存輸出目錄：1A 驗證完整 frame count、anchors、contact sheets 與 ROI gate；1B 驗證 25,873 個來源 frames 全數掃描、5,918 個 10 Hz records、六類 event candidates、Frozen ROI hash 不變且 `ocr_performed=false`。

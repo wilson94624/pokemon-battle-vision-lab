@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pokemon-battle-vision"
-version = "0.1.0"
-description = "Pokémon Champions 對戰影片 Checkpoint 1A 檢查與 ROI 校準工具"
+version = "0.2.0"
+description = "Pokémon Champions 對戰影片 Checkpoint 1A ROI 基線與 Checkpoint 1B 事件候選掃描器"
 readme = "README.md"
 requires-python = "==3.9.6"
 dependencies = [
@@ -33,4 +33,3 @@ markers = [
   "slow: 需要完整順序解碼實際影片的慢速 smoke test",
   "integration: 使用實際外部 executable 或媒體的整合測試",
 ]
-

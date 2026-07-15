@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/events.schema.json",
+  "title": "Checkpoint 1B Event Candidates",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "checkpoint",
+    "kind",
+    "video_sha256",
+    "sampling_hz",
+    "ocr_performed",
+    "event_count",
+    "event_counts",
+    "events"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "checkpoint": {"const": "1B"},
+    "kind": {"const": "event_candidates"},
+    "video_path": {"type": "string"},
+    "video_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sampling_hz": {"const": 10.0},
+    "ocr_performed": {"const": false},
+    "event_count": {"type": "integer", "minimum": 0},
+    "event_counts": {"type": "object"},
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "event_id",
+          "type",
+          "start_frame",
+          "end_frame",
+          "start_time",
+          "end_time",
+          "start_timestamp",
+          "end_timestamp",
+          "duration_sec",
+          "confidence",
+          "sample_count",
+          "visible_rois"
+        ],
+        "properties": {
+          "event_id": {"type": "string"},
+          "type": {
+            "enum": [
+              "TEAM_PREVIEW",
+              "SELECTED_FOUR",
+              "MOVE_MENU",
+              "BATTLE_TEXT",
+              "TRIGGER_NOTIFICATION",
+              "RESULT"
+            ]
+          },
+          "start_frame": {"type": "integer", "minimum": 0},
+          "end_frame": {"type": "integer", "minimum": 0},
+          "start_time": {"type": "number", "minimum": 0},
+          "end_time": {"type": "number", "minimum": 0},
+          "start_timestamp": {"type": "string"},
+          "end_timestamp": {"type": "string"},
+          "duration_sec": {"type": "number", "exclusiveMinimum": 0},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "sample_count": {"type": "integer", "minimum": 1},
+          "visible_rois": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
