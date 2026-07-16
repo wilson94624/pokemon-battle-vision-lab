@@ -1,8 +1,8 @@
 # Pokémon Battle Vision Lab
 
-本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A/1B 與 1B Human Review Pack**：1A 建立並核准 ffprobe PTS、rotation 與 raw-video ROI Frozen Baseline；1B 以固定 10 Hz 掃描全片、記錄 frame metadata 並建立 UI event candidates；Review Pack 把既有 candidates 整理成人工審查圖與 coverage 概覽。
+本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A、1B 與 1C 第一階段**：1A 建立並核准 ffprobe PTS、rotation 與 raw-video ROI Frozen Baseline；1B 以固定 10 Hz 掃描全片、記錄 frame metadata 並建立 UI event candidates；1C 第一階段只對 frozen `BATTLE_TEXT`／`TRIGGER_NOTIFICATION` candidates 執行本機多影格 OCR、Text Validation 與人工審查輸出。
 
-本專案不是網站、即時助手、OCR、Battle Parser 或戰術分析工具。Checkpoint 1B 只判斷 UI 候選狀態與時間區段，不辨識任何文字、招式、特性或道具名稱。
+本專案不是網站、即時助手、Battle Parser 或戰術分析工具。Checkpoint 1C 只保留 raw OCR 與文字有效性，不建立 SVO、BattleEvent、回合狀態或戰術語意。
 
 ## 唯一支援 profile
 
@@ -159,6 +159,22 @@ Review Pack 忠實呈現既有 `events.json`，不會重跑 detector、重新分
 
 一般 candidate 使用 start／middle／end；BATTLE_TEXT 額外使用 first strong、peak score＋structure、last strong，超過 3 秒時另顯示約每 0.5 秒一張的 evidence strip。TRIGGER_NOTIFICATION 使用 start、peak evidence、end，並同時顯示 canonical ROI 與實際 analysis context 的 panel／text／icon／combined scores。一般 coverage 固定為 0.5 秒，dense recall audit 使用既有 10 Hz diagnostics；`battle_text_round1_regression/` 與 `trigger_notification_round1_regression/` 分別提供人工案例的新舊 mapping。完整人工欄位、索引與建議流程請見 [`docs/checkpoint1b_review_guide.md`](docs/checkpoint1b_review_guide.md)。
 
+## 執行 Checkpoint 1C 第一階段
+
+Checkpoint 1C 不重跑 detector，也不修改 Checkpoint 1B candidates。它從 PTS／ordinal 對應選取每筆 candidate 的 `2–7` 張 evidence frame，產生四種有限 preprocessing variants，再以 macOS Apple Vision `VNRecognizeTextRequest`（`zh-Hant`）執行完全本機 OCR：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1c \
+  --project-root . \
+  --video samples/videos/win-01.mp4 \
+  --checkpoint-1b-dir outputs/checkpoint-1b \
+  --checkpoint-1b-review-dir outputs/checkpoint-1b-review \
+  --output outputs/checkpoint-1c \
+  --review-output outputs/checkpoint-1c-review
+```
+
+執行環境另需 Xcode Command Line Tools 的 `xcrun clang`；adapter 直接連結系統 Vision framework，不下載模型或呼叫雲端。輸出會保留 `178` 個 candidates、全部 raw OCR evidence、multi-frame aggregate、`VALID_TEXT/NO_TEXT/UNCERTAIN`、`auto_accepted/needs_review/rejected`、possible duplicate hints 與人工欄位。完整欄位、Review Pack 結構與審查順序請見 [`docs/checkpoint1c_review_guide.md`](docs/checkpoint1c_review_guide.md)，架構與 engine 選型請見 [`docs/checkpoint1c_architecture.md`](docs/checkpoint1c_architecture.md)。
+
 ## 測試
 
 快速單元與整合測試：
@@ -173,4 +189,4 @@ Review Pack 忠實呈現既有 `events.json`，不會重跑 detector、重新分
 .venv/bin/python -m pytest -m slow -s
 ```
 
-slow tests 會使用安全的暫存 project `outputs/`：1A 驗證既有 Frozen Gate；1B 驗證 25,873 個來源 frames、5,918 個 10 Hz records、逐 sample diagnostics、17 個 regression windows、round-1 人工案例及其他 event type 固定數量；Review Pack 驗證新版 events 一一對應、peak evidence、0.5 秒 coverage、10 Hz dense audit、round-1 visual mapping、hidden flag 與 transaction cleanup。
+slow tests 會使用安全的暫存 project `outputs/`：1A 驗證既有 Frozen Gate；1B 驗證 25,873 個來源 frames、5,918 個 10 Hz records、逐 sample diagnostics、17 個 regression windows、round-1 人工案例及其他 event type 固定數量；1B Review Pack 驗證一一對應、peak evidence、0.5 秒 coverage、dense audit 與 transaction cleanup；1C 以真實影片驗證單次順序解碼、178 candidates、本機繁中 OCR、schemas、Review Pack、frozen hashes 與 macOS visibility。

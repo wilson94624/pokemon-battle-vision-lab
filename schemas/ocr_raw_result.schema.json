@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/ocr_raw_result.schema.json",
+  "title": "Checkpoint 1C OCR Raw Result",
+  "type": "object",
+  "required": [
+    "result_id", "event_id", "event_type", "frame_ordinal", "pts", "roi_name",
+    "variant_id", "variant_operations", "image_path", "raw_text", "normalized_text",
+    "ocr_confidence", "character_count", "cjk_character_count", "line_count",
+    "engine", "engine_revision", "language", "frame_quality", "variant_quality",
+    "visual_text_strength", "detector_template_strength", "error"
+  ],
+  "properties": {
+    "result_id": {"type": "string", "minLength": 1},
+    "event_id": {"type": "string", "minLength": 1},
+    "event_type": {"enum": ["BATTLE_TEXT", "TRIGGER_NOTIFICATION"]},
+    "frame_ordinal": {"type": "integer", "minimum": 0},
+    "pts": {"type": "number", "minimum": 0},
+    "roi_name": {"type": "string", "minLength": 1},
+    "variant_id": {"type": "string", "minLength": 1},
+    "variant_operations": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "image_path": {"type": "string", "minLength": 1},
+    "raw_text": {"type": "string"},
+    "normalized_text": {"type": "string"},
+    "ocr_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "character_count": {"type": "integer", "minimum": 0},
+    "cjk_character_count": {"type": "integer", "minimum": 0},
+    "line_count": {"type": "integer", "minimum": 0},
+    "engine": {"const": "apple_vision_vnrecognizetextrequest"},
+    "engine_revision": {"const": "VNRecognizeTextRequestRevision3"},
+    "language": {"const": "zh-Hant"},
+    "frame_quality": {"type": "number", "minimum": 0, "maximum": 1},
+    "variant_quality": {"type": "number", "minimum": 0, "maximum": 1},
+    "visual_text_strength": {"type": "number", "minimum": 0, "maximum": 1},
+    "detector_template_strength": {"type": "number", "minimum": 0, "maximum": 1},
+    "error": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/checkpoint1c_manifest.schema.json",
+  "title": "Checkpoint 1C Manifest",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "status", "generated_at", "ocr_engine", "input_candidate_counts", "processed_candidate_counts", "processed_candidate_count", "raw_result_count", "validation_counts", "workflow_counts", "duplicate_group_count", "initial_evaluation_fixture", "frame_extraction", "outputs", "frozen_hashes_before", "frozen_hashes_after", "frozen_inputs_unchanged", "detector_rerun", "semantic_parser_performed", "cloud_or_llm_vision_used", "source_candidates_deleted", "validation"],
+  "properties": {
+    "schema_version": {"type": "string"}, "checkpoint": {"const": "1C"}, "kind": {"const": "checkpoint1c_manifest"}, "status": {"const": "complete"}, "generated_at": {"type": "string"},
+    "ocr_engine": {"type": "object"}, "input_candidate_counts": {"type": "object"}, "processed_candidate_counts": {"type": "object"},
+    "processed_candidate_count": {"const": 178}, "raw_result_count": {"type": "integer", "minimum": 178},
+    "validation_counts": {"type": "object"}, "workflow_counts": {"type": "object"}, "duplicate_group_count": {"type": "integer", "minimum": 0},
+    "initial_evaluation_fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "production_usage_forbidden", "inference_feedback_used"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "production_usage_forbidden": {"const": true},
+        "inference_feedback_used": {"const": false}
+      }
+    },
+    "frame_extraction": {"type": "object"}, "outputs": {"type": "object"},
+    "frozen_hashes_before": {"type": "object"}, "frozen_hashes_after": {"type": "object"}, "frozen_inputs_unchanged": {"const": true},
+    "detector_rerun": {"const": false}, "semantic_parser_performed": {"const": false}, "cloud_or_llm_vision_used": {"const": false}, "source_candidates_deleted": {"const": false},
+    "validation": {"type": "object"}
+  },
+  "additionalProperties": false
+}

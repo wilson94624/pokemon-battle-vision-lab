@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/ocr_aggregate.schema.json",
+  "title": "Checkpoint 1C Multi-frame OCR Aggregates",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "record_count", "records"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "checkpoint": {"const": "1C"},
+    "kind": {"const": "multi_frame_ocr_aggregates"},
+    "record_count": {"type": "integer", "minimum": 0},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/aggregate"}}
+  },
+  "$defs": {
+    "aggregate": {
+      "type": "object",
+      "required": ["event_id", "event_type", "best_text", "best_confidence", "consensus_confidence", "supporting_result_ids", "supporting_frame_ordinals", "disagreement_score", "selected_frame_ordinal", "selected_variant_id", "candidate_status", "review_reasons", "nonempty_result_count", "distinct_text_count", "cjk_character_count", "line_count"],
+      "properties": {
+        "event_id": {"type": "string"},
+        "event_type": {"enum": ["BATTLE_TEXT", "TRIGGER_NOTIFICATION"]},
+        "best_text": {"type": "string"},
+        "best_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "consensus_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "supporting_result_ids": {"type": "array", "items": {"type": "string"}},
+        "supporting_frame_ordinals": {"type": "array", "items": {"type": "integer", "minimum": 0}, "uniqueItems": true},
+        "disagreement_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "selected_frame_ordinal": {"type": ["integer", "null"], "minimum": 0},
+        "selected_variant_id": {"type": "string"},
+        "candidate_status": {"enum": ["EMPTY", "AGGREGATED"]},
+        "review_reasons": {"type": "array", "items": {"type": "string"}},
+        "nonempty_result_count": {"type": "integer", "minimum": 0},
+        "distinct_text_count": {"type": "integer", "minimum": 0},
+        "cjk_character_count": {"type": "integer", "minimum": 0},
+        "line_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

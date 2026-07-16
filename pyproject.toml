@@ -5,13 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pokemon-battle-vision"
 version = "0.2.0"
-description = "Pokémon Champions 對戰影片 Checkpoint 1A ROI 基線與 Checkpoint 1B 事件候選掃描器"
+description = "Pokémon Champions 對戰影片 Checkpoint 1A/1B 視覺候選與 Checkpoint 1C 本機 OCR pipeline"
 readme = "README.md"
 requires-python = "==3.9.6"
 dependencies = [
   "numpy==2.0.2",
   "opencv-python-headless==4.13.0.92",
   "jsonschema==4.23.0",
+  "Pillow==11.3.0",
 ]
 
 [project.optional-dependencies]
@@ -25,6 +26,9 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+pokemon_battle_vision = ["resources/*.m"]
 
 [tool.pytest.ini_options]
 addopts = "-ra"

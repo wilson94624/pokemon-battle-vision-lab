@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1c_evaluation.schema.json",
+  "title": "Checkpoint 1C initial evaluation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "checkpoint",
+    "kind",
+    "inference_feedback_used",
+    "case_count",
+    "passed_count",
+    "failed_count",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1C"},
+    "kind": {"const": "checkpoint1c_initial_evaluation_report"},
+    "inference_feedback_used": {"const": false},
+    "case_count": {"type": "integer", "minimum": 1},
+    "passed_count": {"type": "integer", "minimum": 0},
+    "failed_count": {"type": "integer", "minimum": 0},
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_id",
+          "diagnostic_category",
+          "candidate_ids",
+          "expected_labels",
+          "observed_labels",
+          "expected_text_fragments",
+          "observed_text",
+          "missing_candidate_ids",
+          "labels_match",
+          "text_fragments_match",
+          "duplicate_marking_match",
+          "passed"
+        ],
+        "properties": {
+          "case_id": {"type": "string", "minLength": 1},
+          "diagnostic_category": {"type": "string", "minLength": 1},
+          "candidate_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "expected_labels": {"type": "array", "minItems": 1, "items": {"enum": ["VALID_TEXT", "NO_TEXT", "UNCERTAIN"]}},
+          "observed_labels": {"type": "array", "items": {"enum": ["VALID_TEXT", "NO_TEXT", "UNCERTAIN"]}},
+          "expected_text_fragments": {"type": "array", "items": {"type": "string"}},
+          "observed_text": {"type": "string"},
+          "missing_candidate_ids": {"type": "array", "items": {"type": "string"}},
+          "labels_match": {"type": "boolean"},
+          "text_fragments_match": {"type": "boolean"},
+          "duplicate_marking_match": {"type": "boolean"},
+          "passed": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/checkpoint1c_review.schema.json",
+  "title": "Checkpoint 1C Human Review Records",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "record_count", "source_manifest_sha256", "contact_sheets", "records"],
+  "properties": {
+    "schema_version": {"type": "string"}, "checkpoint": {"const": "1C"}, "kind": {"const": "checkpoint1c_human_review"}, "record_count": {"const": 178},
+    "source_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "contact_sheets": {"type": "object"},
+    "records": {
+      "type": "array", "minItems": 178, "maxItems": 178,
+      "items": {
+        "type": "object",
+        "required": ["event_id", "event_type", "start_time", "end_time", "validation_label", "workflow_status", "ocr_text", "ocr_confidence", "consensus_confidence", "validation_confidence", "review_reasons", "supporting_result_ids", "duplicate_group_id", "possible_duplicate_of", "duplicate_confidence", "human_text", "human_decision", "human_action", "merge_with_event_id", "split_points", "reviewed_at", "reviewed_by", "review_card_path", "ocr_frame_count", "ocr_frame_ordinals", "ocr_frame_pts", "selected_frame_ordinal", "selected_variant_id", "supporting_frame_ordinals"],
+        "properties": {
+          "event_id": {"type": "string"}, "event_type": {"enum": ["BATTLE_TEXT", "TRIGGER_NOTIFICATION"]}, "start_time": {"type": "number"}, "end_time": {"type": "number"},
+          "validation_label": {"enum": ["VALID_TEXT", "NO_TEXT", "UNCERTAIN"]}, "workflow_status": {"enum": ["auto_accepted", "needs_review", "rejected"]},
+          "ocr_text": {"type": "string"}, "ocr_confidence": {"type": "number", "minimum": 0, "maximum": 1}, "consensus_confidence": {"type": "number", "minimum": 0, "maximum": 1}, "validation_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "review_reasons": {"type": "array", "items": {"type": "string"}}, "supporting_result_ids": {"type": "array", "items": {"type": "string"}},
+          "duplicate_group_id": {"type": ["string", "null"]}, "possible_duplicate_of": {"type": ["string", "null"]}, "duplicate_confidence": {"type": "number"},
+          "human_text": {"type": ["string", "null"]}, "human_decision": {"type": ["string", "null"]}, "human_action": {"type": ["string", "null"]}, "merge_with_event_id": {"type": ["string", "null"]}, "split_points": {"type": ["array", "null"]}, "reviewed_at": {"type": ["string", "null"]}, "reviewed_by": {"type": ["string", "null"]},
+          "review_card_path": {"type": "string"}, "ocr_frame_count": {"type": "integer", "minimum": 1, "maximum": 7}, "ocr_frame_ordinals": {"type": "array", "items": {"type": "integer"}, "uniqueItems": true}, "ocr_frame_pts": {"type": "array", "items": {"type": "number"}},
+          "selected_frame_ordinal": {"type": ["integer", "null"]}, "selected_variant_id": {"type": "string"}, "supporting_frame_ordinals": {"type": "array", "items": {"type": "integer"}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

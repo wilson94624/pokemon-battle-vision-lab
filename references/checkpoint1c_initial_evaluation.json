@@ -1,0 +1,109 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "checkpoint1c_initial_human_evaluation_fixture",
+  "source_baseline": {
+    "events_path": "outputs/checkpoint-1b/events.json",
+    "events_sha256": "4f1573aa2f9c5b84c3b12d6e0efd9af5e5b656c713f1053bf7fc7e93d52a5b59"
+  },
+  "production_usage_forbidden": true,
+  "purpose": "只在 OCR 與 Text Validation 完成後評估輸出；不得參與 frame selection、OCR、aggregation 或 validation inference。",
+  "cases": [
+    {
+      "case_id": "clear_two_line_battle_text",
+      "candidate_ids": ["battle_text-0011"],
+      "time_windows": [[82.391667, 84.108333]],
+      "expected_labels": ["VALID_TEXT"],
+      "expected_text_fragments": ["風妖精", "幫助", "仙子伊布"],
+      "diagnostic_category": "clear_text"
+    },
+    {
+      "case_id": "fade_in_battle_text",
+      "candidate_ids": ["battle_text-0012"],
+      "time_windows": [[84.808333, 85.108333]],
+      "expected_labels": ["VALID_TEXT", "UNCERTAIN"],
+      "expected_text_fragments": ["巨鉗螳螂", "子彈拳"],
+      "diagnostic_category": "fade_in"
+    },
+    {
+      "case_id": "fade_out_battle_text",
+      "candidate_ids": ["battle_text-0012"],
+      "time_windows": [[85.691667, 85.991667]],
+      "expected_labels": ["VALID_TEXT", "UNCERTAIN"],
+      "expected_text_fragments": ["巨鉗螳螂", "子彈拳"],
+      "diagnostic_category": "fade_out"
+    },
+    {
+      "case_id": "possible_duplicate_pair",
+      "candidate_ids": ["battle_text-0007", "battle_text-0008"],
+      "time_windows": [[56.805, 57.005], [57.305, 58.788333]],
+      "expected_labels": ["VALID_TEXT", "UNCERTAIN"],
+      "expected_text_fragments": ["勾魂眼", "巨鉗螳螂"],
+      "diagnostic_category": "possible_duplicate",
+      "expected_duplicate_marking": true
+    },
+    {
+      "case_id": "mega_peripheral_ui_0049",
+      "candidate_ids": ["battle_text-0049"],
+      "time_windows": [[209.103333, 209.203333]],
+      "expected_labels": ["NO_TEXT"],
+      "expected_text_fragments": [],
+      "diagnostic_category": "mega_peripheral_ui"
+    },
+    {
+      "case_id": "mega_peripheral_ui_0050",
+      "candidate_ids": ["battle_text-0050"],
+      "time_windows": [[215.603333, 215.703333]],
+      "expected_labels": ["NO_TEXT"],
+      "expected_text_fragments": [],
+      "diagnostic_category": "mega_peripheral_ui"
+    },
+    {
+      "case_id": "mega_peripheral_ui_0051",
+      "candidate_ids": ["battle_text-0051"],
+      "time_windows": [[217.503333, 217.603333]],
+      "expected_labels": ["NO_TEXT"],
+      "expected_text_fragments": [],
+      "diagnostic_category": "mega_peripheral_ui"
+    },
+    {
+      "case_id": "water_splash_0086",
+      "candidate_ids": ["battle_text-0086"],
+      "time_windows": [[327.513333, 327.713333]],
+      "expected_labels": ["NO_TEXT"],
+      "expected_text_fragments": [],
+      "diagnostic_category": "water_splash_effect"
+    },
+    {
+      "case_id": "water_splash_0087",
+      "candidate_ids": ["battle_text-0087"],
+      "time_windows": [[328.613333, 328.996667]],
+      "expected_labels": ["NO_TEXT"],
+      "expected_text_fragments": [],
+      "diagnostic_category": "water_splash_effect"
+    },
+    {
+      "case_id": "trigger_ability",
+      "candidate_ids": ["trigger_notification-0001"],
+      "time_windows": [[113.393333, 114.993333]],
+      "expected_labels": ["VALID_TEXT"],
+      "expected_text_fragments": ["姆克鷹", "威嚇"],
+      "diagnostic_category": "trigger_ability"
+    },
+    {
+      "case_id": "trigger_item",
+      "candidate_ids": ["trigger_notification-0002"],
+      "time_windows": [[450.791667, 452.591667]],
+      "expected_labels": ["VALID_TEXT", "UNCERTAIN"],
+      "expected_text_fragments": ["烈咬陸鯊", "生命寶珠"],
+      "diagnostic_category": "trigger_item"
+    },
+    {
+      "case_id": "short_battle_text",
+      "candidate_ids": ["battle_text-0163"],
+      "time_windows": [[564.101667, 565.801667]],
+      "expected_labels": ["VALID_TEXT"],
+      "expected_text_fragments": ["雨停了"],
+      "diagnostic_category": "short_text"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-"""Checkpoint 1A、ROI approval、Checkpoint 1B 與 Human Review Pack commands。"""
+"""Checkpoint 1A／1B 與 Checkpoint 1C 本機 OCR commands。"""
 
 import argparse
 import sys
@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from .errors import CheckpointError
+from .checkpoint1c import run_checkpoint_1c
 from .pipeline import run_checkpoint_1a
 from .review_pack import build_review_pack
 from .roi import create_roi_approval
@@ -74,6 +75,17 @@ def _parser() -> argparse.ArgumentParser:
     review_parser.add_argument("--roi-config", type=Path, required=True)
     review_parser.add_argument("--output", type=Path, required=True)
     review_parser.add_argument("--coverage-interval-sec", type=float, default=0.5)
+
+    ocr_parser = subparsers.add_parser(
+        "checkpoint-1c",
+        help="從 frozen Checkpoint 1B candidates 執行本機多影格 OCR、文字驗證與人工審查包",
+    )
+    ocr_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    ocr_parser.add_argument("--video", type=Path, required=True)
+    ocr_parser.add_argument("--checkpoint-1b-dir", type=Path, required=True)
+    ocr_parser.add_argument("--checkpoint-1b-review-dir", type=Path, required=True)
+    ocr_parser.add_argument("--output", type=Path, required=True)
+    ocr_parser.add_argument("--review-output", type=Path, required=True)
     return parser
 
 
@@ -142,6 +154,20 @@ def main(argv: Optional[List[str]] = None) -> int:
             print(
                 "coverage pages：{}".format(manifest["coverage_review"]["page_count"])
             )
+            return 0
+        if args.command == "checkpoint-1c":
+            manifest = run_checkpoint_1c(
+                project_root=args.project_root,
+                video_path=args.video,
+                checkpoint1b_dir=args.checkpoint_1b_dir,
+                checkpoint1b_review_dir=args.checkpoint_1b_review_dir,
+                output_dir=args.output,
+                review_output_dir=args.review_output,
+            )
+            print("Checkpoint 1C 已完成：{}".format(args.output))
+            print("已處理 candidates：{}".format(manifest["processed_candidate_count"]))
+            print("validation counts：{}".format(manifest["validation_counts"]))
+            print("workflow counts：{}".format(manifest["workflow_counts"]))
             return 0
         parser.error("未知 command")
     except CheckpointError as exc:
