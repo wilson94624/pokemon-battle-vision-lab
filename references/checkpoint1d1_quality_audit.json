@@ -1,0 +1,1451 @@
+{
+  "baseline_counts": {
+    "ABILITY": 1,
+    "FAINT": 4,
+    "FIELD_EFFECT": 28,
+    "ITEM": 1,
+    "MOVE": 29,
+    "STATUS": 13,
+    "STAT_CHANGE": 6,
+    "SWITCH": 6,
+    "TERRAIN": 0,
+    "UNKNOWN_EVENT": 12,
+    "WEATHER": 2
+  },
+  "event_audit": [
+    {
+      "battle_event_id": "battle-event-0001",
+      "candidate_id": "battle_text-0004",
+      "current_type": "SWITCH",
+      "reason_group": "keep",
+      "recommended_type": "SWITCH",
+      "rule_id": "switch.sent_out",
+      "start_time": 52.788333
+    },
+    {
+      "battle_event_id": "battle-event-0002",
+      "candidate_id": "battle_text-0007",
+      "current_type": "SWITCH",
+      "reason_group": "keep",
+      "recommended_type": "SWITCH",
+      "rule_id": "switch.go",
+      "start_time": 56.805
+    },
+    {
+      "battle_event_id": "battle-event-0003",
+      "candidate_id": "battle_text-0009",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 78.19
+    },
+    {
+      "battle_event_id": "battle-event-0004",
+      "candidate_id": "battle_text-0011",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_move_preparation",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 82.391667
+    },
+    {
+      "battle_event_id": "battle-event-0005",
+      "candidate_id": "battle_text-0012",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 84.808333
+    },
+    {
+      "battle_event_id": "battle-event-0006",
+      "candidate_id": "battle_text-0013",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_effectiveness",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 88.908333
+    },
+    {
+      "battle_event_id": "battle-event-0007",
+      "candidate_id": "battle_text-0014",
+      "current_type": "FAINT",
+      "reason_group": "keep",
+      "recommended_type": "FAINT",
+      "rule_id": "faint.fell",
+      "start_time": 91.091667
+    },
+    {
+      "battle_event_id": "battle-event-0008",
+      "candidate_id": "battle_text-0015",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 95.391667
+    },
+    {
+      "battle_event_id": "battle-event-0009",
+      "candidate_id": "battle_text-0017",
+      "current_type": "STATUS",
+      "reason_group": "keep",
+      "recommended_type": "STATUS",
+      "rule_id": "status.inflicted",
+      "start_time": 102.793333
+    },
+    {
+      "battle_event_id": "battle-event-0010",
+      "candidate_id": "battle_text-0018",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 105.393333
+    },
+    {
+      "battle_event_id": "battle-event-0011",
+      "candidate_id": "battle_text-0019",
+      "current_type": "SWITCH",
+      "reason_group": "keep",
+      "recommended_type": "SWITCH",
+      "rule_id": "switch.sent_out",
+      "start_time": 109.393333
+    },
+    {
+      "battle_event_id": "battle-event-0012",
+      "candidate_id": "trigger_notification-0001",
+      "current_type": "ABILITY",
+      "reason_group": "keep",
+      "recommended_type": "ABILITY",
+      "rule_id": "ability.activated",
+      "start_time": 113.393333
+    },
+    {
+      "battle_event_id": "battle-event-0013",
+      "candidate_id": "battle_text-0021",
+      "current_type": "STAT_CHANGE",
+      "reason_group": "keep",
+      "recommended_type": "STAT_CHANGE",
+      "rule_id": "stat.changed",
+      "start_time": 113.593333
+    },
+    {
+      "battle_event_id": "battle-event-0014",
+      "candidate_id": "battle_text-0023",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_transformation_activation",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "unknown.unmatched",
+      "start_time": 124.795
+    },
+    {
+      "battle_event_id": "battle-event-0015",
+      "candidate_id": "battle_text-0029",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "form_change_not_field",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "field.form_changed",
+      "start_time": 134.395
+    },
+    {
+      "battle_event_id": "battle-event-0016",
+      "candidate_id": "battle_text-0030",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 136.696667
+    },
+    {
+      "battle_event_id": "battle-event-0017",
+      "candidate_id": "battle_text-0031",
+      "current_type": "STAT_CHANGE",
+      "reason_group": "keep",
+      "recommended_type": "STAT_CHANGE",
+      "rule_id": "stat.changed",
+      "start_time": 140.396667
+    },
+    {
+      "battle_event_id": "battle-event-0018",
+      "candidate_id": "battle_text-0032",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 142.296667
+    },
+    {
+      "battle_event_id": "battle-event-0019",
+      "candidate_id": "battle_text-0034",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_effectiveness",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 146.696667
+    },
+    {
+      "battle_event_id": "battle-event-0020",
+      "candidate_id": "battle_text-0035",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 148.996667
+    },
+    {
+      "battle_event_id": "battle-event-0021",
+      "candidate_id": "battle_text-0036",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_miss",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 151.196667
+    },
+    {
+      "battle_event_id": "battle-event-0022",
+      "candidate_id": "battle_text-0037",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 153.496667
+    },
+    {
+      "battle_event_id": "battle-event-0023",
+      "candidate_id": "battle_text-0040",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_critical",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 158.498333
+    },
+    {
+      "battle_event_id": "battle-event-0024",
+      "candidate_id": "battle_text-0041",
+      "current_type": "STAT_CHANGE",
+      "reason_group": "keep",
+      "recommended_type": "STAT_CHANGE",
+      "rule_id": "stat.changed",
+      "start_time": 160.498333
+    },
+    {
+      "battle_event_id": "battle-event-0025",
+      "candidate_id": "battle_text-0042",
+      "current_type": "FAINT",
+      "reason_group": "keep",
+      "recommended_type": "FAINT",
+      "rule_id": "faint.fell",
+      "start_time": 162.398333
+    },
+    {
+      "battle_event_id": "battle-event-0026",
+      "candidate_id": "battle_text-0044",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 166.298333
+    },
+    {
+      "battle_event_id": "battle-event-0027",
+      "candidate_id": "battle_text-0045",
+      "current_type": "SWITCH",
+      "reason_group": "keep",
+      "recommended_type": "SWITCH",
+      "rule_id": "switch.go",
+      "start_time": 188.6
+    },
+    {
+      "battle_event_id": "battle-event-0028",
+      "candidate_id": "battle_text-0054",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_transformation_activation",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "unknown.unmatched",
+      "start_time": 226.403333
+    },
+    {
+      "battle_event_id": "battle-event-0029",
+      "candidate_id": "battle_text-0056",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "form_change_not_field",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "field.form_changed",
+      "start_time": 235.605
+    },
+    {
+      "battle_event_id": "battle-event-0030",
+      "candidate_id": "battle_text-0057",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 238.005
+    },
+    {
+      "battle_event_id": "battle-event-0031",
+      "candidate_id": "battle_text-0058",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 241.505
+    },
+    {
+      "battle_event_id": "battle-event-0032",
+      "candidate_id": "battle_text-0059",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 243.405
+    },
+    {
+      "battle_event_id": "battle-event-0033",
+      "candidate_id": "battle_text-0061",
+      "current_type": "STAT_CHANGE",
+      "reason_group": "keep",
+      "recommended_type": "STAT_CHANGE",
+      "rule_id": "stat.changed",
+      "start_time": 247.106667
+    },
+    {
+      "battle_event_id": "battle-event-0034",
+      "candidate_id": "battle_text-0062",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 249.006667
+    },
+    {
+      "battle_event_id": "battle-event-0035",
+      "candidate_id": "battle_text-0065",
+      "current_type": "STATUS",
+      "reason_group": "keep",
+      "recommended_type": "STATUS",
+      "rule_id": "status.inflicted",
+      "start_time": 256.406667
+    },
+    {
+      "battle_event_id": "battle-event-0036",
+      "candidate_id": "battle_text-0067",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 258.906667
+    },
+    {
+      "battle_event_id": "battle-event-0037",
+      "candidate_id": "battle_text-0068",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "move_outcome_not_effect_state",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "field.effect_applied",
+      "start_time": 261.606667
+    },
+    {
+      "battle_event_id": "battle-event-0038",
+      "candidate_id": "battle_text-0069",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 263.508333
+    },
+    {
+      "battle_event_id": "battle-event-0039",
+      "candidate_id": "battle_text-0070",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 265.708333
+    },
+    {
+      "battle_event_id": "battle-event-0040",
+      "candidate_id": "battle_text-0078",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 311.795
+    },
+    {
+      "battle_event_id": "battle-event-0041",
+      "candidate_id": "battle_text-0079",
+      "current_type": "STAT_CHANGE",
+      "reason_group": "keep",
+      "recommended_type": "STAT_CHANGE",
+      "rule_id": "stat.changed",
+      "start_time": 315.411667
+    },
+    {
+      "battle_event_id": "battle-event-0042",
+      "candidate_id": "battle_text-0080",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 317.813333
+    },
+    {
+      "battle_event_id": "battle-event-0043",
+      "candidate_id": "battle_text-0082",
+      "current_type": "WEATHER",
+      "reason_group": "keep",
+      "recommended_type": "WEATHER",
+      "rule_id": "weather.started",
+      "start_time": 322.813333
+    },
+    {
+      "battle_event_id": "battle-event-0044",
+      "candidate_id": "battle_text-0083",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 325.113333
+    },
+    {
+      "battle_event_id": "battle-event-0045",
+      "candidate_id": "battle_text-0089",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_recoil_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 330.796667
+    },
+    {
+      "battle_event_id": "battle-event-0046",
+      "candidate_id": "battle_text-0090",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 333.396667
+    },
+    {
+      "battle_event_id": "battle-event-0047",
+      "candidate_id": "battle_text-0094",
+      "current_type": "STAT_CHANGE",
+      "reason_group": "keep",
+      "recommended_type": "STAT_CHANGE",
+      "rule_id": "stat.changed",
+      "start_time": 338.398333
+    },
+    {
+      "battle_event_id": "battle-event-0048",
+      "candidate_id": "battle_text-0095",
+      "current_type": "FAINT",
+      "reason_group": "keep",
+      "recommended_type": "FAINT",
+      "rule_id": "faint.fell",
+      "start_time": 340.315
+    },
+    {
+      "battle_event_id": "battle-event-0049",
+      "candidate_id": "battle_text-0097",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 344.198333
+    },
+    {
+      "battle_event_id": "battle-event-0050",
+      "candidate_id": "battle_text-0098",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 346.398333
+    },
+    {
+      "battle_event_id": "battle-event-0051",
+      "candidate_id": "battle_text-0099",
+      "current_type": "SWITCH",
+      "reason_group": "keep",
+      "recommended_type": "SWITCH",
+      "rule_id": "switch.go",
+      "start_time": 352.398333
+    },
+    {
+      "battle_event_id": "battle-event-0052",
+      "candidate_id": "battle_text-0104",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 382.301667
+    },
+    {
+      "battle_event_id": "battle-event-0053",
+      "candidate_id": "battle_text-0106",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 385.501667
+    },
+    {
+      "battle_event_id": "battle-event-0054",
+      "candidate_id": "battle_text-0107",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 387.901667
+    },
+    {
+      "battle_event_id": "battle-event-0055",
+      "candidate_id": "battle_text-0108",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "side_scoped_condition",
+      "recommended_type": "SIDE_CONDITION",
+      "rule_id": "field.tailwind_started",
+      "start_time": 391.803333
+    },
+    {
+      "battle_event_id": "battle-event-0056",
+      "candidate_id": "battle_text-0109",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 394.186667
+    },
+    {
+      "battle_event_id": "battle-event-0057",
+      "candidate_id": "battle_text-0110",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.move_disabled",
+      "start_time": 398.886667
+    },
+    {
+      "battle_event_id": "battle-event-0058",
+      "candidate_id": "battle_text-0111",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 401.286667
+    },
+    {
+      "battle_event_id": "battle-event-0059",
+      "candidate_id": "battle_text-0113",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 406.403333
+    },
+    {
+      "battle_event_id": "battle-event-0060",
+      "candidate_id": "battle_text-0114",
+      "current_type": "FAINT",
+      "reason_group": "keep",
+      "recommended_type": "FAINT",
+      "rule_id": "faint.fell",
+      "start_time": 408.605
+    },
+    {
+      "battle_event_id": "battle-event-0061",
+      "candidate_id": "battle_text-0115",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 412.305
+    },
+    {
+      "battle_event_id": "battle-event-0062",
+      "candidate_id": "battle_text-0116",
+      "current_type": "SWITCH",
+      "reason_group": "keep",
+      "recommended_type": "SWITCH",
+      "rule_id": "switch.sent_out",
+      "start_time": 416.605
+    },
+    {
+      "battle_event_id": "battle-event-0063",
+      "candidate_id": "battle_text-0118",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 433.79
+    },
+    {
+      "battle_event_id": "battle-event-0064",
+      "candidate_id": "battle_text-0120",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 438.89
+    },
+    {
+      "battle_event_id": "battle-event-0065",
+      "candidate_id": "battle_text-0121",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 440.79
+    },
+    {
+      "battle_event_id": "battle-event-0066",
+      "candidate_id": "battle_text-0123",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 446.291667
+    },
+    {
+      "battle_event_id": "battle-event-0067",
+      "candidate_id": "trigger_notification-0002",
+      "current_type": "ITEM",
+      "reason_group": "keep",
+      "recommended_type": "ITEM",
+      "rule_id": "item.activated",
+      "start_time": 450.791667
+    },
+    {
+      "battle_event_id": "battle-event-0068",
+      "candidate_id": "battle_text-0127",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_hp_loss",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 452.691667
+    },
+    {
+      "battle_event_id": "battle-event-0069",
+      "candidate_id": "battle_text-0128",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 455.691667
+    },
+    {
+      "battle_event_id": "battle-event-0070",
+      "candidate_id": "battle_text-0129",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_field_activation",
+      "recommended_type": "FIELD_EFFECT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 461.391667
+    },
+    {
+      "battle_event_id": "battle-event-0071",
+      "candidate_id": "battle_text-0130",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 463.293333
+    },
+    {
+      "battle_event_id": "battle-event-0072",
+      "candidate_id": "battle_text-0131",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 465.393333
+    },
+    {
+      "battle_event_id": "battle-event-0073",
+      "candidate_id": "battle_text-0132",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 467.293333
+    },
+    {
+      "battle_event_id": "battle-event-0074",
+      "candidate_id": "battle_text-0133",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 469.093333
+    },
+    {
+      "battle_event_id": "battle-event-0075",
+      "candidate_id": "battle_text-0134",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 470.993333
+    },
+    {
+      "battle_event_id": "battle-event-0076",
+      "candidate_id": "battle_text-0141",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 501.396667
+    },
+    {
+      "battle_event_id": "battle-event-0077",
+      "candidate_id": "battle_text-0143",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.move_disabled",
+      "start_time": 505.796667
+    },
+    {
+      "battle_event_id": "battle-event-0078",
+      "candidate_id": "battle_text-0144",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 507.696667
+    },
+    {
+      "battle_event_id": "battle-event-0079",
+      "candidate_id": "battle_text-0146",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "move_outcome_not_effect_state",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "field.move_prevented",
+      "start_time": 512.696667
+    },
+    {
+      "battle_event_id": "battle-event-0080",
+      "candidate_id": "battle_text-0147",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 515.096667
+    },
+    {
+      "battle_event_id": "battle-event-0081",
+      "candidate_id": "battle_text-0151",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 521.798333
+    },
+    {
+      "battle_event_id": "battle-event-0082",
+      "candidate_id": "battle_text-0152",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 523.898333
+    },
+    {
+      "battle_event_id": "battle-event-0083",
+      "candidate_id": "battle_text-0153",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 525.798333
+    },
+    {
+      "battle_event_id": "battle-event-0084",
+      "candidate_id": "battle_text-0154",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 527.598333
+    },
+    {
+      "battle_event_id": "battle-event-0085",
+      "candidate_id": "battle_text-0155",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 529.398333
+    },
+    {
+      "battle_event_id": "battle-event-0086",
+      "candidate_id": "battle_text-0156",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 545.3
+    },
+    {
+      "battle_event_id": "battle-event-0087",
+      "candidate_id": "battle_text-0157",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 548.5
+    },
+    {
+      "battle_event_id": "battle-event-0088",
+      "candidate_id": "battle_text-0158",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 550.4
+    },
+    {
+      "battle_event_id": "battle-event-0089",
+      "candidate_id": "battle_text-0159",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 555.301667
+    },
+    {
+      "battle_event_id": "battle-event-0090",
+      "candidate_id": "battle_text-0160",
+      "current_type": "MOVE",
+      "reason_group": "keep",
+      "recommended_type": "MOVE",
+      "rule_id": "move.used",
+      "start_time": 557.201667
+    },
+    {
+      "battle_event_id": "battle-event-0091",
+      "candidate_id": "battle_text-0162",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "move_outcome_not_effect_state",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "field.move_prevented",
+      "start_time": 562.201667
+    },
+    {
+      "battle_event_id": "battle-event-0092",
+      "candidate_id": "battle_text-0163",
+      "current_type": "WEATHER",
+      "reason_group": "keep",
+      "recommended_type": "WEATHER",
+      "rule_id": "weather.ended",
+      "start_time": 564.101667
+    },
+    {
+      "battle_event_id": "battle-event-0093",
+      "candidate_id": "battle_text-0164",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 566.001667
+    },
+    {
+      "battle_event_id": "battle-event-0094",
+      "candidate_id": "battle_text-0165",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_ended",
+      "start_time": 568.101667
+    },
+    {
+      "battle_event_id": "battle-event-0095",
+      "candidate_id": "battle_text-0166",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_ended",
+      "start_time": 570.001667
+    },
+    {
+      "battle_event_id": "battle-event-0096",
+      "candidate_id": "battle_text-0167",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 571.801667
+    },
+    {
+      "battle_event_id": "battle-event-0097",
+      "candidate_id": "battle_text-0168",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 573.703333
+    },
+    {
+      "battle_event_id": "battle-event-0098",
+      "candidate_id": "battle_text-0169",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 575.503333
+    },
+    {
+      "battle_event_id": "battle-event-0099",
+      "candidate_id": "battle_text-0170",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 577.403333
+    },
+    {
+      "battle_event_id": "battle-event-0100",
+      "candidate_id": "battle_text-0171",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "side_scoped_condition",
+      "recommended_type": "SIDE_CONDITION",
+      "rule_id": "field.tailwind_ended",
+      "start_time": 579.203333
+    },
+    {
+      "battle_event_id": "battle-event-0101",
+      "candidate_id": "battle_text-0172",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_battle_result",
+      "recommended_type": "BATTLE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 582.403333
+    },
+    {
+      "battle_event_id": "battle-event-0102",
+      "candidate_id": "battle_text-0173",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_battle_result",
+      "recommended_type": "BATTLE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 584.003333
+    }
+  ],
+  "field_effect_analysis": [
+    {
+      "battle_event_id": "battle-event-0015",
+      "candidate_id": "battle_text-0029",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "form_change_not_field",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "field.form_changed",
+      "start_time": 134.395
+    },
+    {
+      "battle_event_id": "battle-event-0029",
+      "candidate_id": "battle_text-0056",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "form_change_not_field",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "field.form_changed",
+      "start_time": 235.605
+    },
+    {
+      "battle_event_id": "battle-event-0031",
+      "candidate_id": "battle_text-0058",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 241.505
+    },
+    {
+      "battle_event_id": "battle-event-0037",
+      "candidate_id": "battle_text-0068",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "move_outcome_not_effect_state",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "field.effect_applied",
+      "start_time": 261.606667
+    },
+    {
+      "battle_event_id": "battle-event-0053",
+      "candidate_id": "battle_text-0106",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 385.501667
+    },
+    {
+      "battle_event_id": "battle-event-0055",
+      "candidate_id": "battle_text-0108",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "side_scoped_condition",
+      "recommended_type": "SIDE_CONDITION",
+      "rule_id": "field.tailwind_started",
+      "start_time": 391.803333
+    },
+    {
+      "battle_event_id": "battle-event-0057",
+      "candidate_id": "battle_text-0110",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.move_disabled",
+      "start_time": 398.886667
+    },
+    {
+      "battle_event_id": "battle-event-0064",
+      "candidate_id": "battle_text-0120",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 438.89
+    },
+    {
+      "battle_event_id": "battle-event-0072",
+      "candidate_id": "battle_text-0131",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 465.393333
+    },
+    {
+      "battle_event_id": "battle-event-0073",
+      "candidate_id": "battle_text-0132",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 467.293333
+    },
+    {
+      "battle_event_id": "battle-event-0074",
+      "candidate_id": "battle_text-0133",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 469.093333
+    },
+    {
+      "battle_event_id": "battle-event-0075",
+      "candidate_id": "battle_text-0134",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 470.993333
+    },
+    {
+      "battle_event_id": "battle-event-0077",
+      "candidate_id": "battle_text-0143",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.move_disabled",
+      "start_time": 505.796667
+    },
+    {
+      "battle_event_id": "battle-event-0079",
+      "candidate_id": "battle_text-0146",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "move_outcome_not_effect_state",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "field.move_prevented",
+      "start_time": 512.696667
+    },
+    {
+      "battle_event_id": "battle-event-0082",
+      "candidate_id": "battle_text-0152",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 523.898333
+    },
+    {
+      "battle_event_id": "battle-event-0083",
+      "candidate_id": "battle_text-0153",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 525.798333
+    },
+    {
+      "battle_event_id": "battle-event-0084",
+      "candidate_id": "battle_text-0154",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 527.598333
+    },
+    {
+      "battle_event_id": "battle-event-0085",
+      "candidate_id": "battle_text-0155",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 529.398333
+    },
+    {
+      "battle_event_id": "battle-event-0087",
+      "candidate_id": "battle_text-0157",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 548.5
+    },
+    {
+      "battle_event_id": "battle-event-0089",
+      "candidate_id": "battle_text-0159",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_applied",
+      "start_time": 555.301667
+    },
+    {
+      "battle_event_id": "battle-event-0091",
+      "candidate_id": "battle_text-0162",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "move_outcome_not_effect_state",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "field.move_prevented",
+      "start_time": 562.201667
+    },
+    {
+      "battle_event_id": "battle-event-0094",
+      "candidate_id": "battle_text-0165",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_ended",
+      "start_time": 568.101667
+    },
+    {
+      "battle_event_id": "battle-event-0095",
+      "candidate_id": "battle_text-0166",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.effect_ended",
+      "start_time": 570.001667
+    },
+    {
+      "battle_event_id": "battle-event-0096",
+      "candidate_id": "battle_text-0167",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 571.801667
+    },
+    {
+      "battle_event_id": "battle-event-0097",
+      "candidate_id": "battle_text-0168",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 573.703333
+    },
+    {
+      "battle_event_id": "battle-event-0098",
+      "candidate_id": "battle_text-0169",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 575.503333
+    },
+    {
+      "battle_event_id": "battle-event-0099",
+      "candidate_id": "battle_text-0170",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "pokemon_scoped_volatile",
+      "recommended_type": "VOLATILE_STATUS",
+      "rule_id": "field.counter_updated",
+      "start_time": 577.403333
+    },
+    {
+      "battle_event_id": "battle-event-0100",
+      "candidate_id": "battle_text-0171",
+      "current_type": "FIELD_EFFECT",
+      "reason_group": "side_scoped_condition",
+      "recommended_type": "SIDE_CONDITION",
+      "rule_id": "field.tailwind_ended",
+      "start_time": 579.203333
+    }
+  ],
+  "kind": "checkpoint1d1_quality_audit_fixture",
+  "production_usage_forbidden": true,
+  "recommended_counts": {
+    "ABILITY": 1,
+    "BATTLE_RESULT": 2,
+    "DAMAGE_RESULT": 13,
+    "FAINT": 4,
+    "FIELD_EFFECT": 1,
+    "ITEM": 1,
+    "MOVE": 29,
+    "MOVE_RESULT": 8,
+    "SIDE_CONDITION": 2,
+    "STATUS": 2,
+    "STAT_CHANGE": 6,
+    "SWITCH": 6,
+    "TERRAIN": 0,
+    "TRANSFORMATION": 4,
+    "UNKNOWN_EVENT": 0,
+    "VOLATILE_STATUS": 21,
+    "WEATHER": 2
+  },
+  "schema_version": "0.1.0",
+  "source": {
+    "event_count": 102,
+    "path": "outputs/checkpoint-1d/battle_events.json",
+    "sha256": "b79337bdad24dddcbfeb0e94fdb9edb3261b64fbe925988ab473d3ade4860f39"
+  },
+  "status_analysis": [
+    {
+      "battle_event_id": "battle-event-0009",
+      "candidate_id": "battle_text-0017",
+      "current_type": "STATUS",
+      "reason_group": "keep",
+      "recommended_type": "STATUS",
+      "rule_id": "status.inflicted",
+      "start_time": 102.793333
+    },
+    {
+      "battle_event_id": "battle-event-0010",
+      "candidate_id": "battle_text-0018",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 105.393333
+    },
+    {
+      "battle_event_id": "battle-event-0026",
+      "candidate_id": "battle_text-0044",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 166.298333
+    },
+    {
+      "battle_event_id": "battle-event-0035",
+      "candidate_id": "battle_text-0065",
+      "current_type": "STATUS",
+      "reason_group": "keep",
+      "recommended_type": "STATUS",
+      "rule_id": "status.inflicted",
+      "start_time": 256.406667
+    },
+    {
+      "battle_event_id": "battle-event-0038",
+      "candidate_id": "battle_text-0069",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 263.508333
+    },
+    {
+      "battle_event_id": "battle-event-0039",
+      "candidate_id": "battle_text-0070",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 265.708333
+    },
+    {
+      "battle_event_id": "battle-event-0049",
+      "candidate_id": "battle_text-0097",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 344.198333
+    },
+    {
+      "battle_event_id": "battle-event-0050",
+      "candidate_id": "battle_text-0098",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 346.398333
+    },
+    {
+      "battle_event_id": "battle-event-0059",
+      "candidate_id": "battle_text-0113",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 406.403333
+    },
+    {
+      "battle_event_id": "battle-event-0061",
+      "candidate_id": "battle_text-0115",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 412.305
+    },
+    {
+      "battle_event_id": "battle-event-0071",
+      "candidate_id": "battle_text-0130",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 463.293333
+    },
+    {
+      "battle_event_id": "battle-event-0081",
+      "candidate_id": "battle_text-0151",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 521.798333
+    },
+    {
+      "battle_event_id": "battle-event-0093",
+      "candidate_id": "battle_text-0164",
+      "current_type": "STATUS",
+      "reason_group": "status_damage_is_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "status.damage",
+      "start_time": 566.001667
+    }
+  ],
+  "summary": {
+    "baseline_unknown_count": 12,
+    "keep_count": 51,
+    "reclassify_count": 51,
+    "recommended_unknown_count": 0
+  },
+  "unknown_analysis": [
+    {
+      "battle_event_id": "battle-event-0004",
+      "candidate_id": "battle_text-0011",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_move_preparation",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 82.391667
+    },
+    {
+      "battle_event_id": "battle-event-0006",
+      "candidate_id": "battle_text-0013",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_effectiveness",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 88.908333
+    },
+    {
+      "battle_event_id": "battle-event-0014",
+      "candidate_id": "battle_text-0023",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_transformation_activation",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "unknown.unmatched",
+      "start_time": 124.795
+    },
+    {
+      "battle_event_id": "battle-event-0019",
+      "candidate_id": "battle_text-0034",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_effectiveness",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 146.696667
+    },
+    {
+      "battle_event_id": "battle-event-0021",
+      "candidate_id": "battle_text-0036",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_miss",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 151.196667
+    },
+    {
+      "battle_event_id": "battle-event-0023",
+      "candidate_id": "battle_text-0040",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_critical",
+      "recommended_type": "MOVE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 158.498333
+    },
+    {
+      "battle_event_id": "battle-event-0028",
+      "candidate_id": "battle_text-0054",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_transformation_activation",
+      "recommended_type": "TRANSFORMATION",
+      "rule_id": "unknown.unmatched",
+      "start_time": 226.403333
+    },
+    {
+      "battle_event_id": "battle-event-0045",
+      "candidate_id": "battle_text-0089",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_recoil_damage",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 330.796667
+    },
+    {
+      "battle_event_id": "battle-event-0068",
+      "candidate_id": "battle_text-0127",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_hp_loss",
+      "recommended_type": "DAMAGE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 452.691667
+    },
+    {
+      "battle_event_id": "battle-event-0070",
+      "candidate_id": "battle_text-0129",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_field_activation",
+      "recommended_type": "FIELD_EFFECT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 461.391667
+    },
+    {
+      "battle_event_id": "battle-event-0101",
+      "candidate_id": "battle_text-0172",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_battle_result",
+      "recommended_type": "BATTLE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 582.403333
+    },
+    {
+      "battle_event_id": "battle-event-0102",
+      "candidate_id": "battle_text-0173",
+      "current_type": "UNKNOWN_EVENT",
+      "reason_group": "unknown_battle_result",
+      "recommended_type": "BATTLE_RESULT",
+      "rule_id": "unknown.unmatched",
+      "start_time": 584.003333
+    }
+  ]
+}

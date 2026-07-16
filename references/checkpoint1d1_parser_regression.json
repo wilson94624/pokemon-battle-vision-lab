@@ -1,0 +1,643 @@
+{
+  "case_count": 102,
+  "cases": [
+    {
+      "candidate_id": "battle_text-0004",
+      "expected_type": "SWITCH",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "猫猫茶派出了仙子伊布和\n風妖精!"
+    },
+    {
+      "candidate_id": "battle_text-0007",
+      "expected_type": "SWITCH",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "上吧!勾魂眼\n巨鉗螳螂!"
+    },
+    {
+      "candidate_id": "battle_text-0009",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精使出了\n幫助!"
+    },
+    {
+      "candidate_id": "battle_text-0011",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精擺出了\n幫助仙子伊布的架勢!"
+    },
+    {
+      "candidate_id": "battle_text-0012",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨鉗螳螂使出了\n子彈拳!"
+    },
+    {
+      "candidate_id": "battle_text-0013",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對對手的仙子伊布\n效果絕佳!"
+    },
+    {
+      "candidate_id": "battle_text-0014",
+      "expected_type": "FAINT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的仙子伊布倒下了!"
+    },
+    {
+      "candidate_id": "battle_text-0015",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n鬼火!"
+    },
+    {
+      "candidate_id": "battle_text-0017",
+      "expected_type": "STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精\n被灼傷了!"
+    },
+    {
+      "candidate_id": "battle_text-0018",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0019",
+      "expected_type": "SWITCH",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "猫猫茶派出了\n姆克鷹!"
+    },
+    {
+      "candidate_id": "trigger_notification-0001",
+      "expected_type": "ABILITY",
+      "input_event_type": "TRIGGER_NOTIFICATION",
+      "raw_text": "姆克鷹的\n威嚇"
+    },
+    {
+      "candidate_id": "battle_text-0021",
+      "expected_type": "STAT_CHANGE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼和巨鉗螳螂的\n攻擊降低了!"
+    },
+    {
+      "candidate_id": "battle_text-0023",
+      "expected_type": "TRANSFORMATION",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的姆克鷹進化石和\n猫猫茶的全一環產生了反應!"
+    },
+    {
+      "candidate_id": "battle_text-0029",
+      "expected_type": "TRANSFORMATION",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹超級進化成了\n超級姆克鷹!"
+    },
+    {
+      "candidate_id": "battle_text-0030",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精使出了\n撒嬌!"
+    },
+    {
+      "candidate_id": "battle_text-0031",
+      "expected_type": "STAT_CHANGE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n攻擊大幅提高了!"
+    },
+    {
+      "candidate_id": "battle_text-0032",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨鉗螳螂使出了\n子彈拳!"
+    },
+    {
+      "candidate_id": "battle_text-0034",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對對手的風妖精\n效果絕佳!"
+    },
+    {
+      "candidate_id": "battle_text-0035",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n鬼火!"
+    },
+    {
+      "candidate_id": "battle_text-0036",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "沒有擊中對手的姆克鷹!"
+    },
+    {
+      "candidate_id": "battle_text-0037",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹使出了\n近身戰!"
+    },
+    {
+      "candidate_id": "battle_text-0040",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "擊中了要害!"
+    },
+    {
+      "candidate_id": "battle_text-0041",
+      "expected_type": "STAT_CHANGE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n防禦、特防提高了!"
+    },
+    {
+      "candidate_id": "battle_text-0042",
+      "expected_type": "FAINT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨鉗螳螂倒下了!"
+    },
+    {
+      "candidate_id": "battle_text-0044",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0045",
+      "expected_type": "SWITCH",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "上吧!巨沼怪!"
+    },
+    {
+      "candidate_id": "battle_text-0054",
+      "expected_type": "TRANSFORMATION",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪的巨沼怪進化石和\n哈哈丸的全一環產生了反應!"
+    },
+    {
+      "candidate_id": "battle_text-0056",
+      "expected_type": "TRANSFORMATION",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪超級進化成了\n超級巨沼怪!"
+    },
+    {
+      "candidate_id": "battle_text-0057",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪使出了\n守住!"
+    },
+    {
+      "candidate_id": "battle_text-0058",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪\n擺出了防守的架勢!"
+    },
+    {
+      "candidate_id": "battle_text-0059",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精使出了\n撒嬌!"
+    },
+    {
+      "candidate_id": "battle_text-0061",
+      "expected_type": "STAT_CHANGE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n攻擊大幅提高了!"
+    },
+    {
+      "candidate_id": "battle_text-0062",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n鬼火!"
+    },
+    {
+      "candidate_id": "battle_text-0065",
+      "expected_type": "STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n被灼傷了!"
+    },
+    {
+      "candidate_id": "battle_text-0067",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹使出了\n近身戰!"
+    },
+    {
+      "candidate_id": "battle_text-0068",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪\n在攻擊中守護住了自己!"
+    },
+    {
+      "candidate_id": "battle_text-0069",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0070",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0078",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精使出了\n撒嬌!"
+    },
+    {
+      "candidate_id": "battle_text-0079",
+      "expected_type": "STAT_CHANGE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n攻擊大幅提高了!"
+    },
+    {
+      "candidate_id": "battle_text-0080",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n求雨!"
+    },
+    {
+      "candidate_id": "battle_text-0082",
+      "expected_type": "WEATHER",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "開始下雨了!"
+    },
+    {
+      "candidate_id": "battle_text-0083",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪使出了\n波動衝!"
+    },
+    {
+      "candidate_id": "battle_text-0089",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪\n受到了反作用力造成的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0090",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹使出了\n近身戰!"
+    },
+    {
+      "candidate_id": "battle_text-0094",
+      "expected_type": "STAT_CHANGE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n防禦、特防提高了!"
+    },
+    {
+      "candidate_id": "battle_text-0095",
+      "expected_type": "FAINT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "巨沼怪倒下了!"
+    },
+    {
+      "candidate_id": "battle_text-0097",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0098",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0099",
+      "expected_type": "SWITCH",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "上吧!蚊香蛙皇!"
+    },
+    {
+      "candidate_id": "battle_text-0104",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇使出了\n守住!"
+    },
+    {
+      "candidate_id": "battle_text-0106",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇\n擺出了防守的架勢!"
+    },
+    {
+      "candidate_id": "battle_text-0107",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精使出了\n順風!"
+    },
+    {
+      "candidate_id": "battle_text-0108",
+      "expected_type": "SIDE_CONDITION",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "從對手身後\n吹起了順風!"
+    },
+    {
+      "candidate_id": "battle_text-0109",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n定身法!"
+    },
+    {
+      "candidate_id": "battle_text-0110",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "封住了對手的姆克鷹的\n近身戰!"
+    },
+    {
+      "candidate_id": "battle_text-0111",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹使出了\n羽棲!"
+    },
+    {
+      "candidate_id": "battle_text-0113",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0114",
+      "expected_type": "FAINT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的風妖精倒下了!"
+    },
+    {
+      "candidate_id": "battle_text-0115",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0116",
+      "expected_type": "SWITCH",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "猫猫茶派出了\n烈咬陸鯊!"
+    },
+    {
+      "candidate_id": "battle_text-0118",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n再來一次!"
+    },
+    {
+      "candidate_id": "battle_text-0120",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n接受了再來一次!"
+    },
+    {
+      "candidate_id": "battle_text-0121",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹使出了\n羽棲!"
+    },
+    {
+      "candidate_id": "battle_text-0123",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊使出了\n地震!"
+    },
+    {
+      "candidate_id": "trigger_notification-0002",
+      "expected_type": "ITEM",
+      "input_event_type": "TRIGGER_NOTIFICATION",
+      "raw_text": "烈咬陸鯊使用了\n生命寶珠!"
+    },
+    {
+      "candidate_id": "battle_text-0127",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊的生命\n被削減了一些!"
+    },
+    {
+      "candidate_id": "battle_text-0128",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇使出了\n滅亡之歌!"
+    },
+    {
+      "candidate_id": "battle_text-0129",
+      "expected_type": "FIELD_EFFECT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "聽過滅亡之歌的寶可夢\n3回合後就會滅亡!"
+    },
+    {
+      "candidate_id": "battle_text-0130",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0131",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n滅亡計時變成3了!"
+    },
+    {
+      "candidate_id": "battle_text-0132",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊的\n滅亡計時變成3了!"
+    },
+    {
+      "candidate_id": "battle_text-0133",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇的\n滅亡計時變成3了!"
+    },
+    {
+      "candidate_id": "battle_text-0134",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼的\n滅亡計時變成3了!"
+    },
+    {
+      "candidate_id": "battle_text-0141",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n定身法!"
+    },
+    {
+      "candidate_id": "battle_text-0143",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "封住了對手的烈咬陸鯊的\n地震"
+    },
+    {
+      "candidate_id": "battle_text-0144",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹使出了\n羽棲!"
+    },
+    {
+      "candidate_id": "battle_text-0146",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊因定身法\n而無法使出地震!"
+    },
+    {
+      "candidate_id": "battle_text-0147",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇使出了\n氣象球!"
+    },
+    {
+      "candidate_id": "battle_text-0151",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0152",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n滅亡計時變成2了!"
+    },
+    {
+      "candidate_id": "battle_text-0153",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊的\n滅亡計時變成2了!"
+    },
+    {
+      "candidate_id": "battle_text-0154",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇的\n滅亡計時變成2了!"
+    },
+    {
+      "candidate_id": "battle_text-0155",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼的\n滅亡計時變成2了!"
+    },
+    {
+      "candidate_id": "battle_text-0156",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇使出了\n守住!"
+    },
+    {
+      "candidate_id": "battle_text-0157",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇\n擺出了防守的架勢!"
+    },
+    {
+      "candidate_id": "battle_text-0158",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "勾魂眼使出了\n再來一次!"
+    },
+    {
+      "candidate_id": "battle_text-0159",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊\n接受了再來一次!"
+    },
+    {
+      "candidate_id": "battle_text-0160",
+      "expected_type": "MOVE",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹使出了\n羽棲!"
+    },
+    {
+      "candidate_id": "battle_text-0162",
+      "expected_type": "MOVE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊因定身法\n而無法使出地震!"
+    },
+    {
+      "candidate_id": "battle_text-0163",
+      "expected_type": "WEATHER",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "雨停了!"
+    },
+    {
+      "candidate_id": "battle_text-0164",
+      "expected_type": "DAMAGE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹\n受到了灼傷的傷害!"
+    },
+    {
+      "candidate_id": "battle_text-0165",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n再來一次狀態解除了!"
+    },
+    {
+      "candidate_id": "battle_text-0166",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n定身法解除了!"
+    },
+    {
+      "candidate_id": "battle_text-0167",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的姆克鷹的\n滅亡計時變成1了!"
+    },
+    {
+      "candidate_id": "battle_text-0168",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的烈咬陸鯊的\n滅亡計時變成1!"
+    },
+    {
+      "candidate_id": "battle_text-0169",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "蚊香蛙皇的\n滅亡計時變成1了!"
+    },
+    {
+      "candidate_id": "battle_text-0170",
+      "expected_type": "VOLATILE_STATUS",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "i.\n勾魂眼的\n滅亡計時變成1了!"
+    },
+    {
+      "candidate_id": "battle_text-0171",
+      "expected_type": "SIDE_CONDITION",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "對手的順風停止了!"
+    },
+    {
+      "candidate_id": "battle_text-0172",
+      "expected_type": "BATTLE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "有一方選擇了投降。"
+    },
+    {
+      "candidate_id": "battle_text-0173",
+      "expected_type": "BATTLE_RESULT",
+      "input_event_type": "BATTLE_TEXT",
+      "raw_text": "成功戰勝了\n猫猫茶!"
+    }
+  ],
+  "expected_counts": {
+    "ABILITY": 1,
+    "BATTLE_RESULT": 2,
+    "DAMAGE_RESULT": 13,
+    "FAINT": 4,
+    "FIELD_EFFECT": 1,
+    "ITEM": 1,
+    "MOVE": 29,
+    "MOVE_RESULT": 8,
+    "SIDE_CONDITION": 2,
+    "STATUS": 2,
+    "STAT_CHANGE": 6,
+    "SWITCH": 6,
+    "TERRAIN": 0,
+    "TRANSFORMATION": 4,
+    "UNKNOWN_EVENT": 0,
+    "VOLATILE_STATUS": 21,
+    "WEATHER": 2
+  },
+  "kind": "checkpoint1d1_parser_regression",
+  "production_usage_forbidden": true,
+  "schema_version": "0.1.0",
+  "source_review": {
+    "path": "outputs/checkpoint-1c-review/checkpoint1c_review.json",
+    "sha256": "d0c62a7f01f55575e3ef04c64ac565e9f452fc154f1bab0e21157c85a3a6111b"
+  }
+}

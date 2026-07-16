@@ -102,7 +102,49 @@ def _status(match: Match[str], _: str) -> Dict[str, Any]:
 
 def _status_damage(match: Match[str], _: str) -> Dict[str, Any]:
     metadata = _subject_metadata(match.group("subject"), field="target")
-    metadata.update({"status": match.group("status"), "action": "damage"})
+    metadata.update(
+        {
+            "status": match.group("status"),
+            "cause": "status",
+            "action": "damage",
+        }
+    )
+    return metadata
+
+
+def _recoil_damage(match: Match[str], _: str) -> Dict[str, Any]:
+    metadata = _subject_metadata(match.group("subject"), field="target")
+    metadata.update({"cause": "recoil", "action": "damage"})
+    return metadata
+
+
+def _unspecified_hp_loss(match: Match[str], _: str) -> Dict[str, Any]:
+    metadata = _subject_metadata(match.group("subject"), field="target")
+    metadata.update({"cause": "unspecified", "action": "damage"})
+    return metadata
+
+
+def _move_result_target(result: str) -> MetadataBuilder:
+    def builder(match: Match[str], _: str) -> Dict[str, Any]:
+        metadata = _subject_metadata(match.group("target"), field="target")
+        metadata.update({"result": result, "action": "resolve"})
+        return metadata
+
+    return builder
+
+
+def _critical_result(_: Match[str], __: str) -> Dict[str, Any]:
+    return {"result": "critical_hit", "action": "resolve"}
+
+
+def _helping_hand_result(match: Match[str], _: str) -> Dict[str, Any]:
+    metadata = _subject_metadata(match.group("subject"))
+    targets, target_side = parse_subjects(match.group("target"))
+    if targets:
+        metadata["target"] = targets[0]
+    if target_side and "side" not in metadata:
+        metadata["side"] = target_side
+    metadata.update({"result": "helping_hand_ready", "action": "prepare"})
     return metadata
 
 
@@ -158,13 +200,25 @@ def _effect_counter(match: Match[str], _: str) -> Dict[str, Any]:
 
 def _effect_end(match: Match[str], _: str) -> Dict[str, Any]:
     metadata = _subject_metadata(match.group("subject"), field="target")
-    metadata.update({"effect": match.group("effect"), "action": "end"})
+    effect = match.group("effect")
+    if effect.endswith("狀態"):
+        effect = effect[: -len("狀態")]
+    metadata.update({"effect": effect, "action": "end"})
     return metadata
 
 
-def _effect_apply(match: Match[str], _: str) -> Dict[str, Any]:
+def _target_effect(effect: str, action: str) -> MetadataBuilder:
+    def builder(match: Match[str], _: str) -> Dict[str, Any]:
+        metadata = _subject_metadata(match.group("subject"), field="target")
+        metadata.update({"effect": effect, "action": action})
+        return metadata
+
+    return builder
+
+
+def _protected_result(match: Match[str], _: str) -> Dict[str, Any]:
     metadata = _subject_metadata(match.group("subject"), field="target")
-    metadata.update({"effect": match.group("effect"), "action": "apply"})
+    metadata.update({"result": "protected", "effect": "守住", "action": "block"})
     return metadata
 
 
@@ -182,7 +236,8 @@ def _move_prevented(match: Match[str], _: str) -> Dict[str, Any]:
         {
             "effect": match.group("effect"),
             "move": match.group("move"),
-            "action": "prevent_move",
+            "result": "prevented",
+            "action": "resolve",
         }
     )
     return metadata
@@ -191,9 +246,38 @@ def _move_prevented(match: Match[str], _: str) -> Dict[str, Any]:
 def _form_change(match: Match[str], _: str) -> Dict[str, Any]:
     metadata = _subject_metadata(match.group("subject"))
     metadata.update(
-        {"effect": "form_change", "details": match.group("form"), "action": "change"}
+        {"effect": "form_change", "form": match.group("form"), "action": "change"}
     )
     return metadata
+
+
+def _transformation_activation(match: Match[str], _: str) -> Dict[str, Any]:
+    metadata = _subject_metadata(match.group("subject"))
+    metadata.update(
+        {
+            "item": match.group("item"),
+            "trainer": match.group("trainer"),
+            "device": match.group("device"),
+            "action": "activate",
+        }
+    )
+    return metadata
+
+
+def _field_activation(match: Match[str], _: str) -> Dict[str, Any]:
+    return {
+        "effect": match.group("effect"),
+        "counter": int(match.group("counter")),
+        "action": "activate",
+    }
+
+
+def _forfeit_result(_: Match[str], __: str) -> Dict[str, Any]:
+    return {"result": "forfeit", "action": "end"}
+
+
+def _win_result(match: Match[str], _: str) -> Dict[str, Any]:
+    return {"result": "win", "loser": match.group("loser"), "action": "end"}
 
 
 def _rule(
@@ -244,10 +328,24 @@ BATTLE_EVENT_RULES = (
     _rule("faint.fell", "FAINT", r"(?P<subject>.+?)倒下了[!]", _faint, 0.99),
     _rule(
         "status.damage",
-        "STATUS",
+        "DAMAGE_RESULT",
         r"(?P<subject>.+?)受到了(?P<status>灼傷|中毒|劇毒)的傷害[!]",
         _status_damage,
         0.99,
+    ),
+    _rule(
+        "damage.recoil",
+        "DAMAGE_RESULT",
+        r"(?P<subject>.+?)受到了反作用力造成的傷害[!]",
+        _recoil_damage,
+        0.99,
+    ),
+    _rule(
+        "damage.hp_loss",
+        "DAMAGE_RESULT",
+        r"(?P<subject>.+)的生命被削減了一些[!]",
+        _unspecified_hp_loss,
+        0.93,
     ),
     _rule(
         "status.inflicted",
@@ -262,6 +360,41 @@ BATTLE_EVENT_RULES = (
         r"(?P<subjects>.+?)的(?P<stat>攻擊|防禦、特防|防禦|特攻|特防|速度|命中率|閃避率)(?P<change>大幅提高|提高|大幅降低|降低)了[!]",
         _stat_change,
         0.98,
+    ),
+    _rule(
+        "move_result.helping_hand",
+        "MOVE_RESULT",
+        r"(?P<subject>.+?)擺出了幫助(?P<target>.+?)的架勢[!]",
+        _helping_hand_result,
+        0.97,
+    ),
+    _rule(
+        "move_result.super_effective",
+        "MOVE_RESULT",
+        r"對(?P<target>.+?)效果絕佳[!]",
+        _move_result_target("super_effective"),
+        0.99,
+    ),
+    _rule(
+        "move_result.not_very_effective",
+        "MOVE_RESULT",
+        r"對(?P<target>.+?)效果不太好[!]",
+        _move_result_target("not_very_effective"),
+        0.96,
+    ),
+    _rule(
+        "move_result.miss",
+        "MOVE_RESULT",
+        r"沒有擊中(?P<target>.+?)[!]",
+        _move_result_target("miss"),
+        0.99,
+    ),
+    _rule(
+        "move_result.critical",
+        "MOVE_RESULT",
+        r"擊中了要害[!]",
+        _critical_result,
+        0.99,
     ),
     _rule(
         "weather.started",
@@ -285,59 +418,101 @@ BATTLE_EVENT_RULES = (
         0.94,
     ),
     _rule(
-        "field.tailwind_started",
+        "field.activated",
         "FIELD_EFFECT",
+        r"聽過(?P<effect>滅亡之歌)的寶可夢(?P<counter>[0-9]+)回合後就會滅亡[!]",
+        _field_activation,
+        0.97,
+    ),
+    _rule(
+        "side_condition.tailwind_started",
+        "SIDE_CONDITION",
         r"從(?P<side>對手)?身後吹起了順風[!]",
         _tailwind_start,
         0.98,
     ),
     _rule(
-        "field.tailwind_ended",
-        "FIELD_EFFECT",
+        "side_condition.tailwind_ended",
+        "SIDE_CONDITION",
         r"(?P<side>對手的)?順風停止了[!]",
         _tailwind_end,
         0.98,
     ),
     _rule(
-        "field.counter_updated",
-        "FIELD_EFFECT",
+        "volatile.counter_updated",
+        "VOLATILE_STATUS",
         r"(?P<subject>.+?)的(?P<effect>滅亡計時)變成(?P<counter>[0-9]+)了?[!]",
         _effect_counter,
         0.98,
     ),
     _rule(
-        "field.effect_ended",
-        "FIELD_EFFECT",
+        "volatile.effect_ended",
+        "VOLATILE_STATUS",
         r"(?P<subject>.+?)的(?P<effect>再來一次狀態|定身法)解除了[!]",
         _effect_end,
         0.97,
     ),
     _rule(
-        "field.effect_applied",
-        "FIELD_EFFECT",
-        r"(?P<subject>.+?)(?P<effect>接受了再來一次|擺出了防守的架勢|在攻擊中守護住了自己)[!]",
-        _effect_apply,
-        0.92,
+        "volatile.protect_started",
+        "VOLATILE_STATUS",
+        r"(?P<subject>.+?)擺出了防守的架勢[!]",
+        _target_effect("守住", "start"),
+        0.97,
     ),
     _rule(
-        "field.move_disabled",
-        "FIELD_EFFECT",
-        r"封住了(?P<subject>.+?)的(?P<move>.+?)[!]?",
+        "volatile.encore_started",
+        "VOLATILE_STATUS",
+        r"(?P<subject>.+?)接受了再來一次[!]",
+        _target_effect("再來一次", "start"),
+        0.97,
+    ),
+    _rule(
+        "move_result.protected",
+        "MOVE_RESULT",
+        r"(?P<subject>.+?)在攻擊中守護住了自己[!]",
+        _protected_result,
+        0.98,
+    ),
+    _rule(
+        "volatile.move_disabled",
+        "VOLATILE_STATUS",
+        r"封住了(?P<subject>.+)的(?P<move>.+?)[!]?",
         _move_disabled,
         0.97,
     ),
     _rule(
-        "field.move_prevented",
-        "FIELD_EFFECT",
+        "move_result.prevented",
+        "MOVE_RESULT",
         r"(?P<subject>.+?)因(?P<effect>定身法)而無法使出(?P<move>.+?)[!]",
         _move_prevented,
         0.98,
     ),
     _rule(
-        "field.form_changed",
-        "FIELD_EFFECT",
+        "transformation.activated",
+        "TRANSFORMATION",
+        r"(?P<subject>.+)的(?P<item>.+?進化石)和(?P<trainer>.+?)的(?P<device>.+?)產生了反應[!]",
+        _transformation_activation,
+        0.96,
+    ),
+    _rule(
+        "transformation.completed",
+        "TRANSFORMATION",
         r"(?P<subject>.+?)超級進化成了(?P<form>.+?)[!]",
         _form_change,
         0.96,
+    ),
+    _rule(
+        "battle_result.forfeit",
+        "BATTLE_RESULT",
+        r"有一方選擇了投降[。!]",
+        _forfeit_result,
+        0.99,
+    ),
+    _rule(
+        "battle_result.win",
+        "BATTLE_RESULT",
+        r"成功戰勝了(?P<loser>.+?)[!]",
+        _win_result,
+        0.98,
     ),
 )

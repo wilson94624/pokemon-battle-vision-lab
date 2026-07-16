@@ -1,6 +1,8 @@
 """Checkpoint 1D Battle Event Parser 的單元與小型 pipeline 測試。"""
 
 import json
+import inspect
+from collections import Counter
 from pathlib import Path
 from typing import Any, Dict
 
@@ -8,6 +10,7 @@ import pytest
 
 from pokemon_battle_vision.battle_event_normalization import normalize_battle_text
 from pokemon_battle_vision.battle_event_parser import BattleEventParser
+from pokemon_battle_vision import battle_event_rules
 from pokemon_battle_vision.checkpoint1d import (
     READ_ONLY_INPUTS,
     acceptance_for_record,
@@ -50,16 +53,67 @@ from pokemon_battle_vision.errors import InputError
         (
             "對手的烈咬陸鯊的\n滅亡計時變成3了!",
             "BATTLE_TEXT",
-            "FIELD_EFFECT",
+            "VOLATILE_STATUS",
             {"effect": "滅亡計時", "counter": 3},
         ),
         ("上吧!巨沼怪!", "BATTLE_TEXT", "SWITCH", {"actor": "巨沼怪"}),
         ("對手的風妖精倒下了!", "BATTLE_TEXT", "FAINT", {"target": "風妖精"}),
-        ("擊中了要害!", "BATTLE_TEXT", "UNKNOWN_EVENT", {}),
+        ("擊中了要害!", "BATTLE_TEXT", "MOVE_RESULT", {"result": "critical_hit"}),
     ],
 )
 def test_parser_supports_mvp_event_types(text, input_type, event_type, expected):
     result = BattleEventParser().parse(text, input_type)
+    assert result.event_type == event_type
+    for key, value in expected.items():
+        assert result.metadata[key] == value
+
+
+@pytest.mark.parametrize(
+    "text,event_type,expected",
+    [
+        ("對對手的仙子伊布\n效果絕佳!", "MOVE_RESULT", {"result": "super_effective"}),
+        ("沒有擊中對手的姆克鷹!", "MOVE_RESULT", {"result": "miss"}),
+        ("擊中了要害!", "MOVE_RESULT", {"result": "critical_hit"}),
+        (
+            "巨沼怪\n受到了反作用力造成的傷害!",
+            "DAMAGE_RESULT",
+            {"cause": "recoil"},
+        ),
+        (
+            "從對手身後\n吹起了順風!",
+            "SIDE_CONDITION",
+            {"effect": "順風", "side": "opponent"},
+        ),
+        (
+            "對手的姆克鷹的\n滅亡計時變成3了!",
+            "VOLATILE_STATUS",
+            {"effect": "滅亡計時", "counter": 3},
+        ),
+        (
+            "對手的姆克鷹超級進化成了\n超級姆克鷹!",
+            "TRANSFORMATION",
+            {"action": "change", "form": "超級姆克鷹"},
+        ),
+        (
+            "聽過滅亡之歌的寶可夢\n3回合後就會滅亡!",
+            "FIELD_EFFECT",
+            {"effect": "滅亡之歌", "counter": 3},
+        ),
+        (
+            "對手的姆克鷹的\n再來一次狀態解除了!",
+            "VOLATILE_STATUS",
+            {"effect": "再來一次", "action": "end"},
+        ),
+        ("有一方選擇了投降。", "BATTLE_RESULT", {"result": "forfeit"}),
+        (
+            "成功戰勝了\n猫猫茶!",
+            "BATTLE_RESULT",
+            {"result": "win", "loser": "猫猫茶"},
+        ),
+    ],
+)
+def test_taxonomy_completion_rules(text, event_type, expected):
+    result = BattleEventParser().parse(text, "BATTLE_TEXT")
     assert result.event_type == event_type
     for key, value in expected.items():
         assert result.metadata[key] == value
@@ -81,6 +135,49 @@ def test_trigger_only_ability_rule_does_not_guess_battle_text():
     result = BattleEventParser().parse("姆克鷹的\n威嚇", "BATTLE_TEXT")
     assert result.event_type == "UNKNOWN_EVENT"
     assert result.metadata == {"rule_id": "unknown.unmatched"}
+
+
+def test_disable_possessive_split_uses_last_separator():
+    result = BattleEventParser().parse(
+        "封住了對手的姆克鷹的\n近身戰!", "BATTLE_TEXT"
+    )
+    assert result.event_type == "VOLATILE_STATUS"
+    assert result.metadata["target"] == "姆克鷹"
+    assert result.metadata["side"] == "opponent"
+    assert result.metadata["move"] == "近身戰"
+
+
+def test_short_ascii_ocr_prefix_does_not_pollute_entity_metadata():
+    result = BattleEventParser().parse(
+        "i.\n勾魂眼的\n滅亡計時變成1了!", "BATTLE_TEXT"
+    )
+    assert result.event_type == "VOLATILE_STATUS"
+    assert result.metadata["target"] == "勾魂眼"
+
+
+def test_round1_taxonomy_regression_covers_all_102_review_inputs():
+    root = Path(__file__).resolve().parents[2]
+    fixture = json.loads(
+        (root / "references/checkpoint1d1_parser_regression.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    parser = BattleEventParser()
+    actual_counts = Counter()
+    for case in fixture["cases"]:
+        result = parser.parse(case["raw_text"], case["input_event_type"])
+        assert result.event_type == case["expected_type"], case["candidate_id"]
+        actual_counts[result.event_type] += 1
+    assert fixture["case_count"] == 102
+    assert {
+        name: actual_counts.get(name, 0) for name in fixture["expected_counts"]
+    } == fixture["expected_counts"]
+
+
+def test_production_rules_do_not_read_audit_fixture_or_candidate_ids():
+    source = inspect.getsource(battle_event_rules)
+    assert "checkpoint1d1" not in source
+    assert "battle_text-" not in source
 
 
 def _minimal_record(

@@ -6,6 +6,7 @@ from typing import List, Optional, Tuple
 
 
 _TERMINAL_PUNCTUATION = "!！。.?？"
+_CJK_CHARACTER = r"\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff"
 
 
 def normalize_battle_text(raw_text: str) -> str:
@@ -31,6 +32,8 @@ def strip_terminal_punctuation(value: str) -> str:
 def parse_subjects(value: str) -> Tuple[List[str], Optional[str]]:
     """將「對手的A和B」拆成實體列表與視角；不猜測未明示的陣營。"""
     text = strip_terminal_punctuation(value)
+    # 只在 entity 起點清除緊貼中文的短 ASCII OCR 噪聲；raw_text 永遠保留。
+    text = re.sub(r"^[^" + _CJK_CHARACTER + r"]+(?=[" + _CJK_CHARACTER + r"])", "", text)
     side: Optional[str] = None
     if text.startswith("對手的"):
         side = "opponent"

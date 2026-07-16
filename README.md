@@ -1,6 +1,6 @@
 # Pokémon Battle Vision Lab
 
-本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A 至 1D MVP**：1A 建立並核准 ROI Frozen Baseline；1B 建立 UI event candidates；1C 執行本機 Apple Vision OCR、Text Validation 與 Human Review；1D 將已接受文字轉成可追溯的 BattleEvent 中介格式。
+本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A 至 1D.1**：1A 建立並核准 ROI Frozen Baseline；1B 建立 UI event candidates；1C 執行本機 Apple Vision OCR、Text Validation 與 Human Review；1D／1D.1 將已接受文字轉成經 quality audit 的 BattleEvent 中介格式。
 
 本專案不是網站、即時助手或戰術分析工具。Checkpoint 1D 只建立 BattleEvent IR，不建立回合、Battle State、Replay Analysis 或戰術語意。
 
@@ -186,7 +186,7 @@ Checkpoint 1D 只讀取完成審查的 1C review JSON，不需要影片，也不
   --output outputs/checkpoint-1d
 ```
 
-輸出為 `battle_events.json` 與 `checkpoint1d_manifest.json`。架構、schema、接受規則與 `UNKNOWN_EVENT` 策略請見 [`docs/checkpoint1d_architecture.md`](docs/checkpoint1d_architecture.md)。
+輸出為 `battle_events.json` 與 `checkpoint1d_manifest.json`。架構、schema、接受規則與 `UNKNOWN_EVENT` 策略請見 [`docs/checkpoint1d_architecture.md`](docs/checkpoint1d_architecture.md)；1D.1 taxonomy audit 與工程 ROI 決策見 [`docs/checkpoint1d1_quality_audit.md`](docs/checkpoint1d1_quality_audit.md)。
 
 ## 測試
 

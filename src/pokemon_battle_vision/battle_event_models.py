@@ -6,6 +6,8 @@ from typing import Any, Dict
 
 EVENT_TYPES = (
     "MOVE",
+    "MOVE_RESULT",
+    "DAMAGE_RESULT",
     "ABILITY",
     "ITEM",
     "STATUS",
@@ -13,8 +15,12 @@ EVENT_TYPES = (
     "WEATHER",
     "TERRAIN",
     "FIELD_EFFECT",
+    "SIDE_CONDITION",
+    "VOLATILE_STATUS",
+    "TRANSFORMATION",
     "SWITCH",
     "FAINT",
+    "BATTLE_RESULT",
     "UNKNOWN_EVENT",
 )
 

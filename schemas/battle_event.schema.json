@@ -5,7 +5,7 @@
   "type": "object",
   "required": ["schema_version", "checkpoint", "kind", "parser_version", "source", "event_count", "event_counts", "unknown_count", "events"],
   "properties": {
-    "schema_version": {"const": "0.1.0"},
+    "schema_version": {"const": "0.2.0"},
     "checkpoint": {"const": "1D"},
     "kind": {"const": "battle_event_results"},
     "parser_version": {"type": "string"},
@@ -29,13 +29,15 @@
   },
   "$defs": {
     "eventType": {
-      "enum": ["MOVE", "ABILITY", "ITEM", "STATUS", "STAT_CHANGE", "WEATHER", "TERRAIN", "FIELD_EFFECT", "SWITCH", "FAINT", "UNKNOWN_EVENT"]
+      "enum": ["MOVE", "MOVE_RESULT", "DAMAGE_RESULT", "ABILITY", "ITEM", "STATUS", "STAT_CHANGE", "WEATHER", "TERRAIN", "FIELD_EFFECT", "SIDE_CONDITION", "VOLATILE_STATUS", "TRANSFORMATION", "SWITCH", "FAINT", "BATTLE_RESULT", "UNKNOWN_EVENT"]
     },
     "eventCounts": {
       "type": "object",
-      "required": ["MOVE", "ABILITY", "ITEM", "STATUS", "STAT_CHANGE", "WEATHER", "TERRAIN", "FIELD_EFFECT", "SWITCH", "FAINT", "UNKNOWN_EVENT"],
+      "required": ["MOVE", "MOVE_RESULT", "DAMAGE_RESULT", "ABILITY", "ITEM", "STATUS", "STAT_CHANGE", "WEATHER", "TERRAIN", "FIELD_EFFECT", "SIDE_CONDITION", "VOLATILE_STATUS", "TRANSFORMATION", "SWITCH", "FAINT", "BATTLE_RESULT", "UNKNOWN_EVENT"],
       "properties": {
         "MOVE": {"type": "integer", "minimum": 0},
+        "MOVE_RESULT": {"type": "integer", "minimum": 0},
+        "DAMAGE_RESULT": {"type": "integer", "minimum": 0},
         "ABILITY": {"type": "integer", "minimum": 0},
         "ITEM": {"type": "integer", "minimum": 0},
         "STATUS": {"type": "integer", "minimum": 0},
@@ -43,8 +45,12 @@
         "WEATHER": {"type": "integer", "minimum": 0},
         "TERRAIN": {"type": "integer", "minimum": 0},
         "FIELD_EFFECT": {"type": "integer", "minimum": 0},
+        "SIDE_CONDITION": {"type": "integer", "minimum": 0},
+        "VOLATILE_STATUS": {"type": "integer", "minimum": 0},
+        "TRANSFORMATION": {"type": "integer", "minimum": 0},
         "SWITCH": {"type": "integer", "minimum": 0},
         "FAINT": {"type": "integer", "minimum": 0},
+        "BATTLE_RESULT": {"type": "integer", "minimum": 0},
         "UNKNOWN_EVENT": {"type": "integer", "minimum": 0}
       },
       "additionalProperties": false
@@ -98,8 +104,14 @@
             "terrain": {"type": "string"},
             "effect": {"type": "string"},
             "action": {"type": "string"},
+            "result": {"type": "string"},
+            "cause": {"type": "string"},
             "counter": {"type": "integer", "minimum": 0},
-            "details": {"type": "string"}
+            "details": {"type": "string"},
+            "form": {"type": "string"},
+            "device": {"type": "string"},
+            "winner": {"type": "string"},
+            "loser": {"type": "string"}
           },
           "additionalProperties": false
         }

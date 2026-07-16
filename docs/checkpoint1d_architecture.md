@@ -56,11 +56,13 @@ checkpoint1c_review.json
 
 Duplicate 必須指向一筆實際納入的 Accepted candidate，避免 silent dangling reference。
 
-## MVP Event Types
+## Event Types（Parser 0.2.0）
 
 目前 schema 固定支援：
 
 - `MOVE`
+- `MOVE_RESULT`
+- `DAMAGE_RESULT`
 - `ABILITY`
 - `ITEM`
 - `STATUS`
@@ -68,11 +70,15 @@ Duplicate 必須指向一筆實際納入的 Accepted candidate，避免 silent d
 - `WEATHER`
 - `TERRAIN`
 - `FIELD_EFFECT`
+- `SIDE_CONDITION`
+- `VOLATILE_STATUS`
+- `TRANSFORMATION`
 - `SWITCH`
 - `FAINT`
+- `BATTLE_RESULT`
 - `UNKNOWN_EVENT`
 
-`FIELD_EFFECT` 只記錄文字明示的 effect，不維護效果剩餘回合或目前場面。
+`FIELD_EFFECT` 嚴格保留給全場條件；單側效果使用 `SIDE_CONDITION`，寶可夢個體的暫時效果使用 `VOLATILE_STATUS`。`MOVE_RESULT` 透過 `metadata.result` 表示 miss、critical、effectiveness、block 等結果，避免為每種結果建立過細 Event Type。完整 1D.1 audit 與 ROI 決策見 [`checkpoint1d1_quality_audit.md`](checkpoint1d1_quality_audit.md)。
 
 ## Parser 與 Normalization
 

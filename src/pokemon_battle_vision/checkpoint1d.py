@@ -16,7 +16,7 @@ from .output_transaction import OutputTransaction, finalize_generated_output
 from .utils import project_relative, sha256_file, write_json
 
 
-PARSER_VERSION = "0.1.0"
+PARSER_VERSION = "0.2.0"
 ACCEPTANCE_POLICY = (
     "human_decision 優先；accepted 納入、duplicate/rejected 排除；"
     "未經人工覆寫的 workflow_status=auto_accepted 納入"
@@ -195,7 +195,7 @@ def run_checkpoint_1d(
         event_counts.setdefault(event_type, 0)
     event_counts = {event_type: event_counts[event_type] for event_type in EVENT_TYPES}
     result = {
-        "schema_version": "0.1.0",
+        "schema_version": "0.2.0",
         "checkpoint": "1D",
         "kind": "battle_event_results",
         "parser_version": PARSER_VERSION,
@@ -233,7 +233,7 @@ def run_checkpoint_1d(
         result_path = transaction.staging_dir / "battle_events.json"
         write_json(result_path, result)
         manifest = {
-            "schema_version": "0.1.0",
+            "schema_version": "0.2.0",
             "checkpoint": "1D",
             "kind": "checkpoint1d_manifest",
             "status": "complete",
