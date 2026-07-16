@@ -7,6 +7,7 @@ from typing import List, Optional
 
 from .errors import CheckpointError
 from .checkpoint1c import run_checkpoint_1c
+from .checkpoint1d import run_checkpoint_1d
 from .pipeline import run_checkpoint_1a
 from .review_pack import build_review_pack
 from .roi import create_roi_approval
@@ -16,7 +17,7 @@ from .scanner import run_checkpoint_1b
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pokemon-battle-vision",
-        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A/1B Human Review",
+        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1D",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -86,6 +87,14 @@ def _parser() -> argparse.ArgumentParser:
     ocr_parser.add_argument("--checkpoint-1b-review-dir", type=Path, required=True)
     ocr_parser.add_argument("--output", type=Path, required=True)
     ocr_parser.add_argument("--review-output", type=Path, required=True)
+
+    event_parser = subparsers.add_parser(
+        "checkpoint-1d",
+        help="將完成審查的 Checkpoint 1C 文字轉成 BattleEvent IR",
+    )
+    event_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    event_parser.add_argument("--review", type=Path, required=True)
+    event_parser.add_argument("--output", type=Path, required=True)
     return parser
 
 
@@ -168,6 +177,17 @@ def main(argv: Optional[List[str]] = None) -> int:
             print("已處理 candidates：{}".format(manifest["processed_candidate_count"]))
             print("validation counts：{}".format(manifest["validation_counts"]))
             print("workflow counts：{}".format(manifest["workflow_counts"]))
+            return 0
+        if args.command == "checkpoint-1d":
+            manifest = run_checkpoint_1d(
+                project_root=args.project_root,
+                review_path=args.review,
+                output_dir=args.output,
+            )
+            print("Checkpoint 1D 已完成：{}".format(args.output / "battle_events.json"))
+            print("Battle Events：{}".format(manifest["event_count"]))
+            print("Event counts：{}".format(manifest["event_counts"]))
+            print("UNKNOWN_EVENT：{}".format(manifest["unknown_count"]))
             return 0
         parser.error("未知 command")
     except CheckpointError as exc:

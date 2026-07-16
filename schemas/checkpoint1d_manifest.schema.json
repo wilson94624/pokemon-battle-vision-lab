@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/checkpoint1d_manifest.schema.json",
+  "title": "Checkpoint 1D Manifest",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "status", "generated_at", "parser_version", "input", "output", "event_count", "event_counts", "unknown_count", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1D"},
+    "kind": {"const": "checkpoint1d_manifest"},
+    "status": {"const": "complete"},
+    "generated_at": {"type": "string"},
+    "parser_version": {"type": "string"},
+    "input": {
+      "type": "object",
+      "required": ["path", "sha256", "record_count", "accepted_input_count"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "record_count": {"type": "integer", "minimum": 0},
+        "accepted_input_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "event_count": {"type": "integer", "minimum": 0},
+    "event_counts": {"type": "object"},
+    "unknown_count": {"type": "integer", "minimum": 0},
+    "validation": {
+      "type": "object",
+      "required": ["schema_valid", "event_ids_unique", "candidate_ids_unique", "timestamps_monotonic", "all_events_traceable", "review_input_unchanged"],
+      "properties": {
+        "schema_valid": {"const": true},
+        "event_ids_unique": {"const": true},
+        "candidate_ids_unique": {"const": true},
+        "timestamps_monotonic": {"const": true},
+        "all_events_traceable": {"const": true},
+        "review_input_unchanged": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "scope_guards": {
+      "type": "object",
+      "required": ["ocr_rerun", "detector_rerun", "roi_modified", "checkpoint1b_modified", "checkpoint1c_modified", "battle_state_performed", "replay_analysis_performed", "gui_created"],
+      "properties": {
+        "ocr_rerun": {"const": false},
+        "detector_rerun": {"const": false},
+        "roi_modified": {"const": false},
+        "checkpoint1b_modified": {"const": false},
+        "checkpoint1c_modified": {"const": false},
+        "battle_state_performed": {"const": false},
+        "replay_analysis_performed": {"const": false},
+        "gui_created": {"const": false}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

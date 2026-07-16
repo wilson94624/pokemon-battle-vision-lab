@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/battle_event.schema.json",
+  "title": "Checkpoint 1D Battle Event Results",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "parser_version", "source", "event_count", "event_counts", "unknown_count", "events"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1D"},
+    "kind": {"const": "battle_event_results"},
+    "parser_version": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["checkpoint", "review_path", "review_sha256", "review_record_count", "accepted_input_count", "acceptance_policy"],
+      "properties": {
+        "checkpoint": {"const": "1C"},
+        "review_path": {"type": "string"},
+        "review_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "review_record_count": {"type": "integer", "minimum": 0},
+        "accepted_input_count": {"type": "integer", "minimum": 0},
+        "acceptance_policy": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "event_count": {"type": "integer", "minimum": 0},
+    "event_counts": {"$ref": "#/$defs/eventCounts"},
+    "unknown_count": {"type": "integer", "minimum": 0},
+    "events": {"type": "array", "items": {"$ref": "#/$defs/event"}}
+  },
+  "$defs": {
+    "eventType": {
+      "enum": ["MOVE", "ABILITY", "ITEM", "STATUS", "STAT_CHANGE", "WEATHER", "TERRAIN", "FIELD_EFFECT", "SWITCH", "FAINT", "UNKNOWN_EVENT"]
+    },
+    "eventCounts": {
+      "type": "object",
+      "required": ["MOVE", "ABILITY", "ITEM", "STATUS", "STAT_CHANGE", "WEATHER", "TERRAIN", "FIELD_EFFECT", "SWITCH", "FAINT", "UNKNOWN_EVENT"],
+      "properties": {
+        "MOVE": {"type": "integer", "minimum": 0},
+        "ABILITY": {"type": "integer", "minimum": 0},
+        "ITEM": {"type": "integer", "minimum": 0},
+        "STATUS": {"type": "integer", "minimum": 0},
+        "STAT_CHANGE": {"type": "integer", "minimum": 0},
+        "WEATHER": {"type": "integer", "minimum": 0},
+        "TERRAIN": {"type": "integer", "minimum": 0},
+        "FIELD_EFFECT": {"type": "integer", "minimum": 0},
+        "SWITCH": {"type": "integer", "minimum": 0},
+        "FAINT": {"type": "integer", "minimum": 0},
+        "UNKNOWN_EVENT": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "required": ["id", "timestamp", "start_time", "end_time", "candidate_id", "event_type", "raw_text", "normalized_text", "confidence", "source", "metadata"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^battle-event-[0-9]{4}$"},
+        "timestamp": {"type": "number", "minimum": 0},
+        "start_time": {"type": "number", "minimum": 0},
+        "end_time": {"type": "number", "minimum": 0},
+        "candidate_id": {"type": "string", "minLength": 1},
+        "event_type": {"$ref": "#/$defs/eventType"},
+        "raw_text": {"type": "string", "minLength": 1},
+        "normalized_text": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "source": {
+          "type": "object",
+          "required": ["checkpoint", "input_event_type", "text_origin", "acceptance", "ocr_confidence", "validation_confidence", "reviewed_by", "reviewed_at"],
+          "properties": {
+            "checkpoint": {"const": "1C"},
+            "input_event_type": {"enum": ["BATTLE_TEXT", "TRIGGER_NOTIFICATION"]},
+            "text_origin": {"enum": ["ocr_text", "human_text"]},
+            "acceptance": {"enum": ["auto_accepted", "human_accepted"]},
+            "ocr_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+            "validation_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+            "reviewed_by": {"type": ["string", "null"]},
+            "reviewed_at": {"type": ["string", "null"]}
+          },
+          "additionalProperties": false
+        },
+        "metadata": {
+          "type": "object",
+          "required": ["rule_id"],
+          "properties": {
+            "rule_id": {"type": "string"},
+            "actor": {"type": "string"},
+            "target": {"type": "string"},
+            "targets": {"type": "array", "items": {"type": "string"}},
+            "trainer": {"type": "string"},
+            "side": {"enum": ["player", "opponent", "unknown"]},
+            "move": {"type": "string"},
+            "ability": {"type": "string"},
+            "item": {"type": "string"},
+            "status": {"type": "string"},
+            "stat": {"type": "string"},
+            "direction": {"enum": ["raise", "lower"]},
+            "magnitude": {"type": "integer", "minimum": 1},
+            "weather": {"type": "string"},
+            "terrain": {"type": "string"},
+            "effect": {"type": "string"},
+            "action": {"type": "string"},
+            "counter": {"type": "integer", "minimum": 0},
+            "details": {"type": "string"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
