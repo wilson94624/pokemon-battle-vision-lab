@@ -8,6 +8,7 @@ from typing import List, Optional
 from .errors import CheckpointError
 from .checkpoint1c import run_checkpoint_1c
 from .checkpoint1d import run_checkpoint_1d
+from .checkpoint1e import run_checkpoint_1e
 from .pipeline import run_checkpoint_1a
 from .review_pack import build_review_pack
 from .roi import create_roi_approval
@@ -17,7 +18,7 @@ from .scanner import run_checkpoint_1b
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pokemon-battle-vision",
-        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1D",
+        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1E",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -95,6 +96,15 @@ def _parser() -> argparse.ArgumentParser:
     event_parser.add_argument("--project-root", type=Path, default=Path.cwd())
     event_parser.add_argument("--review", type=Path, required=True)
     event_parser.add_argument("--output", type=Path, required=True)
+
+    timeline_parser = subparsers.add_parser(
+        "checkpoint-1e",
+        help="將 frozen BattleEvent 建立為保守關聯、可人工審查的對戰時間線",
+    )
+    timeline_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    timeline_parser.add_argument("--events", type=Path, required=True)
+    timeline_parser.add_argument("--output", type=Path, required=True)
+    timeline_parser.add_argument("--review-output", type=Path, required=True)
     return parser
 
 
@@ -188,6 +198,19 @@ def main(argv: Optional[List[str]] = None) -> int:
             print("Battle Events：{}".format(manifest["event_count"]))
             print("Event counts：{}".format(manifest["event_counts"]))
             print("UNKNOWN_EVENT：{}".format(manifest["unknown_count"]))
+            return 0
+        if args.command == "checkpoint-1e":
+            manifest = run_checkpoint_1e(
+                project_root=args.project_root,
+                events_path=args.events,
+                output_dir=args.output,
+                review_output_dir=args.review_output,
+            )
+            print("Checkpoint 1E 已完成：{}".format(args.output / "battle_timeline.json"))
+            print("Action Groups：{}".format(manifest["timeline_count"]))
+            print("Relation Edges：{}".format(manifest["relation_count"]))
+            print("Group status：{}".format(manifest["group_status_counts"]))
+            print("Unlinked events：{}".format(manifest["unlinked_event_count"]))
             return 0
         parser.error("未知 command")
     except CheckpointError as exc:

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/battle_timeline.schema.json",
+  "title": "Checkpoint 1E Ordered Battle Timeline",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "builder_version", "source", "source_event_count", "all_source_event_ids", "timeline_count", "relation_count", "group_status_counts", "unlinked_event_count", "groups"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1E"},
+    "kind": {"const": "ordered_battle_timeline"},
+    "builder_version": {"type": "string"},
+    "source": {"$ref": "#/$defs/source"},
+    "source_event_count": {"type": "integer", "minimum": 0},
+    "all_source_event_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/eventId"}},
+    "timeline_count": {"type": "integer", "minimum": 0},
+    "relation_count": {"type": "integer", "minimum": 0},
+    "group_status_counts": {"$ref": "#/$defs/statusCounts"},
+    "unlinked_event_count": {"type": "integer", "minimum": 0},
+    "groups": {"type": "array", "items": {"$ref": "#/$defs/group"}}
+  },
+  "$defs": {
+    "eventId": {"type": "string", "pattern": "^battle-event-[0-9]{4}$"},
+    "source": {
+      "type": "object",
+      "required": ["checkpoint", "events_path", "events_sha256", "manifest_path", "manifest_sha256", "event_count"],
+      "properties": {
+        "checkpoint": {"const": "1D"},
+        "events_path": {"type": "string"},
+        "events_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "manifest_path": {"type": "string"},
+        "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "event_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "statusCounts": {
+      "type": "object",
+      "properties": {
+        "auto_accepted": {"type": "integer", "minimum": 0},
+        "needs_review": {"type": "integer", "minimum": 0},
+        "unlinked": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "humanReview": {
+      "type": "object",
+      "required": ["human_action", "human_decision", "human_relation_type", "human_primary_event_id", "human_group_id", "reviewed_by", "reviewed_at", "review_note"],
+      "properties": {
+        "human_action": {"type": ["string", "null"]},
+        "human_decision": {"type": ["string", "null"]},
+        "human_relation_type": {"type": ["string", "null"]},
+        "human_primary_event_id": {"type": ["string", "null"]},
+        "human_group_id": {"type": ["string", "null"]},
+        "reviewed_by": {"type": ["string", "null"]},
+        "reviewed_at": {"type": ["string", "null"]},
+        "review_note": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "group": {
+      "type": "object",
+      "required": ["timeline_id", "sequence", "start_time", "end_time", "primary_event_id", "event_ids", "relation_edge_ids", "group_type", "confidence", "review_status", "review_reasons", "source_event_count", "human_review"],
+      "properties": {
+        "timeline_id": {"type": "string", "pattern": "^timeline-[0-9]{4}$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "start_time": {"type": "number", "minimum": 0},
+        "end_time": {"type": "number", "minimum": 0},
+        "primary_event_id": {"$ref": "#/$defs/eventId"},
+        "event_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/eventId"}},
+        "relation_edge_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^relation-[0-9]{4}$"}},
+        "group_type": {"enum": ["ACTION_CHAIN", "EVENT_BATCH", "STANDALONE_ACTION", "STANDALONE_EVENT", "UNLINKED_EVENT"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "review_status": {"enum": ["auto_accepted", "needs_review", "unlinked"]},
+        "review_reasons": {"type": "array", "items": {"type": "string"}},
+        "source_event_count": {"type": "integer", "minimum": 1},
+        "human_review": {"$ref": "#/$defs/humanReview"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

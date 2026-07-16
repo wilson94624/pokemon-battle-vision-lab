@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pokemon-battle-vision"
 version = "0.2.0"
-description = "Pokémon Champions 對戰影片 Checkpoint 1A/1B 視覺候選與 Checkpoint 1C 本機 OCR pipeline"
+description = "Pokémon Champions 對戰影片 Checkpoint 1A 至 1E evidence pipeline"
 readme = "README.md"
 requires-python = "==3.9.6"
 dependencies = [

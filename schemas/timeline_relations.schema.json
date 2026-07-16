@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/timeline_relations.schema.json",
+  "title": "Checkpoint 1E Timeline Relations",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "source_event_count", "relation_count", "relation_status_counts", "relations"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1E"},
+    "kind": {"const": "timeline_relations"},
+    "source_event_count": {"type": "integer", "minimum": 0},
+    "relation_count": {"type": "integer", "minimum": 0},
+    "relation_status_counts": {
+      "type": "object",
+      "properties": {
+        "auto_accepted": {"type": "integer", "minimum": 0},
+        "needs_review": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}}
+  },
+  "$defs": {
+    "humanReview": {
+      "type": "object",
+      "required": ["human_action", "human_decision", "human_relation_type", "human_primary_event_id", "human_group_id", "reviewed_by", "reviewed_at", "review_note"],
+      "properties": {
+        "human_action": {"type": ["string", "null"]}, "human_decision": {"type": ["string", "null"]},
+        "human_relation_type": {"type": ["string", "null"]}, "human_primary_event_id": {"type": ["string", "null"]},
+        "human_group_id": {"type": ["string", "null"]}, "reviewed_by": {"type": ["string", "null"]},
+        "reviewed_at": {"type": ["string", "null"]}, "review_note": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "required": ["relation_id", "from_event_id", "to_event_id", "relation_type", "rule_id", "confidence", "evidence", "review_status", "group_id", "human_review"],
+      "properties": {
+        "relation_id": {"type": "string", "pattern": "^relation-[0-9]{4}$"},
+        "from_event_id": {"type": "string", "pattern": "^battle-event-[0-9]{4}$"},
+        "to_event_id": {"type": "string", "pattern": "^battle-event-[0-9]{4}$"},
+        "relation_type": {"enum": ["RESULT_OF", "DAMAGE_FROM", "STATUS_FROM", "STAT_CHANGE_FROM", "TRIGGERED_BY", "FOLLOWED_BY", "SAME_ACTION", "TEMPORALLY_ADJACENT"]},
+        "rule_id": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "review_status": {"enum": ["auto_accepted", "needs_review"]},
+        "group_id": {"type": ["string", "null"], "pattern": "^timeline-[0-9]{4}$"},
+        "human_review": {"$ref": "#/$defs/humanReview"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

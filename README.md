@@ -188,6 +188,20 @@ Checkpoint 1D 只讀取完成審查的 1C review JSON，不需要影片，也不
 
 輸出為 `battle_events.json` 與 `checkpoint1d_manifest.json`。架構、schema、接受規則與 `UNKNOWN_EVENT` 策略請見 [`docs/checkpoint1d_architecture.md`](docs/checkpoint1d_architecture.md)；1D.1 taxonomy audit 與工程 ROI 決策見 [`docs/checkpoint1d1_quality_audit.md`](docs/checkpoint1d1_quality_audit.md)。
 
+## 執行 Checkpoint 1E Battle Timeline Builder
+
+Checkpoint 1E 只讀 frozen Checkpoint 1D BattleEvents，建立保守關聯的 Action Groups、Event Chains 與人工 Review Pack：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1e \
+  --project-root . \
+  --events outputs/checkpoint-1d/battle_events.json \
+  --output outputs/checkpoint-1e \
+  --review-output outputs/checkpoint-1e-review
+```
+
+輸出為 `battle_timeline.json`、`timeline_relations.json`、`timeline_audit.json`、`checkpoint1e_manifest.json` 與 `outputs/checkpoint-1e-review/`。只有 metadata 結構證據足夠的 relation 才合併 group；只有時間相鄰的候選維持分組並進入 `needs_review`。1E 不推算 turn 或 Battle State，詳見 [`docs/checkpoint1e_architecture.md`](docs/checkpoint1e_architecture.md) 與修改前的 [`docs/checkpoint1e_architecture_audit.md`](docs/checkpoint1e_architecture_audit.md)。
+
 ## 測試
 
 快速單元與整合測試：

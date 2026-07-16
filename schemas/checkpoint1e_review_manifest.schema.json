@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/checkpoint1e_review_manifest.schema.json",
+  "title": "Checkpoint 1E Review Manifest",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "source", "group_count", "group_review_count", "needs_review_relation_count", "unlinked_event_count", "outputs", "contact_sheets", "validation"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1E"},
+    "kind": {"const": "checkpoint1e_review_manifest"},
+    "source": {
+      "type": "object",
+      "required": ["timeline_path", "timeline_sha256"],
+      "properties": {
+        "timeline_path": {"type": "string"},
+        "timeline_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "group_count": {"type": "integer", "minimum": 0},
+    "group_review_count": {"type": "integer", "minimum": 0},
+    "needs_review_relation_count": {"type": "integer", "minimum": 0},
+    "unlinked_event_count": {"type": "integer", "minimum": 0},
+    "outputs": {"type": "object", "additionalProperties": {"$ref": "#/$defs/file"}},
+    "contact_sheets": {
+      "type": "object",
+      "required": ["group_page_count", "needs_review_page_count", "total_page_count", "tile_count"],
+      "properties": {
+        "group_page_count": {"type": "integer", "minimum": 0},
+        "needs_review_page_count": {"type": "integer", "minimum": 0},
+        "total_page_count": {"type": "integer", "minimum": 0},
+        "tile_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "validation": {"type": "object", "additionalProperties": {"type": "boolean"}}
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

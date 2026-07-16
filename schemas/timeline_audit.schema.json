@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/timeline_audit.schema.json",
+  "title": "Checkpoint 1E Timeline Audit",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "source_event_count", "time_gap_distribution", "event_type_counts", "metadata_coverage", "roles", "limitations", "validation"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1E"},
+    "kind": {"const": "battle_timeline_audit"},
+    "source_event_count": {"type": "integer", "minimum": 0},
+    "time_gap_distribution": {"type": "object"},
+    "event_type_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "metadata_coverage": {"type": "array", "items": {"type": "object"}},
+    "roles": {"type": "object"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "validation": {
+      "type": "object",
+      "required": ["all_source_events_covered", "source_event_ids_unique", "events_consumed_once", "groups_monotonic", "group_event_order_preserved", "relation_pairs_unique", "no_turn_inference"],
+      "additionalProperties": {"type": "boolean"}
+    }
+  },
+  "additionalProperties": false
+}
