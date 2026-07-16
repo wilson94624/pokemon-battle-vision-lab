@@ -7,10 +7,25 @@ from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
 import cv2
 import numpy as np
 
+from .battle_text_detection import (
+    DEFAULT_BATTLE_TEXT_CONFIG,
+    BattleTextProposalConfig,
+    analyze_battle_text_crop,
+)
 from .checkpoint1b_models import EVENT_TYPES
 from .errors import InputError
 from .image_io import read_image
 from .models import PixelRoi
+from .trigger_notification_detection import (
+    DEFAULT_TRIGGER_PROPOSAL_CONFIG,
+    TriggerNotificationProposalConfig,
+    analyze_trigger_notification_crop,
+)
+from .trigger_notification_features import (
+    TRIGGER_ANALYSIS_ROIS,
+    TRIGGER_SIDE_ROIS,
+    trigger_analysis_rois,
+)
 
 
 EVENT_ROIS: Dict[str, Tuple[str, ...]] = {
@@ -35,8 +50,8 @@ DEFAULT_THRESHOLDS: Dict[str, float] = {
     "TEAM_PREVIEW": 0.84,
     "SELECTED_FOUR": 0.83,
     "MOVE_MENU": 0.80,
-    "BATTLE_TEXT": 0.76,
-    "TRIGGER_NOTIFICATION": 0.82,
+    "BATTLE_TEXT": DEFAULT_BATTLE_TEXT_CONFIG.proposal_threshold,
+    "TRIGGER_NOTIFICATION": DEFAULT_TRIGGER_PROPOSAL_CONFIG.proposal_threshold,
     "RESULT": 0.84,
 }
 
@@ -199,19 +214,33 @@ class CandidateDetector:
         pixel_rois: Mapping[str, PixelRoi],
         templates: Mapping[str, Sequence[EventTemplate]],
         thresholds: Mapping[str, float] = DEFAULT_THRESHOLDS,
+        battle_text_config: BattleTextProposalConfig = DEFAULT_BATTLE_TEXT_CONFIG,
+        trigger_notification_config: TriggerNotificationProposalConfig = DEFAULT_TRIGGER_PROPOSAL_CONFIG,
     ) -> None:
         self.pixel_rois = dict(pixel_rois)
         self.templates = {key: list(value) for key, value in templates.items()}
         self.thresholds = dict(thresholds)
+        self.battle_text_config = battle_text_config
+        self.trigger_notification_config = trigger_notification_config
 
-    def _frame_signatures(self, frame: np.ndarray) -> Dict[str, AppearanceSignature]:
+    def _frame_crops(self, frame: np.ndarray) -> Dict[str, np.ndarray]:
         required_ids = {
             roi_id for roi_ids in EVENT_ROIS.values() for roi_id in roi_ids
         }
-        return {
-            roi_id: appearance_signature(crop_roi(frame, self.pixel_rois[roi_id]))
+        crops = {
+            roi_id: crop_roi(frame, self.pixel_rois[roi_id])
             for roi_id in required_ids
         }
+        analysis_rois = trigger_analysis_rois(
+            self.pixel_rois, frame.shape[1], frame.shape[0]
+        )
+        crops.update(
+            {
+                roi_id: crop_roi(frame, roi)
+                for roi_id, roi in analysis_rois.items()
+            }
+        )
+        return crops
 
     def _template_score(
         self,
@@ -232,10 +261,16 @@ class CandidateDetector:
         }
         return float(np.mean(list(by_roi.values()))), by_roi
 
-    def score_frame(self, frame: np.ndarray) -> Tuple[Dict[str, float], Dict[str, List[str]]]:
-        signatures = self._frame_signatures(frame)
+    def score_frame_detailed(
+        self, frame: np.ndarray
+    ) -> Tuple[Dict[str, float], Dict[str, List[str]], Dict[str, Any]]:
+        crops = self._frame_crops(frame)
+        signatures = {
+            roi_id: appearance_signature(crop) for roi_id, crop in crops.items()
+        }
         event_scores: Dict[str, float] = {}
         visible_by_event: Dict[str, List[str]] = {}
+        detector_evidence: Dict[str, Any] = {}
         for event_type in EVENT_TYPES:
             best_score = -1.0
             best_by_roi: Dict[str, float] = {}
@@ -244,12 +279,59 @@ class CandidateDetector:
                 if score > best_score:
                     best_score = score
                     best_by_roi = by_roi
-            event_scores[event_type] = round(max(0.0, best_score), 6)
+            template_score = max(0.0, best_score)
+            if event_type == "BATTLE_TEXT":
+                battle_evidence = analyze_battle_text_crop(
+                    crops["battle_text"], template_score, self.battle_text_config
+                )
+                event_scores[event_type] = battle_evidence.proposal_score
+                detector_evidence[event_type] = battle_evidence.to_dict()
+                best_by_roi = {
+                    "battle_text": battle_evidence.proposal_score,
+                }
+            elif event_type == "TRIGGER_NOTIFICATION":
+                analysis_rois = trigger_analysis_rois(
+                    self.pixel_rois, frame.shape[1], frame.shape[0]
+                )
+                template_by_roi = dict(best_by_roi)
+                side_evidence = {}
+                best_by_roi = {}
+                for side, canonical_roi_id in TRIGGER_SIDE_ROIS.items():
+                    evidence = analyze_trigger_notification_crop(
+                        crops[TRIGGER_ANALYSIS_ROIS[side]],
+                        side=side,
+                        canonical_roi_id=canonical_roi_id,
+                        analysis_roi=analysis_rois[TRIGGER_ANALYSIS_ROIS[side]],
+                        template_score=float(template_by_roi.get(canonical_roi_id, 0.0)),
+                        config=self.trigger_notification_config,
+                    )
+                    side_evidence[side] = evidence.to_dict()
+                    best_by_roi[canonical_roi_id] = evidence.proposal_score
+                best_score = max(
+                    evidence["proposal_score"] for evidence in side_evidence.values()
+                )
+                event_scores[event_type] = round(float(best_score), 6)
+                detector_evidence[event_type] = {
+                    "proposal_score": round(float(best_score), 6),
+                    "threshold": self.trigger_notification_config.proposal_threshold,
+                    "visible_rois": sorted(
+                        TRIGGER_SIDE_ROIS[side]
+                        for side, evidence in side_evidence.items()
+                        if evidence["raw_positive"]
+                    ),
+                    "sides": side_evidence,
+                }
+            else:
+                event_scores[event_type] = round(template_score, 6)
             threshold = self.thresholds[event_type]
             visible_by_event[event_type] = sorted(
                 roi_id for roi_id, score in best_by_roi.items() if score >= threshold
             )
-        return event_scores, visible_by_event
+        return event_scores, visible_by_event, detector_evidence
+
+    def score_frame(self, frame: np.ndarray) -> Tuple[Dict[str, float], Dict[str, List[str]]]:
+        scores, visible, _ = self.score_frame_detailed(frame)
+        return scores, visible
 
     def classify(
         self, event_scores: Mapping[str, float], visible_by_event: Mapping[str, Sequence[str]]

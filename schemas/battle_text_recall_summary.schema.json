@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/battle_text_recall_summary.schema.json",
+  "title": "Checkpoint 1B BATTLE_TEXT Recall Summary",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "recall_gate",
+    "old_candidate_count",
+    "new_candidate_count",
+    "regression_window_count",
+    "regression_windows_covered",
+    "regression_windows_still_missed",
+    "coverage_interval_sec",
+    "dense_audit_interval_sec",
+    "short_candidate_count",
+    "long_candidate_count",
+    "diagnostics_path",
+    "review_pack_path",
+    "dense_audit_page_count",
+    "coverage_page_count",
+    "empty_blank_candidate_heuristic"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "recall_gate": {"const": "pending_human_review"},
+    "old_candidate_count": {"type": "integer", "minimum": 0},
+    "new_candidate_count": {"type": "integer", "minimum": 0},
+    "regression_window_count": {"type": "integer", "minimum": 0},
+    "regression_windows_covered": {"type": "integer", "minimum": 0},
+    "regression_windows_still_missed": {"type": "array", "items": {"type": "number"}},
+    "coverage_interval_sec": {"const": 0.5},
+    "dense_audit_interval_sec": {"const": 0.1},
+    "short_candidate_count": {"type": "integer", "minimum": 0},
+    "long_candidate_count": {"type": "integer", "minimum": 0},
+    "diagnostics_path": {"type": "string"},
+    "review_pack_path": {"type": "string"},
+    "dense_audit_page_count": {"type": "integer", "minimum": 1},
+    "coverage_page_count": {"type": "integer", "minimum": 1},
+    "empty_blank_candidate_heuristic": {"type": ["integer", "null"], "minimum": 0}
+  },
+  "additionalProperties": false
+}

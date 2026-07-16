@@ -38,6 +38,7 @@ def _record(sample_index, event_type, score, pts=None):
     current_pts = sample_index * 0.1 if pts is None else pts
     scores = {name: 0.0 for name in EVENT_TYPES}
     scores[event_type] = score
+    battle_positive = event_type == "BATTLE_TEXT" and score >= DEFAULT_THRESHOLDS[event_type]
     return FrameScanRecord(
         sample_index=sample_index,
         frame_index=sample_index * 3,
@@ -49,6 +50,23 @@ def _record(sample_index, event_type, score, pts=None):
         visible_rois=[],
         frame_hash="h" * 64,
         candidate_scores=scores,
+        battle_text_evidence=(
+            {
+                "evidence_level": "strong" if battle_positive else "negative",
+                "strong_positive": battle_positive,
+                "weak_positive": False,
+                "text_line_strength": score if battle_positive else 0.0,
+                "layout_fingerprint": {
+                    "layout_hash": "00" * 40,
+                    "row_profile": [0.2] * 10,
+                    "column_profile": [0.2] * 16,
+                    "bbox": [0.1, 0.2, 0.7, 0.8],
+                    "component_count": 18,
+                },
+            }
+            if event_type == "BATTLE_TEXT"
+            else {}
+        ),
     )
 
 
@@ -84,10 +102,10 @@ def test_timeline_bridges_short_gap_and_records_boundaries():
     event = events[0]
     assert event.type == "BATTLE_TEXT"
     assert event.start_frame == 3
-    assert event.end_frame == 15
+    assert event.end_frame == 18
     assert event.start_time == 0.1
-    assert event.end_time == 0.5
-    assert event.duration_sec == pytest.approx(0.5)
+    assert event.end_time == 0.6
+    assert event.duration_sec == pytest.approx(0.6)
 
 
 def test_timeline_preserves_observed_trigger_side():

@@ -1,4 +1,4 @@
-"""Checkpoint 1A、ROI approval 與 Checkpoint 1B 本地端 commands。"""
+"""Checkpoint 1A、ROI approval、Checkpoint 1B 與 Human Review Pack commands。"""
 
 import argparse
 import sys
@@ -7,6 +7,7 @@ from typing import List, Optional
 
 from .errors import CheckpointError
 from .pipeline import run_checkpoint_1a
+from .review_pack import build_review_pack
 from .roi import create_roi_approval
 from .scanner import run_checkpoint_1b
 
@@ -14,7 +15,7 @@ from .scanner import run_checkpoint_1b
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pokemon-battle-vision",
-        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A/1B",
+        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A/1B Human Review",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -50,6 +51,29 @@ def _parser() -> argparse.ArgumentParser:
     scan_parser.add_argument("--checkpoint-1a-dir", type=Path, required=True)
     scan_parser.add_argument("--roi-approval", type=Path, required=True)
     scan_parser.add_argument("--output", type=Path, required=True)
+    scan_parser.add_argument(
+        "--debug-output",
+        type=Path,
+        help="預設為 --output 同層的 checkpoint-1b-debug",
+    )
+
+    review_parser = subparsers.add_parser(
+        "build-review-pack",
+        help="忠實整理 Checkpoint 1B candidates，產生人工審查 images、contact sheets 與 coverage review",
+    )
+    review_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    review_parser.add_argument("--video", type=Path, required=True)
+    review_parser.add_argument("--events", type=Path, required=True)
+    review_parser.add_argument("--frames", type=Path, required=True)
+    review_parser.add_argument(
+        "--diagnostics",
+        type=Path,
+        help="預設讀取 outputs/checkpoint-1b-debug/battle_text_diagnostics.jsonl",
+    )
+    review_parser.add_argument("--checkpoint-1a-dir", type=Path, required=True)
+    review_parser.add_argument("--roi-config", type=Path, required=True)
+    review_parser.add_argument("--output", type=Path, required=True)
+    review_parser.add_argument("--coverage-interval-sec", type=float, default=0.5)
     return parser
 
 
@@ -95,10 +119,29 @@ def main(argv: Optional[List[str]] = None) -> int:
                 checkpoint1a_dir=args.checkpoint_1a_dir,
                 roi_approval_path=args.roi_approval,
                 output_dir=args.output,
+                debug_output_dir=args.debug_output,
             )
             print("Checkpoint 1B 已完成：{}".format(args.output / "events.json"))
             print("10 Hz sampled frames：{}".format(report["counts"]["sampled_frames"]))
             print("event candidates：{}".format(report["counts"]["event_candidates"]))
+            return 0
+        if args.command == "build-review-pack":
+            manifest = build_review_pack(
+                project_root=args.project_root,
+                video_path=args.video,
+                events_path=args.events,
+                frames_path=args.frames,
+                checkpoint1a_dir=args.checkpoint_1a_dir,
+                roi_config_path=args.roi_config,
+                output_dir=args.output,
+                coverage_interval_sec=args.coverage_interval_sec,
+                diagnostics_path=args.diagnostics,
+            )
+            print("Checkpoint 1B Human Review Pack 已完成：{}".format(args.output))
+            print("candidate review records：{}".format(manifest["candidate_count"]))
+            print(
+                "coverage pages：{}".format(manifest["coverage_review"]["page_count"])
+            )
             return 0
         parser.error("未知 command")
     except CheckpointError as exc:

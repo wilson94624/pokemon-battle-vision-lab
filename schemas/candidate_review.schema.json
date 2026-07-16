@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/candidate_review.schema.json",
+  "title": "Checkpoint 1B Human Review Records",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "checkpoint",
+    "source_events_sha256",
+    "record_count",
+    "allowed_values",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "checkpoint": {"const": "1B_HUMAN_REVIEW"},
+    "source_events_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "record_count": {"type": "integer", "minimum": 0},
+    "allowed_values": {
+      "type": "object",
+      "required": ["human_status", "corrected_type", "boundary_quality"],
+      "properties": {
+        "human_status": {"type": "array", "items": {"type": "string"}},
+        "corrected_type": {"type": "array", "items": {"type": "string"}},
+        "boundary_quality": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "records": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/reviewRecord"}
+    }
+  },
+  "$defs": {
+    "eventType": {
+      "enum": [
+        "TEAM_PREVIEW",
+        "SELECTED_FOUR",
+        "MOVE_MENU",
+        "BATTLE_TEXT",
+        "TRIGGER_NOTIFICATION",
+        "RESULT"
+      ]
+    },
+    "reviewRecord": {
+      "type": "object",
+      "required": [
+        "candidate_id",
+        "predicted_type",
+        "start_frame",
+        "middle_frame",
+        "end_frame",
+        "start_time",
+        "middle_time",
+        "end_time",
+        "duration_sec",
+        "confidence",
+        "visible_rois",
+        "representative_time",
+        "representative_frame",
+        "review_image_path",
+        "review_frame_strategy",
+        "evidence_frames",
+        "human_status",
+        "corrected_type",
+        "boundary_quality",
+        "merge_with_candidate_id",
+        "split_required",
+        "notes"
+      ],
+      "properties": {
+        "candidate_id": {"type": "string", "minLength": 1},
+        "predicted_type": {"$ref": "#/$defs/eventType"},
+        "start_frame": {"type": "integer", "minimum": 0},
+        "middle_frame": {"type": "integer", "minimum": 0},
+        "end_frame": {"type": "integer", "minimum": 0},
+        "start_time": {"type": "number", "minimum": 0},
+        "middle_time": {"type": "number", "minimum": 0},
+        "end_time": {"type": "number", "minimum": 0},
+        "duration_sec": {"type": "number", "minimum": 0},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "visible_rois": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "representative_time": {"type": "number", "minimum": 0},
+        "representative_frame": {"type": "integer", "minimum": 0},
+        "review_image_path": {"type": "string", "pattern": "^candidates/.+\\.jpg$"},
+        "review_frame_strategy": {"type": "string", "minLength": 1},
+        "evidence_frames": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "roles",
+              "frame_index",
+              "pts",
+              "score",
+              "text_structure_strength",
+              "evidence_level",
+              "decision",
+              "side",
+              "panel_score",
+              "text_score",
+              "icon_score",
+              "combined_score",
+              "analysis_roi_id"
+            ],
+            "properties": {
+              "roles": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+              "frame_index": {"type": "integer", "minimum": 0},
+              "pts": {"type": "number", "minimum": 0},
+              "score": {"type": "number", "minimum": 0, "maximum": 1},
+              "text_structure_strength": {"type": "number", "minimum": 0, "maximum": 1},
+              "evidence_level": {"type": "string"},
+              "decision": {"type": "string"}
+              ,"side": {"type": "string"}
+              ,"panel_score": {"type": "number", "minimum": 0, "maximum": 1}
+              ,"text_score": {"type": "number", "minimum": 0, "maximum": 1}
+              ,"icon_score": {"type": "number", "minimum": 0, "maximum": 1}
+              ,"combined_score": {"type": "number", "minimum": 0, "maximum": 1}
+              ,"analysis_roi_id": {"type": "string"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "human_status": {
+          "enum": [
+            "pending",
+            "correct",
+            "false_positive",
+            "wrong_type",
+            "needs_split",
+            "needs_merge",
+            "uncertain"
+          ]
+        },
+        "corrected_type": {
+          "oneOf": [
+            {"const": ""},
+            {"$ref": "#/$defs/eventType"}
+          ]
+        },
+        "boundary_quality": {
+          "enum": [
+            "",
+            "good",
+            "starts_too_early",
+            "starts_too_late",
+            "ends_too_early",
+            "ends_too_late",
+            "both_inaccurate",
+            "uncertain"
+          ]
+        },
+        "merge_with_candidate_id": {"type": "string"},
+        "split_required": {"type": "boolean"},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

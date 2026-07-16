@@ -1,6 +1,6 @@
 """Checkpoint 1B 的 frame metadata 與候選事件資料模型。"""
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List
 
 
@@ -34,6 +34,8 @@ class FrameScanRecord:
     visible_rois: List[str]
     frame_hash: str
     candidate_scores: Dict[str, float]
+    battle_text_evidence: Dict[str, Any] = field(default_factory=dict)
+    trigger_notification_evidence: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

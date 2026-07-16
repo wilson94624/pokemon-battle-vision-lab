@@ -1,0 +1,41 @@
+{
+  "schema_version": "0.1.0",
+  "video": "samples/videos/win-01.mp4",
+  "source_baseline": {
+    "trigger_notification_candidate_count": 1,
+    "detector_method": "approved_template_similarity",
+    "proposal_threshold": 0.82
+  },
+  "positive_windows": [
+    {
+      "case_id": "opponent_ability_around_114s",
+      "side": "opponent",
+      "approx_start_sec": 113.0,
+      "approx_end_sec": 116.0,
+      "pokemon": "姆克鷹",
+      "trigger_kind": "ability",
+      "trigger_name": "威嚇",
+      "expected_raw_text": ["姆克鷹的", "威嚇"],
+      "previous_status": "missed",
+      "baseline_candidate_ids": [],
+      "baseline_candidate_times": [],
+      "human_roi_audit": "canonical_roi_does_not_fully_cover_notification_above_top_edge"
+    },
+    {
+      "case_id": "opponent_item_around_451s",
+      "side": "opponent",
+      "approx_start_sec": 450.0,
+      "approx_end_sec": 453.0,
+      "pokemon": "烈咬陸鯊",
+      "trigger_kind": "item",
+      "trigger_name": "生命寶珠",
+      "expected_raw_text": ["烈咬陸鯊使用了", "生命寶珠！"],
+      "previous_status": "detected",
+      "baseline_candidate_ids": ["trigger_notification-0001"],
+      "baseline_candidate_times": [[450.791667, 452.691667]],
+      "human_roi_audit": "canonical_roi_covers_notification"
+    }
+  ],
+  "production_usage_forbidden": true,
+  "comparison_rule": "以 side 與時間區間 overlap 比對；production detector 不得讀取本 fixture"
+}

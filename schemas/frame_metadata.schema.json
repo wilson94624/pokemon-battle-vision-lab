@@ -13,7 +13,9 @@
     "ui_state",
     "visible_rois",
     "frame_hash",
-    "candidate_scores"
+    "candidate_scores",
+    "battle_text_evidence",
+    "trigger_notification_evidence"
   ],
   "properties": {
     "sample_index": {"type": "integer", "minimum": 0},
@@ -46,6 +48,139 @@
         "RESULT"
       ],
       "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+    },
+    "battle_text_evidence": {
+      "type": "object",
+      "required": [
+        "template_similarity",
+        "template_strength",
+        "visual_structure_strength",
+        "proposal_score",
+        "threshold",
+        "raw_positive",
+        "strong_positive",
+        "weak_positive",
+        "evidence_level",
+        "positive_reasons",
+        "negative_reasons",
+        "local_edge_density",
+        "top_row_density",
+        "component_count",
+        "low_saturation_ratio_60",
+        "low_saturation_ratio_90",
+        "layout_hash",
+        "layout_fingerprint",
+        "text_line_strength",
+        "aligned_component_count",
+        "line_span_ratio",
+        "line_height_cv",
+        "text_mask_ratio",
+        "large_bright_fraction",
+        "dark_background_ratio"
+      ],
+      "properties": {
+        "template_similarity": {"type": "number", "minimum": 0, "maximum": 1},
+        "template_strength": {"type": "number", "minimum": 0, "maximum": 1},
+        "visual_structure_strength": {"type": "number", "minimum": 0, "maximum": 1},
+        "proposal_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "raw_positive": {"type": "boolean"},
+        "strong_positive": {"type": "boolean"},
+        "weak_positive": {"type": "boolean"},
+        "evidence_level": {"enum": ["strong", "weak", "negative"]},
+        "positive_reasons": {"type": "array", "items": {"type": "string"}},
+        "negative_reasons": {"type": "array", "items": {"type": "string"}},
+        "local_edge_density": {"type": "number", "minimum": 0, "maximum": 1},
+        "top_row_density": {"type": "number", "minimum": 0, "maximum": 1},
+        "component_count": {"type": "integer", "minimum": 0},
+        "low_saturation_ratio_60": {"type": "number", "minimum": 0, "maximum": 1},
+        "low_saturation_ratio_90": {"type": "number", "minimum": 0, "maximum": 1},
+        "layout_hash": {"type": "string", "pattern": "^[0-9a-f]+$"},
+        "layout_fingerprint": {"type": "object"},
+        "text_line_strength": {"type": "number", "minimum": 0, "maximum": 1},
+        "aligned_component_count": {"type": "integer", "minimum": 0},
+        "line_span_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "line_height_cv": {"type": "number", "minimum": 0},
+        "text_mask_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "large_bright_fraction": {"type": "number", "minimum": 0},
+        "dark_background_ratio": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "additionalProperties": false
+    },
+    "trigger_notification_evidence": {
+      "type": "object",
+      "required": ["proposal_score", "threshold", "visible_rois", "sides"],
+      "properties": {
+        "proposal_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "visible_rois": {"type": "array", "items": {"type": "string"}},
+        "sides": {
+          "type": "object",
+          "required": ["player", "opponent"],
+          "properties": {
+            "player": {"$ref": "#/$defs/triggerEvidence"},
+            "opponent": {"$ref": "#/$defs/triggerEvidence"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "triggerEvidence": {
+      "type": "object",
+      "required": [
+        "side", "canonical_roi_id", "analysis_roi_id", "analysis_bbox",
+        "template_score", "brightness_contrast", "edge_density",
+        "component_count", "aligned_component_count", "line_span_ratio",
+        "secondary_aligned_component_count", "secondary_line_span_ratio",
+        "secondary_line_height_cv", "line_separation_ratio",
+        "primary_glyph_like_count", "secondary_glyph_like_count",
+        "line_height_cv", "panel_occupancy", "text_region_occupancy",
+        "icon_region_occupancy", "large_bright_fraction", "panel_score",
+        "text_score", "icon_score", "combined_score", "proposal_score",
+        "threshold", "raw_positive", "strong_positive", "weak_positive",
+        "continuation_support",
+        "evidence_level", "positive_reasons", "negative_reasons"
+      ],
+      "properties": {
+        "side": {"enum": ["player", "opponent"]},
+        "canonical_roi_id": {"type": "string"},
+        "analysis_roi_id": {"type": "string"},
+        "analysis_bbox": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "integer", "minimum": 0}},
+        "template_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "brightness_contrast": {"type": "number", "minimum": 0, "maximum": 1},
+        "edge_density": {"type": "number", "minimum": 0, "maximum": 1},
+        "component_count": {"type": "integer", "minimum": 0},
+        "aligned_component_count": {"type": "integer", "minimum": 0},
+        "line_span_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "secondary_aligned_component_count": {"type": "integer", "minimum": 0},
+        "secondary_line_span_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "secondary_line_height_cv": {"type": "number", "minimum": 0},
+        "line_separation_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "primary_glyph_like_count": {"type": "integer", "minimum": 0},
+        "secondary_glyph_like_count": {"type": "integer", "minimum": 0},
+        "line_height_cv": {"type": "number", "minimum": 0},
+        "panel_occupancy": {"type": "number", "minimum": 0, "maximum": 1},
+        "text_region_occupancy": {"type": "number", "minimum": 0, "maximum": 1},
+        "icon_region_occupancy": {"type": "number", "minimum": 0, "maximum": 1},
+        "large_bright_fraction": {"type": "number", "minimum": 0},
+        "panel_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "text_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "icon_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "combined_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "proposal_score": {"type": "number", "minimum": 0, "maximum": 1},
+        "threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "raw_positive": {"type": "boolean"},
+        "strong_positive": {"type": "boolean"},
+        "weak_positive": {"type": "boolean"},
+        "continuation_support": {"type": "boolean"},
+        "evidence_level": {"enum": ["strong", "weak", "continuation", "negative"]},
+        "positive_reasons": {"type": "array", "items": {"type": "string"}},
+        "negative_reasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

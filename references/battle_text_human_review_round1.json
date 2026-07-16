@@ -1,0 +1,1324 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "battle_text_human_review_round1",
+  "production_usage_forbidden": true,
+  "source_baseline": {
+    "events_path": "outputs/checkpoint-1b/events.json",
+    "events_sha256": "c26ae66d6eef1a660f450da0b24b5f69da5d6b84cd4ac5df849124d036748ef7",
+    "diagnostics_path": "outputs/checkpoint-1b-debug/battle_text_diagnostics.jsonl",
+    "diagnostics_sha256": "9dbc485ec93947bd1b77041013b36675a0a99fa3c054faae0aa97423a33e839a",
+    "battle_text_candidate_count": 171,
+    "total_candidate_count": 206
+  },
+  "reviewed_candidate_range": [
+    "battle_text-0001",
+    "battle_text-0035"
+  ],
+  "categories": {
+    "accepted": [
+      "battle_text-0015",
+      "battle_text-0016",
+      "battle_text-0017",
+      "battle_text-0018",
+      "battle_text-0019",
+      "battle_text-0020",
+      "battle_text-0021",
+      "battle_text-0023",
+      "battle_text-0024",
+      "battle_text-0027",
+      "battle_text-0030",
+      "battle_text-0031",
+      "battle_text-0034"
+    ],
+    "false_positive": [
+      "battle_text-0001",
+      "battle_text-0002",
+      "battle_text-0003",
+      "battle_text-0004",
+      "battle_text-0005",
+      "battle_text-0008",
+      "battle_text-0009",
+      "battle_text-0010",
+      "battle_text-0011",
+      "battle_text-0012",
+      "battle_text-0013",
+      "battle_text-0025",
+      "battle_text-0026",
+      "battle_text-0028",
+      "battle_text-0029",
+      "battle_text-0032"
+    ],
+    "over_merged": [
+      "battle_text-0006",
+      "battle_text-0007",
+      "battle_text-0014"
+    ],
+    "under_segmented": [
+      "battle_text-0033"
+    ],
+    "weak_representative": [
+      "battle_text-0035"
+    ],
+    "possible_over_split": [
+      "battle_text-0022"
+    ]
+  },
+  "false_positive_causes": [
+    {"candidate_id": "battle_text-0001", "trigger_path": "template_only", "visual_source": "team/status UI 邊緣與底板亮點"},
+    {"candidate_id": "battle_text-0002", "trigger_path": "template_and_legacy_structure", "visual_source": "長段 team preview、人物輪廓、場地燈光與轉場"},
+    {"candidate_id": "battle_text-0003", "trigger_path": "legacy_structure_only", "visual_source": "場地拱門與訓練家輪廓"},
+    {"candidate_id": "battle_text-0004", "trigger_path": "legacy_structure_only", "visual_source": "場地水平燈列與人物高亮"},
+    {"candidate_id": "battle_text-0005", "trigger_path": "legacy_structure_only", "visual_source": "選單底板、人物衣物與單一亮塊"},
+    {"candidate_id": "battle_text-0008", "trigger_path": "template_only", "visual_source": "紫色 status UI 與選單邊緣"},
+    {"candidate_id": "battle_text-0009", "trigger_path": "template_only", "visual_source": "status UI 卡片與角色輪廓"},
+    {"candidate_id": "battle_text-0010", "trigger_path": "template_only", "visual_source": "場地亮點與寶可夢輪廓"},
+    {"candidate_id": "battle_text-0011", "trigger_path": "legacy_structure_only", "visual_source": "隊伍卡片底部圖示與選單邊界"},
+    {"candidate_id": "battle_text-0012", "trigger_path": "template_only", "visual_source": "場地圓形燈光與寶可夢身體"},
+    {"candidate_id": "battle_text-0013", "trigger_path": "template_only", "visual_source": "場地圓形燈光與角色輪廓"},
+    {"candidate_id": "battle_text-0025", "trigger_path": "template_only", "visual_source": "場地亮點與寶可夢輪廓"},
+    {"candidate_id": "battle_text-0026", "trigger_path": "template_and_legacy_structure", "visual_source": "隊伍 status 卡片與圖示排列"},
+    {"candidate_id": "battle_text-0028", "trigger_path": "legacy_structure_only", "visual_source": "招式特效亮點與寶可夢高亮"},
+    {"candidate_id": "battle_text-0029", "trigger_path": "legacy_structure_only", "visual_source": "寶可夢身體、翅膀與招式特效"},
+    {"candidate_id": "battle_text-0032", "trigger_path": "template_only", "visual_source": "寶可夢輪廓、場地燈點與轉場"}
+  ],
+  "baseline_cases": [
+    {
+      "candidate_id": "battle_text-0001",
+      "start_frame": 568,
+      "end_frame": 592,
+      "start_time": 10.701667,
+      "end_time": 11.101667,
+      "duration_sec": 0.5,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0002",
+      "start_frame": 730,
+      "end_frame": 2476,
+      "start_time": 13.401667,
+      "end_time": 42.503333,
+      "duration_sec": 29.201666,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0003",
+      "start_frame": 2571,
+      "end_frame": 2581,
+      "start_time": 45.186667,
+      "end_time": 45.488333,
+      "duration_sec": 0.401666,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0004",
+      "start_frame": 2589,
+      "end_frame": 2621,
+      "start_time": 45.705,
+      "end_time": 46.688333,
+      "duration_sec": 1.083333,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0005",
+      "start_frame": 2628,
+      "end_frame": 2631,
+      "start_time": 46.905,
+      "end_time": 46.988333,
+      "duration_sec": 0.183333,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0006",
+      "start_frame": 2637,
+      "end_frame": 2863,
+      "start_time": 47.188333,
+      "end_time": 54.688333,
+      "duration_sec": 7.6,
+      "human_category": "over_merged",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 52.688,
+          "end_time": 54.188
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0007",
+      "start_frame": 2927,
+      "end_frame": 3100,
+      "start_time": 56.705,
+      "end_time": 60.605,
+      "duration_sec": 4,
+      "human_category": "over_merged",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 56.805,
+          "end_time": 57.005
+        },
+        {
+          "start_time": 57.305,
+          "end_time": 58.288
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0008",
+      "start_frame": 3244,
+      "end_frame": 3256,
+      "start_time": 63.005,
+      "end_time": 63.205,
+      "duration_sec": 0.3,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0009",
+      "start_frame": 3286,
+      "end_frame": 3298,
+      "start_time": 63.706667,
+      "end_time": 63.906667,
+      "duration_sec": 0.3,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0010",
+      "start_frame": 3382,
+      "end_frame": 3394,
+      "start_time": 65.306667,
+      "end_time": 65.506667,
+      "duration_sec": 0.3,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0011",
+      "start_frame": 3404,
+      "end_frame": 3410,
+      "start_time": 65.69,
+      "end_time": 65.89,
+      "duration_sec": 0.3,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0012",
+      "start_frame": 3973,
+      "end_frame": 3991,
+      "start_time": 76.106667,
+      "end_time": 76.406667,
+      "duration_sec": 0.4,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0013",
+      "start_frame": 4003,
+      "end_frame": 4039,
+      "start_time": 76.606667,
+      "end_time": 77.206667,
+      "duration_sec": 0.7,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0014",
+      "start_frame": 4077,
+      "end_frame": 4243,
+      "start_time": 78.09,
+      "end_time": 82.091667,
+      "duration_sec": 4.101667,
+      "human_category": "over_merged",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 78.19,
+          "end_time": 80.69
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0015",
+      "start_frame": 4249,
+      "end_frame": 4339,
+      "start_time": 82.291667,
+      "end_time": 84.208333,
+      "duration_sec": 2.016666,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 82.392,
+          "end_time": 83.992
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0016",
+      "start_frame": 4369,
+      "end_frame": 4476,
+      "start_time": 84.708333,
+      "end_time": 86.491667,
+      "duration_sec": 1.883334,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 85.208,
+          "end_time": 86.408
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0017",
+      "start_frame": 4615,
+      "end_frame": 4717,
+      "start_time": 88.808333,
+      "end_time": 90.691667,
+      "duration_sec": 1.983334,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 88.908,
+          "end_time": 90.492
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0018",
+      "start_frame": 4728,
+      "end_frame": 4789,
+      "start_time": 90.991667,
+      "end_time": 92.791667,
+      "duration_sec": 1.9,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 91.092,
+          "end_time": 92.692
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0019",
+      "start_frame": 4862,
+      "end_frame": 4937,
+      "start_time": 95.191667,
+      "end_time": 97.108333,
+      "duration_sec": 2.016666,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 95.792,
+          "end_time": 96.992
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0020",
+      "start_frame": 5272,
+      "end_frame": 5380,
+      "start_time": 102.693333,
+      "end_time": 104.493333,
+      "duration_sec": 1.9,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 102.793,
+          "end_time": 104.393
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0021",
+      "start_frame": 5418,
+      "end_frame": 5459,
+      "start_time": 105.193333,
+      "end_time": 106.093333,
+      "duration_sec": 1,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 105.393,
+          "end_time": 105.893
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0022",
+      "start_frame": 5489,
+      "end_frame": 5609,
+      "start_time": 106.593333,
+      "end_time": 108.593333,
+      "duration_sec": 2.1,
+      "human_category": "possible_over_split",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 106.793,
+          "end_time": 108.393
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0023",
+      "start_frame": 5645,
+      "end_frame": 5811,
+      "start_time": 109.193333,
+      "end_time": 112.393333,
+      "duration_sec": 3.3,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 109.393,
+          "end_time": 112.293
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0024",
+      "start_frame": 5877,
+      "end_frame": 5967,
+      "start_time": 113.493333,
+      "end_time": 115.393333,
+      "duration_sec": 2,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 113.593,
+          "end_time": 115.193
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0025",
+      "start_frame": 6075,
+      "end_frame": 6081,
+      "start_time": 118.895,
+      "end_time": 119.095,
+      "duration_sec": 0.3,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0026",
+      "start_frame": 6148,
+      "end_frame": 6214,
+      "start_time": 121.295,
+      "end_time": 123.295,
+      "duration_sec": 2.1,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0027",
+      "start_frame": 6268,
+      "end_frame": 6376,
+      "start_time": 124.695,
+      "end_time": 126.495,
+      "duration_sec": 1.9,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 124.795,
+          "end_time": 126.395
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0028",
+      "start_frame": 6742,
+      "end_frame": 6754,
+      "start_time": 132.595,
+      "end_time": 132.795,
+      "duration_sec": 0.3,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0029",
+      "start_frame": 6766,
+      "end_frame": 6790,
+      "start_time": 132.995,
+      "end_time": 133.395,
+      "duration_sec": 0.5,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0030",
+      "start_frame": 6844,
+      "end_frame": 6952,
+      "start_time": 134.295,
+      "end_time": 136.096667,
+      "duration_sec": 1.901667,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 134.395,
+          "end_time": 135.995
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0031",
+      "start_frame": 6982,
+      "end_frame": 7055,
+      "start_time": 136.596667,
+      "end_time": 138.696667,
+      "duration_sec": 2.2,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 136.697,
+          "end_time": 138.297
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0032",
+      "start_frame": 7064,
+      "end_frame": 7085,
+      "start_time": 138.996667,
+      "end_time": 139.696667,
+      "duration_sec": 0.8,
+      "human_category": "false_positive",
+      "expected_text_visible_spans": []
+    },
+    {
+      "candidate_id": "battle_text-0033",
+      "start_frame": 7100,
+      "end_frame": 7214,
+      "start_time": 140.196667,
+      "end_time": 143.996667,
+      "duration_sec": 3.9,
+      "human_category": "under_segmented",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 140.397,
+          "end_time": 141.997
+        },
+        {
+          "start_time": 142.297,
+          "end_time": 143.897
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0034",
+      "start_frame": 7292,
+      "end_frame": 7346,
+      "start_time": 146.596667,
+      "end_time": 148.396667,
+      "duration_sec": 1.9,
+      "human_category": "accepted",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 146.697,
+          "end_time": 148.297
+        }
+      ]
+    },
+    {
+      "candidate_id": "battle_text-0035",
+      "start_frame": 7370,
+      "end_frame": 7481,
+      "start_time": 149.196667,
+      "end_time": 152.896667,
+      "duration_sec": 3.8,
+      "human_category": "weak_representative",
+      "expected_text_visible_spans": [
+        {
+          "start_time": 149.397,
+          "end_time": 150.897
+        },
+        {
+          "start_time": 151.197,
+          "end_time": 152.797
+        }
+      ]
+    }
+  ],
+  "baseline_audit": [
+    {
+      "candidate_id": "battle_text-0001",
+      "start_time": 10.701667,
+      "end_time": 11.101667,
+      "duration": 0.5,
+      "positive_sample_count": 3,
+      "weak_positive_count": 3,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 0.810746,
+      "median_positive_score": 0.707318,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0002",
+      "start_time": 13.401667,
+      "end_time": 42.503333,
+      "duration": 29.201666,
+      "positive_sample_count": 288,
+      "weak_positive_count": 7,
+      "strong_positive_count": 281,
+      "negative_gap_count": 3,
+      "max_score": 1,
+      "median_positive_score": 0.988903,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 13.501667,
+        "end_time": 41.503333
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0003",
+      "start_time": 45.186667,
+      "end_time": 45.488333,
+      "duration": 0.401666,
+      "positive_sample_count": 2,
+      "weak_positive_count": 0,
+      "strong_positive_count": 2,
+      "negative_gap_count": 1,
+      "max_score": 0.505179,
+      "median_positive_score": 0.503411,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 45.288333,
+        "end_time": 45.388333
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0004",
+      "start_time": 45.705,
+      "end_time": 46.688333,
+      "duration": 1.083333,
+      "positive_sample_count": 10,
+      "weak_positive_count": 0,
+      "strong_positive_count": 10,
+      "negative_gap_count": 1,
+      "max_score": 0.531384,
+      "median_positive_score": 0.518801,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 45.705,
+        "end_time": 46.588333
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0005",
+      "start_time": 46.905,
+      "end_time": 46.988333,
+      "duration": 0.183333,
+      "positive_sample_count": 1,
+      "weak_positive_count": 0,
+      "strong_positive_count": 1,
+      "negative_gap_count": 1,
+      "max_score": 0.535959,
+      "median_positive_score": 0.535959,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 46.905,
+        "end_time": 46.905
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0006",
+      "start_time": 47.188333,
+      "end_time": 54.688333,
+      "duration": 7.6,
+      "positive_sample_count": 75,
+      "weak_positive_count": 0,
+      "strong_positive_count": 75,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 0.713157,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 47.188333,
+        "end_time": 54.588333
+      },
+      "human_category": "over_merged"
+    },
+    {
+      "candidate_id": "battle_text-0007",
+      "start_time": 56.705,
+      "end_time": 60.605,
+      "duration": 4,
+      "positive_sample_count": 38,
+      "weak_positive_count": 1,
+      "strong_positive_count": 37,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 0.71534,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 56.805,
+        "end_time": 58.288
+      },
+      "human_category": "over_merged"
+    },
+    {
+      "candidate_id": "battle_text-0008",
+      "start_time": 63.005,
+      "end_time": 63.205,
+      "duration": 0.3,
+      "positive_sample_count": 1,
+      "weak_positive_count": 1,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 0.502142,
+      "median_positive_score": 0.502142,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0009",
+      "start_time": 63.706667,
+      "end_time": 63.906667,
+      "duration": 0.3,
+      "positive_sample_count": 1,
+      "weak_positive_count": 1,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 0.589463,
+      "median_positive_score": 0.589463,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0010",
+      "start_time": 65.306667,
+      "end_time": 65.506667,
+      "duration": 0.3,
+      "positive_sample_count": 1,
+      "weak_positive_count": 1,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 0.598337,
+      "median_positive_score": 0.598337,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0011",
+      "start_time": 65.69,
+      "end_time": 65.89,
+      "duration": 0.3,
+      "positive_sample_count": 2,
+      "weak_positive_count": 0,
+      "strong_positive_count": 2,
+      "negative_gap_count": 1,
+      "max_score": 0.5,
+      "median_positive_score": 0.5,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 65.69,
+        "end_time": 65.79
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0012",
+      "start_time": 76.106667,
+      "end_time": 76.406667,
+      "duration": 0.4,
+      "positive_sample_count": 2,
+      "weak_positive_count": 2,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 0.555442,
+      "median_positive_score": 0.537749,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0013",
+      "start_time": 76.606667,
+      "end_time": 77.206667,
+      "duration": 0.7,
+      "positive_sample_count": 6,
+      "weak_positive_count": 6,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 0.803857,
+      "median_positive_score": 0.689282,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0014",
+      "start_time": 78.09,
+      "end_time": 82.091667,
+      "duration": 4.101667,
+      "positive_sample_count": 39,
+      "weak_positive_count": 13,
+      "strong_positive_count": 26,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 0.569424,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 78.19,
+        "end_time": 80.69
+      },
+      "human_category": "over_merged"
+    },
+    {
+      "candidate_id": "battle_text-0015",
+      "start_time": 82.291667,
+      "end_time": 84.208333,
+      "duration": 2.016666,
+      "positive_sample_count": 18,
+      "weak_positive_count": 1,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 82.391667,
+        "end_time": 83.991667
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0016",
+      "start_time": 84.708333,
+      "end_time": 86.491667,
+      "duration": 1.883334,
+      "positive_sample_count": 17,
+      "weak_positive_count": 7,
+      "strong_positive_count": 10,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 85.208333,
+        "end_time": 86.408333
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0017",
+      "start_time": 88.808333,
+      "end_time": 90.691667,
+      "duration": 1.983334,
+      "positive_sample_count": 18,
+      "weak_positive_count": 1,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 88.908333,
+        "end_time": 90.491667
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0018",
+      "start_time": 90.991667,
+      "end_time": 92.791667,
+      "duration": 1.9,
+      "positive_sample_count": 17,
+      "weak_positive_count": 0,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 91.091667,
+        "end_time": 92.691667
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0019",
+      "start_time": 95.191667,
+      "end_time": 97.108333,
+      "duration": 2.016666,
+      "positive_sample_count": 18,
+      "weak_positive_count": 5,
+      "strong_positive_count": 13,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 95.791667,
+        "end_time": 96.991667
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0020",
+      "start_time": 102.693333,
+      "end_time": 104.493333,
+      "duration": 1.9,
+      "positive_sample_count": 17,
+      "weak_positive_count": 0,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 102.793333,
+        "end_time": 104.393333
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0021",
+      "start_time": 105.193333,
+      "end_time": 106.093333,
+      "duration": 1,
+      "positive_sample_count": 8,
+      "weak_positive_count": 2,
+      "strong_positive_count": 6,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 105.393333,
+        "end_time": 105.893333
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0022",
+      "start_time": 106.593333,
+      "end_time": 108.593333,
+      "duration": 2.1,
+      "positive_sample_count": 19,
+      "weak_positive_count": 2,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 106.793333,
+        "end_time": 108.393333
+      },
+      "human_category": "possible_over_split"
+    },
+    {
+      "candidate_id": "battle_text-0023",
+      "start_time": 109.193333,
+      "end_time": 112.393333,
+      "duration": 3.3,
+      "positive_sample_count": 31,
+      "weak_positive_count": 1,
+      "strong_positive_count": 30,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 0.822969,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 109.393333,
+        "end_time": 112.293333
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0024",
+      "start_time": 113.493333,
+      "end_time": 115.393333,
+      "duration": 2,
+      "positive_sample_count": 18,
+      "weak_positive_count": 1,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 113.593333,
+        "end_time": 115.193333
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0025",
+      "start_time": 118.895,
+      "end_time": 119.095,
+      "duration": 0.3,
+      "positive_sample_count": 1,
+      "weak_positive_count": 1,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 0.539939,
+      "median_positive_score": 0.539939,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0026",
+      "start_time": 121.295,
+      "end_time": 123.295,
+      "duration": 2.1,
+      "positive_sample_count": 19,
+      "weak_positive_count": 1,
+      "strong_positive_count": 18,
+      "negative_gap_count": 1,
+      "max_score": 0.590165,
+      "median_positive_score": 0.551071,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 121.495,
+        "end_time": 123.195
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0027",
+      "start_time": 124.695,
+      "end_time": 126.495,
+      "duration": 1.9,
+      "positive_sample_count": 17,
+      "weak_positive_count": 0,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 124.795,
+        "end_time": 126.395
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0028",
+      "start_time": 132.595,
+      "end_time": 132.795,
+      "duration": 0.3,
+      "positive_sample_count": 1,
+      "weak_positive_count": 0,
+      "strong_positive_count": 1,
+      "negative_gap_count": 1,
+      "max_score": 0.515501,
+      "median_positive_score": 0.515501,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 132.695,
+        "end_time": 132.695
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0029",
+      "start_time": 132.995,
+      "end_time": 133.395,
+      "duration": 0.5,
+      "positive_sample_count": 4,
+      "weak_positive_count": 0,
+      "strong_positive_count": 4,
+      "negative_gap_count": 1,
+      "max_score": 0.705377,
+      "median_positive_score": 0.659841,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 132.995,
+        "end_time": 133.295
+      },
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0030",
+      "start_time": 134.295,
+      "end_time": 136.096667,
+      "duration": 1.901667,
+      "positive_sample_count": 17,
+      "weak_positive_count": 0,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 134.395,
+        "end_time": 135.995
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0031",
+      "start_time": 136.596667,
+      "end_time": 138.696667,
+      "duration": 2.2,
+      "positive_sample_count": 20,
+      "weak_positive_count": 3,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 136.696667,
+        "end_time": 138.296667
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0032",
+      "start_time": 138.996667,
+      "end_time": 139.696667,
+      "duration": 0.8,
+      "positive_sample_count": 6,
+      "weak_positive_count": 6,
+      "strong_positive_count": 0,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 0.685774,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": null,
+      "human_category": "false_positive"
+    },
+    {
+      "candidate_id": "battle_text-0033",
+      "start_time": 140.196667,
+      "end_time": 143.996667,
+      "duration": 3.9,
+      "positive_sample_count": 36,
+      "weak_positive_count": 4,
+      "strong_positive_count": 32,
+      "negative_gap_count": 2,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 140.396667,
+        "end_time": 143.896667
+      },
+      "human_category": "under_segmented"
+    },
+    {
+      "candidate_id": "battle_text-0034",
+      "start_time": 146.596667,
+      "end_time": 148.396667,
+      "duration": 1.9,
+      "positive_sample_count": 17,
+      "weak_positive_count": 0,
+      "strong_positive_count": 17,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 146.696667,
+        "end_time": 148.296667
+      },
+      "human_category": "accepted"
+    },
+    {
+      "candidate_id": "battle_text-0035",
+      "start_time": 149.196667,
+      "end_time": 152.896667,
+      "duration": 3.8,
+      "positive_sample_count": 36,
+      "weak_positive_count": 3,
+      "strong_positive_count": 33,
+      "negative_gap_count": 1,
+      "max_score": 1,
+      "median_positive_score": 1,
+      "open_reason": "raw_positive",
+      "close_reason": "negative_gap_exceeded",
+      "merge_reason": "short_negative_gap",
+      "split_reason": "",
+      "layout_change_count": 0,
+      "estimated_text_visible_span": {
+        "start_time": 149.396667,
+        "end_time": 152.796667
+      },
+      "human_category": "weak_representative"
+    }
+  ],
+  "diagnostic_questions": {
+    "multi_text_case": {
+      "candidate_id": "battle_text-0033",
+      "expected_segments": [
+        {
+          "start_time": 140.397,
+          "end_time": 141.997
+        },
+        {
+          "start_time": 142.297,
+          "end_time": 143.897
+        }
+      ],
+      "note": "至少兩段不同文字；新版以視覺 transition／layout persistence 評估，不讀取文字內容。"
+    },
+    "possible_over_split_pair": {
+      "candidate_ids": [
+        "battle_text-0021",
+        "battle_text-0022"
+      ],
+      "interruption_span": {
+        "start_time": 106.093,
+        "end_time": 106.793
+      },
+      "note": "底層畫面文字相似，但影片中間出現 iOS 控制中心；僅能依視覺連續性決定。"
+    },
+    "weak_representative_case": {
+      "candidate_id": "battle_text-0035",
+      "old_middle_time": 151.096667,
+      "diagnostic_peak_structure_time": 151.197,
+      "note": "固定 middle 落在淡出；新版應優先 peak score 與 text structure。"
+    }
+  }
+}
