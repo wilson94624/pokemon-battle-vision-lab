@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/checkpoint1f_review_statistics.schema.json",
+  "title": "Checkpoint 1F Human Review Statistics",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "human_review_complete", "total_record_count", "generator_auto_accepted_count", "generator_needs_review_count", "manual_accepted_count", "remaining_needs_review_count", "accepted_unlinked_count", "reviewed_by", "reviewed_at"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1F"},
+    "kind": {"const": "checkpoint1f_human_review_statistics"},
+    "human_review_complete": {"const": true},
+    "total_record_count": {"const": 70},
+    "generator_auto_accepted_count": {"const": 24},
+    "generator_needs_review_count": {"const": 46},
+    "manual_accepted_count": {"const": 46},
+    "remaining_needs_review_count": {"const": 0},
+    "accepted_unlinked_count": {"const": 2},
+    "reviewed_by": {"type": "string", "minLength": 1},
+    "reviewed_at": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

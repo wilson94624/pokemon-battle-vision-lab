@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/battle_state_snapshots.schema.json",
+  "title": "Checkpoint 1F Battle State Snapshots",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "state_version", "snapshot_count", "projected_group_count", "snapshots"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1F"},
+    "kind": {"const": "battle_state_snapshots"},
+    "state_version": {"const": "0.1.0"},
+    "snapshot_count": {"type": "integer", "minimum": 1},
+    "projected_group_count": {"type": "integer", "minimum": 0},
+    "snapshots": {"type": "array", "items": {"$ref": "#/$defs/snapshot"}}
+  },
+  "$defs": {
+    "knowledge": {
+      "type": "object",
+      "required": ["knowledge", "value", "confidence", "source_event_ids", "source_timeline_ids", "observed_at"],
+      "properties": {
+        "knowledge": {"enum": ["known", "unknown", "conflicted", "not_applicable"]},
+        "value": {},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "source_event_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "source_timeline_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "observed_at": {"type": ["number", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "humanReview": {
+      "type": "object",
+      "required": ["human_decision", "human_action", "human_entity", "human_field", "human_value", "reviewed_by", "reviewed_at", "review_note"],
+      "properties": {
+        "human_decision": {"type": ["string", "null"]},
+        "human_action": {"type": ["string", "null"]},
+        "human_entity": {"type": ["string", "null"]},
+        "human_field": {"type": ["string", "null"]},
+        "human_value": {"type": ["string", "null"]},
+        "reviewed_by": {"type": ["string", "null"]},
+        "reviewed_at": {"type": ["string", "null"]},
+        "review_note": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "pokemon": {
+      "type": "object",
+      "required": ["entity_id", "name", "side", "active", "fainted", "status", "volatile_statuses", "stat_stages", "transformation", "known_item", "known_ability", "hp", "provenance"],
+      "properties": {
+        "entity_id": {"type": "string"},
+        "name": {"type": "string"},
+        "side": {"$ref": "#/$defs/knowledge"},
+        "active": {"$ref": "#/$defs/knowledge"},
+        "fainted": {"$ref": "#/$defs/knowledge"},
+        "status": {"$ref": "#/$defs/knowledge"},
+        "volatile_statuses": {"type": "object", "additionalProperties": {"type": "object"}},
+        "stat_stages": {"type": "object", "additionalProperties": {"type": "object"}},
+        "transformation": {"$ref": "#/$defs/knowledge"},
+        "known_item": {"$ref": "#/$defs/knowledge"},
+        "known_ability": {"$ref": "#/$defs/knowledge"},
+        "hp": {"$ref": "#/$defs/knowledge"},
+        "provenance": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": false
+    },
+    "side": {
+      "type": "object",
+      "required": ["active", "known_pokemon", "fainted", "side_conditions", "complete_roster", "active_slots", "unknown_active_slots"],
+      "properties": {
+        "active": {"$ref": "#/$defs/knowledge"},
+        "known_pokemon": {"type": "object", "additionalProperties": {"$ref": "#/$defs/pokemon"}},
+        "fainted": {"$ref": "#/$defs/knowledge"},
+        "side_conditions": {"type": "object", "additionalProperties": {"type": "object"}},
+        "complete_roster": {"$ref": "#/$defs/knowledge"},
+        "active_slots": {"$ref": "#/$defs/knowledge"},
+        "unknown_active_slots": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "snapshot": {
+      "type": "object",
+      "required": ["snapshot_id", "sequence", "timestamp", "previous_snapshot_id", "source_timeline_id", "source_event_ids", "state_version", "battle", "player_side", "opponent_side", "field", "confidence", "completeness", "review_status", "review_reasons", "conflict_ids", "unresolved_update_ids", "unknown_fields", "human_review"],
+      "properties": {
+        "snapshot_id": {"type": "string", "pattern": "^state-[0-9]{4}$"},
+        "sequence": {"type": "integer", "minimum": 0},
+        "timestamp": {"type": "number", "minimum": 0},
+        "previous_snapshot_id": {"type": ["string", "null"]},
+        "source_timeline_id": {"type": ["string", "null"]},
+        "source_event_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "state_version": {"const": "0.1.0"},
+        "battle": {"type": "object"},
+        "player_side": {"$ref": "#/$defs/side"},
+        "opponent_side": {"$ref": "#/$defs/side"},
+        "field": {"type": "object"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "completeness": {"type": "number", "minimum": 0, "maximum": 1},
+        "review_status": {"enum": ["auto_accepted", "needs_review"]},
+        "review_reasons": {"type": "array", "items": {"type": "string"}},
+        "conflict_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "unresolved_update_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "unknown_fields": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "human_review": {"$ref": "#/$defs/humanReview"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/checkpoint1f_review_manifest.schema.json",
+  "title": "Checkpoint 1F Review Manifest",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "source", "review_record_count", "card_count", "contact_sheets", "indexes", "outputs", "validation"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1F"},
+    "kind": {"const": "checkpoint1f_review_manifest"},
+    "source": {"type": "object"},
+    "review_record_count": {"type": "integer", "minimum": 0},
+    "card_count": {"type": "integer", "minimum": 0},
+    "contact_sheets": {"type": "object"},
+    "indexes": {"type": "object"},
+    "outputs": {"type": "object", "additionalProperties": {"$ref": "#/$defs/file"}},
+    "validation": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "review_completion": {
+      "type": "object",
+      "required": ["status", "reviewed_by", "reviewed_at", "manual_accepted_count", "remaining_needs_review_count"],
+      "properties": {
+        "status": {"const": "complete"},
+        "reviewed_by": {"type": "string", "minLength": 1},
+        "reviewed_at": {"type": "string", "minLength": 1},
+        "manual_accepted_count": {"type": "integer", "minimum": 0},
+        "remaining_needs_review_count": {"const": 0}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

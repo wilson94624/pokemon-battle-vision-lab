@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/state_audit.schema.json",
+  "title": "Checkpoint 1F Projection Audit",
+  "type": "object",
+  "required": ["schema_version", "checkpoint", "kind", "source_event_count", "timeline_group_count", "snapshot_count", "delta_count", "conflict_count", "unresolved_update_count", "no_op_delta_count", "operation_counts", "delta_status_counts", "review_status_counts", "confidence_statistics", "completeness_statistics", "relation_policy", "accepted_unlinked_timeline_ids", "event_processing", "reducer_registry", "unsupported_state", "limitations", "validation"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1F"},
+    "kind": {"const": "battle_state_projection_audit"},
+    "source_event_count": {"type": "integer", "minimum": 0},
+    "timeline_group_count": {"type": "integer", "minimum": 0},
+    "snapshot_count": {"type": "integer", "minimum": 1},
+    "delta_count": {"type": "integer", "minimum": 0},
+    "conflict_count": {"type": "integer", "minimum": 0},
+    "unresolved_update_count": {"type": "integer", "minimum": 0},
+    "no_op_delta_count": {"type": "integer", "minimum": 0},
+    "operation_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "delta_status_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "review_status_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "confidence_statistics": {"type": "object"},
+    "completeness_statistics": {"type": "object"},
+    "relation_policy": {"type": "object"},
+    "accepted_unlinked_timeline_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "event_processing": {"type": "array", "items": {"type": "object"}},
+    "reducer_registry": {"type": "array", "items": {"type": "object"}},
+    "unsupported_state": {"type": "array", "items": {"type": "string"}},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "validation": {"type": "object", "additionalProperties": {"type": "boolean"}}
+  },
+  "additionalProperties": false
+}

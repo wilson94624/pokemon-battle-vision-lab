@@ -202,6 +202,23 @@ Checkpoint 1E 只讀 frozen Checkpoint 1D BattleEvents，建立保守關聯的 A
 
 輸出為 `battle_timeline.json`、`timeline_relations.json`、`timeline_audit.json`、`checkpoint1e_manifest.json` 與 `outputs/checkpoint-1e-review/`。只有 metadata 結構證據足夠的 relation 才合併 group；只有時間相鄰的候選維持分組並進入 `needs_review`。1E 不推算 turn 或 Battle State，詳見 [`docs/checkpoint1e_architecture.md`](docs/checkpoint1e_architecture.md) 與修改前的 [`docs/checkpoint1e_architecture_audit.md`](docs/checkpoint1e_architecture_audit.md)。
 
+## 執行 Checkpoint 1F Battle State Reconstruction
+
+Checkpoint 1F 只讀取 frozen Checkpoint 1D BattleEvents、已完成審查的 Checkpoint 1E Timeline／Relations 與 1E review records。它不讀影片、不重新執行 OCR／Parser／Timeline Builder，也不推測 HP、正式 turn、slot、speed order 或 move choice：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1f \
+  --project-root . \
+  --events outputs/checkpoint-1d/battle_events.json \
+  --timeline outputs/checkpoint-1e/battle_timeline.json \
+  --relations outputs/checkpoint-1e/timeline_relations.json \
+  --timeline-review outputs/checkpoint-1e-review \
+  --output outputs/checkpoint-1f \
+  --review-output outputs/checkpoint-1f-review
+```
+
+正式輸出包含 immutable `battle_state_snapshots.json`、逐 group `state_deltas.json`、`state_conflicts.json`、`state_audit.json`、manifest，以及 70 張 State Before → Event → Delta → State After review cards。Generator 的人工欄位預設為 `null`；正式 Human Review 已接受全部 46 張 `needs_review` cards，並另存 completion summary／statistics。Unresolved 與 conflict 仍保留原始證據，不會因人工接受而改寫 projection。資料模型、reducer registry、confidence／completeness 與 review 規則詳見 [`docs/checkpoint1f_architecture.md`](docs/checkpoint1f_architecture.md)，修改前的可行性與開源方案稽核見 [`docs/checkpoint1f_architecture_audit.md`](docs/checkpoint1f_architecture_audit.md)。
+
 ## 測試
 
 快速單元與整合測試：
