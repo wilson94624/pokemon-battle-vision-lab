@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1i_manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "status", "engine_version", "source", "knowledge", "counts", "outputs", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1I"},
+    "kind": {"const": "checkpoint1i_manifest"},
+    "status": {"const": "complete"},
+    "engine_version": {"const": "0.1.0"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint", "manifest", "battle_facts", "battle_fact_relations"],
+      "properties": {
+        "checkpoint": {"const": "1H"},
+        "manifest": {"$ref": "#/$defs/file"},
+        "battle_facts": {"$ref": "#/$defs/file"},
+        "battle_fact_relations": {"$ref": "#/$defs/file"}
+      }
+    },
+    "knowledge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["knowledge_version", "data", "manifest"],
+      "properties": {
+        "knowledge_version": {"type": "string", "minLength": 1},
+        "data": {"$ref": "#/$defs/file"},
+        "manifest": {"$ref": "#/$defs/file"}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_battle_facts", "source_fact_relations", "interpretations", "supported", "unresolved", "conflicted"],
+      "properties": {
+        "source_battle_facts": {"type": "integer", "minimum": 1},
+        "source_fact_relations": {"type": "integer", "minimum": 0},
+        "interpretations": {"type": "integer", "minimum": 1},
+        "supported": {"type": "integer", "minimum": 0},
+        "unresolved": {"type": "integer", "minimum": 0},
+        "conflicted": {"type": "integer", "minimum": 0}
+      }
+    },
+    "outputs": {"type": "object", "minProperties": 3, "additionalProperties": {"$ref": "#/$defs/file"}},
+    "validation": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}},
+    "scope_guards": {"type": "object", "minProperties": 1, "additionalProperties": {"const": false}}
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "schema", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "schema": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-"""Checkpoint 1A 至 1H commands。"""
+"""Checkpoint 1A 至 1I commands。"""
 
 import argparse
 import sys
@@ -12,6 +12,7 @@ from .checkpoint1e import run_checkpoint_1e
 from .checkpoint1f import run_checkpoint_1f
 from .checkpoint1g import run_checkpoint_1g
 from .checkpoint1h import run_checkpoint_1h
+from .checkpoint1i import run_checkpoint_1i
 from .pipeline import run_checkpoint_1a
 from .review_pack import build_review_pack
 from .roi import create_roi_approval
@@ -21,7 +22,7 @@ from .scanner import run_checkpoint_1b
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pokemon-battle-vision",
-        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1H",
+        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1I",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -153,6 +154,18 @@ def _parser() -> argparse.ArgumentParser:
     )
     reconstruction_parser.add_argument("--checkpoint-1g-dir", type=Path, required=True)
     reconstruction_parser.add_argument("--output", type=Path, required=True)
+
+    interpretation_parser = subparsers.add_parser(
+        "checkpoint-1i",
+        help="以版本化 Pokémon rule knowledge 解釋 frozen 1H Battle Facts",
+    )
+    interpretation_parser.add_argument(
+        "--project-root", type=Path, default=Path.cwd()
+    )
+    interpretation_parser.add_argument(
+        "--checkpoint-1h-dir", type=Path, required=True
+    )
+    interpretation_parser.add_argument("--output", type=Path, required=True)
     return parser
 
 
@@ -316,6 +329,17 @@ def main(argv: Optional[List[str]] = None) -> int:
                     manifest["counts"]["turn_candidates"]
                 )
             )
+            return 0
+        if args.command == "checkpoint-1i":
+            manifest = run_checkpoint_1i(
+                project_root=args.project_root,
+                checkpoint1h_dir=args.checkpoint_1h_dir,
+                output_dir=args.output,
+            )
+            print("Checkpoint 1I 已完成：{}".format(args.output))
+            print("Rule Interpretations：{}".format(manifest["counts"]["interpretations"]))
+            print("Supported：{}".format(manifest["counts"]["supported"]))
+            print("Unresolved：{}".format(manifest["counts"]["unresolved"]))
             return 0
         parser.error("未知 command")
     except CheckpointError as exc:

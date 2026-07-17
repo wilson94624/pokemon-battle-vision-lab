@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1i_audit.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "direct_input_hashes", "upstream_source_snapshot_drift", "source_mapping", "coverage", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1I"},
+    "kind": {"const": "checkpoint1i_audit"},
+    "direct_input_hashes": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "upstream_source_snapshot_drift": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy", "record_count", "records"],
+      "properties": {
+        "policy": {"const": "informational_only_direct_frozen_checkpoint1h_outputs_are_authoritative"},
+        "record_count": {"type": "integer", "minimum": 0},
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "checkpoint1h_snapshot_sha256", "current_sha256"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "checkpoint1h_snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              "current_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+            }
+          }
+        }
+      }
+    },
+    "source_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["battle_fact_to_interpretations", "fact_relation_to_interpretations"],
+      "properties": {
+        "battle_fact_to_interpretations": {"type": "object", "additionalProperties": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rule-interpretation-[0-9]{4}$"}}},
+        "fact_relation_to_interpretations": {"type": "object", "additionalProperties": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rule-interpretation-[0-9]{4}$"}}}
+      }
+    },
+    "coverage": {"type": "object"},
+    "validation": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}},
+    "scope_guards": {"type": "object", "minProperties": 1, "additionalProperties": {"const": false}}
+  }
+}

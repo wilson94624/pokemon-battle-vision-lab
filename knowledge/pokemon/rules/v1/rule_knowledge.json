@@ -1,0 +1,201 @@
+{
+  "schema_version": "0.1.0",
+  "knowledge_version": "pokemon-rule-foundation-2026.07.17-v1",
+  "kind": "pokemon_rule_knowledge",
+  "ruleset_scope": "minimal_gen9_reference_for_checkpoint1i",
+  "language": "zh-Hant",
+  "sources": [
+    {
+      "source_id": "pokemon-showdown-pinned",
+      "decision": "adopted",
+      "url": "https://github.com/smogon/pokemon-showdown",
+      "revision": "f0327afadabd7688829b1d3046872017a7bdc1c3",
+      "license": "MIT",
+      "input_sha256": {
+        "data/abilities.ts": "175067b1e827ca11ae4728169215c9bdd27ac4cb3e35d2e83eaaaee7e9e8c842",
+        "data/moves.ts": "9cf8b3460829e76ed4a83cdde072cc7f4648fb224c4f566e5ffd7cbb3009bd7c",
+        "data/pokedex.ts": "0aba8712ababae8e356bdd9d6c6ffa73a5169d39a3ac831a853ae88fe653e6bc",
+        "data/typechart.ts": "7b0eae126bdcf98edfd71cbe75af00b763f5f0d5db36024b6f3e7c5e4aea95ac"
+      },
+      "usage": ["selected_move_fields", "selected_ability_rules", "selected_species_types", "minimal_type_chart"]
+    },
+    {
+      "source_id": "pokemon-official-levitate",
+      "decision": "referenced",
+      "url": "https://www.pokemon.com/uk/pokedex/azelf",
+      "revision": "accessed-2026-07-17",
+      "license": "official_site_all_rights_reserved_factual_reference_only",
+      "input_sha256": {},
+      "usage": ["levitate_ground_immunity_semantics"]
+    },
+    {
+      "source_id": "pkmn-data-interface",
+      "decision": "adapted",
+      "url": "https://www.npmjs.com/package/@pkmn/data",
+      "revision": "interface-reviewed-2026-07-17",
+      "license": "MIT",
+      "input_sha256": {},
+      "usage": ["generation_scoped_read_only_lookup_concept"]
+    },
+    {
+      "source_id": "pokeapi-v2-docs",
+      "decision": "referenced",
+      "url": "https://pokeapi.co/docs/v2",
+      "revision": "accessed-2026-07-17",
+      "license": "BSD-3-Clause_project_reference",
+      "input_sha256": {},
+      "usage": ["typed_move_type_target_resource_shape"]
+    },
+    {
+      "source_id": "pokemon-showdown-simulator",
+      "decision": "rejected",
+      "url": "https://github.com/smogon/pokemon-showdown",
+      "revision": "f0327afadabd7688829b1d3046872017a7bdc1c3",
+      "license": "MIT",
+      "input_sha256": {},
+      "usage": ["not_used_complete_simulation_out_of_scope"]
+    },
+    {
+      "source_id": "pkmn-engine",
+      "decision": "rejected",
+      "url": "https://github.com/pkmn/engine",
+      "revision": "reviewed-2026-07-17",
+      "license": "MIT",
+      "input_sha256": {},
+      "usage": ["not_used_native_simulation_and_runtime_dependency_out_of_scope"]
+    },
+    {
+      "source_id": "pkmn-dmg",
+      "decision": "rejected",
+      "url": "https://github.com/pkmn/dmg",
+      "revision": "reviewed-2026-07-17",
+      "license": "MIT",
+      "input_sha256": {},
+      "usage": ["not_used_damage_calculation_out_of_scope"]
+    }
+  ],
+  "moves": [
+    {
+      "knowledge_id": "move:bullet-punch",
+      "move_id": "bullet-punch",
+      "aliases": ["子彈拳", "Bullet Punch"],
+      "move_type": "Steel",
+      "category": "Physical",
+      "target": "normal",
+      "source_refs": ["pokemon-showdown-pinned:data/moves.ts#bulletpunch"]
+    },
+    {
+      "knowledge_id": "move:earthquake",
+      "move_id": "earthquake",
+      "aliases": ["地震", "Earthquake"],
+      "move_type": "Ground",
+      "category": "Physical",
+      "target": "allAdjacent",
+      "source_refs": ["pokemon-showdown-pinned:data/moves.ts#earthquake"]
+    },
+    {
+      "knowledge_id": "move:helping-hand",
+      "move_id": "helping-hand",
+      "aliases": ["幫助", "Helping Hand"],
+      "move_type": "Normal",
+      "category": "Status",
+      "target": "adjacentAlly",
+      "source_refs": ["pokemon-showdown-pinned:data/moves.ts#helpinghand"]
+    }
+  ],
+  "species_types": [
+    {
+      "knowledge_id": "species-type:547",
+      "canonical_species_id": 547,
+      "canonical_name": "風妖精",
+      "types": ["Grass", "Fairy"],
+      "source_refs": ["pokemon-showdown-pinned:data/pokedex.ts#whimsicott"]
+    },
+    {
+      "knowledge_id": "species-type:700",
+      "canonical_species_id": 700,
+      "canonical_name": "仙子伊布",
+      "types": ["Fairy"],
+      "source_refs": ["pokemon-showdown-pinned:data/pokedex.ts#sylveon"]
+    }
+  ],
+  "type_effectiveness": {
+    "knowledge_id": "type-chart:minimal-gen9",
+    "rule_id": "type_effectiveness.multiply_target_types.v1",
+    "rule_version": "1.0.0",
+    "default_multiplier": 1.0,
+    "entries": [
+      {"attacking_type": "Steel", "defending_type": "Fairy", "multiplier": 2.0},
+      {"attacking_type": "Steel", "defending_type": "Grass", "multiplier": 1.0},
+      {"attacking_type": "Ground", "defending_type": "Flying", "multiplier": 0.0},
+      {"attacking_type": "Ground", "defending_type": "Electric", "multiplier": 2.0},
+      {"attacking_type": "Ground", "defending_type": "Ghost", "multiplier": 1.0}
+    ],
+    "source_refs": ["pokemon-showdown-pinned:data/typechart.ts"]
+  },
+  "ability_rules": [
+    {
+      "knowledge_id": "ability-rule:levitate-ground-immunity",
+      "ability_id": "levitate",
+      "aliases": ["飄浮", "Levitate"],
+      "rule_id": "ability_immunity.levitate_ground.v1",
+      "rule_version": "1.0.0",
+      "applies_to_move_types": ["Ground"],
+      "applies_to_categories": ["Physical", "Special"],
+      "requires_other_pokemon_source": false,
+      "accepted_failure_results": ["immune", "no_effect", "failed"],
+      "source_refs": ["pokemon-official-levitate", "pokemon-showdown-pinned:data/abilities.ts#levitate"]
+    },
+    {
+      "knowledge_id": "ability-rule:good-as-gold-status-immunity",
+      "ability_id": "good-as-gold",
+      "aliases": ["黃金之軀", "Good as Gold"],
+      "rule_id": "ability_immunity.good_as_gold_status.v1",
+      "rule_version": "1.0.0",
+      "applies_to_move_types": [],
+      "applies_to_categories": ["Status"],
+      "requires_other_pokemon_source": true,
+      "accepted_failure_results": ["immune", "no_effect", "failed"],
+      "source_refs": ["pokemon-showdown-pinned:data/abilities.ts#goodasgold"]
+    }
+  ],
+  "explicit_rules": [
+    {
+      "knowledge_id": "explicit-rule:disable-prevents-move",
+      "rule_id": "explicit_failure.disable_prevents_move.v1",
+      "rule_version": "1.0.0",
+      "fact_type": "MOVE_RESOLVED",
+      "required_metadata": {"result": "prevented", "effect": "定身法"},
+      "conclusion_code": "MOVE_PREVENTED_BY_EXPLICIT_DISABLE",
+      "source_refs": ["pokemon-showdown-pinned:data/moves.ts#disable"]
+    },
+    {
+      "knowledge_id": "explicit-rule:protect-blocks-move",
+      "rule_id": "move_outcome.protect_explicit_block.v1",
+      "rule_version": "1.0.0",
+      "fact_type": "MOVE_RESOLVED",
+      "required_metadata": {"result": "protected", "effect": "守住"},
+      "conclusion_code": "MOVE_BLOCKED_BY_EXPLICIT_PROTECTION",
+      "source_refs": ["pokemon-showdown-pinned:data/moves.ts#protect"]
+    }
+  ],
+  "target_rules": [
+    {
+      "knowledge_id": "target-rule:helping-hand-adjacent-ally",
+      "rule_id": "target_validity.helping_hand_adjacent_ally.v1",
+      "rule_version": "1.0.0",
+      "move_id": "helping-hand",
+      "expected_target": "adjacentAlly",
+      "explicit_success_results": ["helping_hand_ready"],
+      "source_refs": ["pokemon-showdown-pinned:data/moves.ts#helpinghand"]
+    }
+  ],
+  "scope_guards": {
+    "complete_simulator": false,
+    "damage_calculator": false,
+    "legality_engine": false,
+    "decision_engine": false,
+    "battle_facts_created": false,
+    "battle_facts_modified": false
+  }
+}

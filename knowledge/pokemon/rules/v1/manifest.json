@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1.0",
+  "knowledge_version": "pokemon-rule-foundation-2026.07.17-v1",
+  "kind": "pokemon_rule_knowledge_manifest",
+  "status": "complete",
+  "data": {
+    "path": "rule_knowledge.json",
+    "schema": "schemas/pokemon_rule_knowledge.schema.json",
+    "sha256": "ac3cfc8205c6f75ecab20b954346303c28db43e665db36ba653042fdbb0e506d"
+  },
+  "counts": {
+    "sources": 7,
+    "moves": 3,
+    "species_types": 2,
+    "type_effectiveness_entries": 5,
+    "ability_rules": 2,
+    "explicit_rules": 2,
+    "target_rules": 1
+  },
+  "validation": {
+    "ability_rule_ids_unique": true,
+    "data_schema_valid": true,
+    "move_aliases_unique": true,
+    "move_ids_unique": true,
+    "rule_ids_unique": true,
+    "source_ids_unique": true,
+    "species_ids_unique": true,
+    "type_effectiveness_keys_unique": true
+  },
+  "scope_guards": {
+    "battle_facts_created": false,
+    "battle_facts_modified": false,
+    "complete_simulator": false,
+    "damage_calculator": false,
+    "decision_engine": false,
+    "legality_engine": false
+  }
+}

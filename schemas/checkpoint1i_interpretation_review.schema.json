@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1i_interpretation_review.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "record_count", "review_policy", "records"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1I"},
+    "kind": {"const": "interpretation_review"},
+    "record_count": {"type": "integer", "minimum": 1},
+    "review_policy": {"const": "review_interpretation_only_never_edit_referenced_battle_facts"},
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["interpretation_id", "sequence", "timestamp", "interpretation_type", "rule_id", "certainty", "confidence", "referenced_battle_fact_ids", "referenced_fact_relation_ids", "conclusion_code", "conclusion_summary", "required_observation_status_counts", "unresolved_reason", "review_questions"],
+        "properties": {
+          "interpretation_id": {"type": "string", "pattern": "^rule-interpretation-[0-9]{4}$"},
+          "sequence": {"type": "integer", "minimum": 1},
+          "timestamp": {"type": "number", "minimum": 0},
+          "interpretation_type": {"type": "string", "minLength": 1},
+          "rule_id": {"type": "string", "minLength": 1},
+          "certainty": {"enum": ["supported", "unresolved", "conflicted"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "referenced_battle_fact_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"}},
+          "referenced_fact_relation_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^battle-fact-relation-[0-9]{4}$"}},
+          "conclusion_code": {"type": "string", "minLength": 1},
+          "conclusion_summary": {"type": "string", "minLength": 1},
+          "required_observation_status_counts": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["satisfied", "missing", "contradicted"],
+            "properties": {
+              "satisfied": {"type": "integer", "minimum": 0},
+              "missing": {"type": "integer", "minimum": 0},
+              "contradicted": {"type": "integer", "minimum": 0}
+            }
+          },
+          "unresolved_reason": {"type": ["string", "null"]},
+          "review_questions": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    }
+  }
+}

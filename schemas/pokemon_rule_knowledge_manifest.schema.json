@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/pokemon_rule_knowledge_manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "knowledge_version", "kind", "status", "data", "counts", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "knowledge_version": {"const": "pokemon-rule-foundation-2026.07.17-v1"},
+    "kind": {"const": "pokemon_rule_knowledge_manifest"},
+    "status": {"const": "complete"},
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "schema", "sha256"],
+      "properties": {
+        "path": {"const": "rule_knowledge.json"},
+        "schema": {"const": "schemas/pokemon_rule_knowledge.schema.json"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sources", "moves", "species_types", "type_effectiveness_entries", "ability_rules", "explicit_rules", "target_rules"],
+      "properties": {
+        "sources": {"type": "integer", "minimum": 1},
+        "moves": {"type": "integer", "minimum": 1},
+        "species_types": {"type": "integer", "minimum": 1},
+        "type_effectiveness_entries": {"type": "integer", "minimum": 1},
+        "ability_rules": {"type": "integer", "minimum": 1},
+        "explicit_rules": {"type": "integer", "minimum": 1},
+        "target_rules": {"type": "integer", "minimum": 1}
+      }
+    },
+    "validation": {"type": "object", "minProperties": 1, "additionalProperties": {"const": true}},
+    "scope_guards": {"type": "object", "additionalProperties": {"const": false}}
+  }
+}
