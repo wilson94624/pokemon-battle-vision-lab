@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "checkpoint1j_historical_drift.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "registry", "policy", "approved_drift_count", "records", "validation"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"}, "kind": {"const": "historical_snapshot_drift_audit"},
+    "registry": {"$ref": "#/$defs/file"},
+    "policy": {"const": "exact_approved_metadata_drift_only_direct_frozen_payload_hashes_remain_blocking"},
+    "approved_drift_count": {"type": "integer", "minimum": 0},
+    "records": {"type": "array", "items": {"type": "object"}},
+    "validation": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}}
+  },
+  "$defs": {"file": {"type": "object", "additionalProperties": false, "required": ["path", "schema", "sha256"], "properties": {"path": {"type": "string"}, "schema": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
+}

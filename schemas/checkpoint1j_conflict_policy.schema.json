@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "checkpoint1j_conflict_policy.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "policy", "categories", "required_preserved_fields", "review_rule", "production_conflicted_count", "production_conflict_review_ids"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"}, "kind": {"const": "conflict_review_policy"},
+    "policy": {"const": "classify_conflict_without_overwriting_observation_or_knowledge_expectation"},
+    "categories": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"enum": ["observation_error_suspected", "identity_resolution_error_suspected", "knowledge_data_error_suspected", "rule_engine_error_suspected", "version_mismatch", "insufficient_evidence", "unresolved_other"]}},
+    "required_preserved_fields": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "review_rule": {"type": "string", "minLength": 1}, "production_conflicted_count": {"type": "integer", "minimum": 0},
+    "production_conflict_review_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^interpretation-review-[0-9]{4}$"}}
+  }
+}

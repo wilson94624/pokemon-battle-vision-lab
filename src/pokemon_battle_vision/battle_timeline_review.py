@@ -408,6 +408,7 @@ def build_timeline_review_pack(
     relations: Sequence[RelationEdge],
     events: Sequence[Mapping[str, Any]],
     timeline_sha256: str,
+    timeline_path: str = "outputs/checkpoint-1e/battle_timeline.json",
 ) -> Dict[str, Any]:
     event_by_id = {str(event["id"]): event for event in events}
     relation_by_id = {edge.relation_id: edge for edge in relations}
@@ -521,7 +522,7 @@ def build_timeline_review_pack(
         "checkpoint": "1E",
         "kind": "checkpoint1e_review_manifest",
         "source": {
-            "timeline_path": "outputs/checkpoint-1e/battle_timeline.json",
+            "timeline_path": timeline_path,
             "timeline_sha256": timeline_sha256,
         },
         "group_count": len(groups),

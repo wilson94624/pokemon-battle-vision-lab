@@ -10,6 +10,7 @@
     "kind": {"const": "checkpoint1i_manifest"},
     "status": {"const": "complete"},
     "engine_version": {"const": "0.1.0"},
+    "replay_id": {"type": "string", "minLength": 1},
     "source": {
       "type": "object",
       "additionalProperties": false,

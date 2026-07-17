@@ -4,6 +4,7 @@ from pathlib import Path
 
 import jsonschema
 
+from pokemon_battle_vision.approved_drift import ApprovedDriftRegistry
 from pokemon_battle_vision.output_transaction import OutputTransaction
 from pokemon_battle_vision.utils import sha256_file
 
@@ -69,11 +70,12 @@ def test_formal_apple_vision_runtime_and_knowledge_base_enrichment_are_real():
     assert all(row["available_moves"] for row in menus)
 
 
-def test_frozen_source_hashes_still_match_manifest():
+def test_frozen_source_hashes_match_or_have_exact_drift_approval():
+    registry = ApprovedDriftRegistry.from_project(PROJECT)
     source = _json(OUTPUT / "checkpoint1g_manifest.json")["source"]
     for row in source.values():
         path = PROJECT / row["path"]
-        assert sha256_file(path) == row["sha256"]
+        registry.verify("1G", row["path"], row["sha256"], sha256_file(path))
     assert "knowledge/pokemon/v1/pokemon_knowledge_base.json" in source
     assert "knowledge/pokemon/v1/manifest.json" in source
 

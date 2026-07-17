@@ -5,9 +5,9 @@
   "type": "object",
   "required": ["schema_version", "checkpoint", "kind", "status", "generated_at", "ocr_engine", "input_candidate_counts", "processed_candidate_counts", "processed_candidate_count", "raw_result_count", "validation_counts", "workflow_counts", "duplicate_group_count", "initial_evaluation_fixture", "frame_extraction", "outputs", "frozen_hashes_before", "frozen_hashes_after", "frozen_inputs_unchanged", "detector_rerun", "semantic_parser_performed", "cloud_or_llm_vision_used", "source_candidates_deleted", "validation"],
   "properties": {
-    "schema_version": {"type": "string"}, "checkpoint": {"const": "1C"}, "kind": {"const": "checkpoint1c_manifest"}, "status": {"const": "complete"}, "generated_at": {"type": "string"},
+    "schema_version": {"type": "string"}, "checkpoint": {"const": "1C"}, "kind": {"const": "checkpoint1c_manifest"}, "status": {"const": "complete"}, "generated_at": {"type": "string"}, "replay_id": {"type": "string", "minLength": 1},
     "ocr_engine": {"type": "object"}, "input_candidate_counts": {"type": "object"}, "processed_candidate_counts": {"type": "object"},
-    "processed_candidate_count": {"const": 178}, "raw_result_count": {"type": "integer", "minimum": 178},
+    "processed_candidate_count": {"type": "integer", "minimum": 0}, "raw_result_count": {"type": "integer", "minimum": 0},
     "validation_counts": {"type": "object"}, "workflow_counts": {"type": "object"}, "duplicate_group_count": {"type": "integer", "minimum": 0},
     "initial_evaluation_fixture": {
       "type": "object",

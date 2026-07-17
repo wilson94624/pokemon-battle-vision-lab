@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1j_interpretation_reviews.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "review_schema_version", "record_count", "review_policy", "records"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"},
+    "kind": {"const": "interpretation_review_records"}, "review_schema_version": {"const": "0.1.0"},
+    "record_count": {"type": "integer", "minimum": 1},
+    "review_policy": {"const": "human_decisions_are_separate_and_never_rewrite_interpretation_payloads"},
+    "records": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/review"}}
+  },
+  "$defs": {
+    "review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["review_record_id", "interpretation_id", "interpretation_origin", "interpretation_payload_hash", "certainty", "review_status", "reviewer", "reviewed_at", "review_reason", "issue_codes", "conflict_category", "interpretation_version", "knowledge_version", "review_schema_version", "review_card_path", "conflict_context"],
+      "properties": {
+        "review_record_id": {"type": "string", "pattern": "^interpretation-review-[0-9]{4}$"},
+        "interpretation_id": {"type": "string", "pattern": "^rule-interpretation-(1j-)?[0-9]{4}$"},
+        "interpretation_origin": {"enum": ["1I", "1J"]},
+        "interpretation_payload_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "certainty": {"enum": ["supported", "unresolved", "conflicted"]},
+        "review_status": {"enum": ["accepted", "rejected", "needs_review", "deferred"]},
+        "reviewer": {"type": ["string", "null"]}, "reviewed_at": {"type": ["string", "null"]},
+        "review_reason": {"type": ["string", "null"]},
+        "issue_codes": {"type": "array", "uniqueItems": true, "items": {"enum": ["evidence_incomplete", "fact_reference_error", "relation_reference_error", "knowledge_reference_error", "conclusion_overreach", "certainty_incorrect", "unresolved_outcome_correct", "conflict_requires_investigation", "other"]}},
+        "conflict_category": {"type": ["string", "null"], "enum": [null, "observation_error_suspected", "identity_resolution_error_suspected", "knowledge_data_error_suspected", "rule_engine_error_suspected", "version_mismatch", "insufficient_evidence", "unresolved_other"]},
+        "interpretation_version": {"type": "string"}, "knowledge_version": {"type": "string"},
+        "review_schema_version": {"const": "0.1.0"},
+        "review_card_path": {"type": "string", "pattern": "^review_pack/cards/interpretation-review-[0-9]{4}\\.md$"},
+        "conflict_context": {"type": ["object", "null"]}
+      }
+    }
+  }
+}

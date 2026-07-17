@@ -107,7 +107,7 @@ def _image_and_provenance_report(
         and by_name["player_team_details.jpeg"]["readable"]
     )
     if not provenance_valid:
-        raise InputError("player_team_details.jpeg 與 win01_match_reference.json provenance 無法驗證")
+        raise InputError("player team reference 與 match reference provenance 無法驗證")
     return {
         "schema_version": "0.1.0",
         "status": "pass",

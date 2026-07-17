@@ -10,6 +10,7 @@
     "kind": {"const": "checkpoint1h_manifest"},
     "status": {"const": "complete"},
     "reconstruction_version": {"type": "string"},
+    "replay_id": {"type": "string", "minLength": 1},
     "outputs": {"type": "object", "additionalProperties": {"$ref": "#/$defs/file"}},
     "source": {"type": "object", "additionalProperties": {"$ref": "#/$defs/source"}},
     "counts": {"type": "object"},

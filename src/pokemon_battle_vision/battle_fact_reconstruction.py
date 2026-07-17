@@ -101,6 +101,16 @@ def _indexes(source: Mapping[str, Any]) -> Dict[str, Any]:
         "event_to_cycle": event_to_cycle,
         "hp_observations": observations,
         "menus": menus,
+        "artifact_paths": source.get(
+            "artifact_paths",
+            {
+                "events": "outputs/checkpoint-1d/battle_events.json",
+                "hp_changes": "outputs/checkpoint-1g/hp_changes.json",
+                "hp_observations": "outputs/checkpoint-1g/hp_observations.json",
+                "decision_cycles": "outputs/checkpoint-1g/decision_cycles.json",
+                "move_menu_observations": "outputs/checkpoint-1g/move_menu_observations.json",
+            },
+        ),
     }
 
 
@@ -133,7 +143,7 @@ def _event_draft(
         "evidence": (
             EvidenceReference(
                 checkpoint="1D",
-                artifact_path="outputs/checkpoint-1d/battle_events.json",
+                artifact_path=indexes["artifact_paths"]["events"],
                 record_id=event_id,
                 observation_kind="battle_text_parsed_event",
                 evidence_role="primary",
@@ -163,7 +173,7 @@ def _hp_draft(
     evidence = [
         EvidenceReference(
             checkpoint="1G",
-            artifact_path="outputs/checkpoint-1g/hp_changes.json",
+            artifact_path=indexes["artifact_paths"]["hp_changes"],
             record_id=change_id,
             observation_kind="derived_hp_change_observation",
             evidence_role="primary",
@@ -177,7 +187,7 @@ def _hp_draft(
         evidence.append(
             EvidenceReference(
                 checkpoint="1G",
-                artifact_path="outputs/checkpoint-1g/hp_observations.json",
+                artifact_path=indexes["artifact_paths"]["hp_observations"],
                 record_id=observation_id,
                 observation_kind="hp_observation",
                 evidence_role="supporting",
@@ -231,7 +241,7 @@ def _boundary_draft(cycle: Mapping[str, Any], indexes: Mapping[str, Any]) -> Dic
     evidence = [
         EvidenceReference(
             checkpoint="1G",
-            artifact_path="outputs/checkpoint-1g/decision_cycles.json",
+            artifact_path=indexes["artifact_paths"]["decision_cycles"],
             record_id=cycle_id,
             observation_kind="decision_cycle_boundary",
             evidence_role="primary",
@@ -245,7 +255,7 @@ def _boundary_draft(cycle: Mapping[str, Any], indexes: Mapping[str, Any]) -> Dic
         evidence.append(
             EvidenceReference(
                 checkpoint="1G",
-                artifact_path="outputs/checkpoint-1g/move_menu_observations.json",
+                artifact_path=indexes["artifact_paths"]["move_menu_observations"],
                 record_id=candidate_id,
                 observation_kind="move_menu_boundary_observation",
                 evidence_role="boundary_support",

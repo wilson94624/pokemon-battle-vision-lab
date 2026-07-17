@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "checkpoint1j_audit.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "direct_input_hashes", "immutability", "counts", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"}, "kind": {"const": "checkpoint1j_audit"},
+    "direct_input_hashes": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "immutability": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}},
+    "counts": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 0}},
+    "validation": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}},
+    "scope_guards": {"type": "object", "minProperties": 1, "additionalProperties": {"const": false}}
+  }
+}

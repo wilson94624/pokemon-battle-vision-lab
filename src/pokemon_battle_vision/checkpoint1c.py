@@ -35,6 +35,7 @@ from .scanner import load_frame_timestamp_index
 from .text_validation import validate_candidate_text
 from .trigger_notification_features import trigger_analysis_rois
 from .utils import project_relative, sha256_file, write_json
+from .replay import DEFAULT_REPLAY_ID, normalize_replay_id, resolve_project_path
 
 
 EXPECTED_CHECKPOINT1B_COUNTS = {
@@ -60,9 +61,34 @@ FROZEN_INPUTS = {
 }
 
 
-def _frozen_hashes(project_root: Path) -> Dict[str, Dict[str, str]]:
+def _frozen_inputs(
+    project_root: Path,
+    checkpoint1a_dir: Path,
+    checkpoint1b_dir: Path,
+    checkpoint1b_review_dir: Path,
+    roi_config_path: Path,
+) -> Dict[str, str]:
+    root = project_root.resolve()
+    paths = {
+        "events": checkpoint1b_dir / "events.json",
+        "frames": checkpoint1b_dir / "frames.jsonl",
+        "roi_config": roi_config_path,
+        "roi_approval": checkpoint1a_dir / "roi_approval.json",
+        "battle_text_detector": root / "src/pokemon_battle_vision/battle_text_detection.py",
+        "battle_text_timeline": root / "src/pokemon_battle_vision/battle_text_timeline.py",
+        "trigger_detector": root / "src/pokemon_battle_vision/trigger_notification_detection.py",
+        "trigger_timeline": root / "src/pokemon_battle_vision/trigger_notification_timeline.py",
+        "checkpoint1b_review": checkpoint1b_review_dir / "candidate_review.json",
+        "checkpoint1b_review_manifest": checkpoint1b_review_dir / "review_manifest.json",
+    }
+    return {name: project_relative(path.resolve(), root) for name, path in paths.items()}
+
+
+def _frozen_hashes(
+    project_root: Path, frozen_inputs: Optional[Mapping[str, str]] = None
+) -> Dict[str, Dict[str, str]]:
     rows = {}
-    for name, relative in FROZEN_INPUTS.items():
+    for name, relative in (frozen_inputs or FROZEN_INPUTS).items():
         path = project_root / relative
         if not path.is_file():
             raise InputError("Checkpoint 1C frozen input 不存在：{}".format(path))
@@ -89,7 +115,12 @@ def _validate_inputs(
     video_path: Path,
     checkpoint1b_dir: Path,
     checkpoint1b_review_dir: Path,
+    checkpoint1a_dir: Optional[Path] = None,
+    roi_config_path: Optional[Path] = None,
+    replay_id: str = DEFAULT_REPLAY_ID,
 ) -> Tuple[Dict[str, Any], List[Dict[str, Any]], Dict[str, Any], Dict[str, Any]]:
+    checkpoint1a_dir = (checkpoint1a_dir or (project_root / "outputs/checkpoint-1a")).resolve()
+    roi_config_path = (roi_config_path or (project_root / "configs/roi_2868x1320.json")).resolve()
     events_path = checkpoint1b_dir / "events.json"
     frames_path = checkpoint1b_dir / "frames.jsonl"
     review_path = checkpoint1b_review_dir / "candidate_review.json"
@@ -97,25 +128,31 @@ def _validate_inputs(
         if not path.is_file():
             raise InputError("Checkpoint 1C 輸入不存在：{}".format(path))
     events_payload = load_json(events_path)
-    if events_payload.get("event_counts") != EXPECTED_CHECKPOINT1B_COUNTS:
-        raise InputError(
-            "Checkpoint 1B candidate counts 不是 frozen baseline：{}".format(
-                events_payload.get("event_counts")
-            )
-        )
-    if events_payload.get("event_count") != 212 or events_payload.get("ocr_performed") is not False:
+    if int(events_payload.get("event_count", -1)) != len(events_payload.get("events", [])):
+        raise InputError("Checkpoint 1B events event_count 與 events 長度不一致")
+    if events_payload.get("ocr_performed") is not False:
         raise InputError("Checkpoint 1B events contract 無效")
+    if replay_id == DEFAULT_REPLAY_ID:
+        if events_payload.get("event_counts") != EXPECTED_CHECKPOINT1B_COUNTS:
+            raise InputError(
+                "Checkpoint 1B candidate counts 不是 frozen baseline：{}".format(
+                    events_payload.get("event_counts")
+                )
+            )
+        if events_payload.get("event_count") != 212:
+            raise InputError("Checkpoint 1B events contract 無效")
     review_payload = load_json(review_path)
     if review_payload.get("source_events_sha256") != sha256_file(events_path):
         raise InputError("Checkpoint 1B Review Pack 與 events.json hash 不一致")
     review_records = list(review_payload.get("records", []))
-    if len(review_records) != 212:
-        raise InputError("Checkpoint 1B Review Pack 應有 212 records")
+    if len(review_records) != int(events_payload.get("event_count", -1)):
+        raise InputError("Checkpoint 1B Review Pack record_count 與 events 不一致")
     frames = load_frame_records(frames_path)
-    if len(frames) != 5918:
+    if not frames:
+        raise InputError("Checkpoint 1B frames.jsonl 不可為空")
+    if replay_id == DEFAULT_REPLAY_ID and len(frames) != 5918:
         raise InputError("Checkpoint 1B frames.jsonl 應有 5,918 records")
-    approval = load_json(project_root / "outputs/checkpoint-1a/roi_approval.json")
-    roi_config_path = project_root / "configs/roi_2868x1320.json"
+    approval = load_json(checkpoint1a_dir / "roi_approval.json")
     if approval.get("roi_config_sha256") != sha256_file(roi_config_path):
         raise InputError("ROI approval 與 frozen ROI config hash 不一致")
     if approval.get("video_sha256") != events_payload.get("video_sha256"):
@@ -149,8 +186,10 @@ def _build_selections(
             raise InputError("Checkpoint 1C frame ordinal 未去重：{}".format(event_id))
         by_event[event_id] = rows
         all_rows.extend(rows)
-    if len(by_event) != 178:
-        raise InputError("Checkpoint 1C 必須處理 178 candidates，實際 {}".format(len(by_event)))
+    if len(by_event) != sum(
+        str(event["type"]) in SUPPORTED_OCR_TYPES for event in events
+    ):
+        raise InputError("Checkpoint 1C OCR candidate selection 不完整")
     return all_rows, by_event
 
 
@@ -226,25 +265,40 @@ def run_checkpoint_1c(
     output_dir: Path,
     review_output_dir: Path,
     ocr_engine=None,
+    checkpoint1a_dir: Optional[Path] = None,
+    roi_config_path: Optional[Path] = None,
+    replay_id: str = DEFAULT_REPLAY_ID,
 ) -> Dict[str, Any]:
     project_root = project_root.resolve()
-    video_path = video_path.resolve()
-    checkpoint1b_dir = checkpoint1b_dir.resolve()
-    checkpoint1b_review_dir = checkpoint1b_review_dir.resolve()
-    output_dir = output_dir.resolve()
-    review_output_dir = review_output_dir.resolve()
+    video_path = resolve_project_path(project_root, video_path)
+    checkpoint1b_dir = resolve_project_path(project_root, checkpoint1b_dir)
+    checkpoint1b_review_dir = resolve_project_path(project_root, checkpoint1b_review_dir)
+    checkpoint1a_dir = resolve_project_path(
+        project_root, checkpoint1a_dir or (project_root / "outputs/checkpoint-1a")
+    )
+    roi_config_path = resolve_project_path(
+        project_root, roi_config_path or (project_root / "configs/roi_2868x1320.json")
+    )
+    replay_id = normalize_replay_id(replay_id)
+    output_dir = resolve_project_path(project_root, output_dir)
+    review_output_dir = resolve_project_path(project_root, review_output_dir)
     if output_dir == review_output_dir:
         raise InputError("Checkpoint 1C data output 與 review output 不可相同")
-    frozen_before = _frozen_hashes(project_root)
-    events_payload, frame_records, review_payload, _ = _validate_inputs(
-        project_root, video_path, checkpoint1b_dir, checkpoint1b_review_dir
+    frozen_inputs = _frozen_inputs(
+        project_root, checkpoint1a_dir, checkpoint1b_dir, checkpoint1b_review_dir, roi_config_path
     )
-    metadata = load_json(project_root / "outputs/checkpoint-1a/metadata.json")
+    frozen_before = _frozen_hashes(project_root, frozen_inputs)
+    events_payload, frame_records, review_payload, _ = _validate_inputs(
+        project_root, video_path, checkpoint1b_dir, checkpoint1b_review_dir,
+        checkpoint1a_dir, roi_config_path,
+        replay_id,
+    )
+    metadata = load_json(checkpoint1a_dir / "metadata.json")
     timestamp_index = load_frame_timestamp_index(
-        project_root / "outputs/checkpoint-1a/frame_timestamps.npz",
+        checkpoint1a_dir / "frame_timestamps.npz",
         str(events_payload["video_sha256"]),
     )
-    _, normalized_rois = load_roi_config(project_root / "configs/roi_2868x1320.json")
+    _, normalized_rois = load_roi_config(roi_config_path)
     display_width = int(metadata["display_dimensions"]["width"])
     display_height = int(metadata["display_dimensions"]["height"])
     pixels = pixel_rois(normalized_rois, display_width, display_height)
@@ -374,7 +428,7 @@ def run_checkpoint_1c(
                 evaluation_payload
             )
 
-            frozen_after = _frozen_hashes(project_root)
+            frozen_after = _frozen_hashes(project_root, frozen_inputs)
             if frozen_after != frozen_before:
                 raise InputError("Checkpoint 1C 執行期間 frozen Checkpoint 1B inputs 發生變更")
             processed_counts = dict(Counter(str(event["type"]) for event in target_events))
@@ -421,7 +475,7 @@ def run_checkpoint_1c(
                 "source_candidates_deleted": False,
                 "validation": {
                     "all_178_candidates_processed": len(target_events) == 178,
-                    "candidate_ids_unique": len(events_by_id) == 178,
+                    "candidate_ids_unique": len(events_by_id) == len(target_events),
                     "raw_results_traceable": all(
                         row["event_id"] in events_by_id
                         and abs(
@@ -459,6 +513,12 @@ def run_checkpoint_1c(
                 },
             }
             manifest_path = output_transaction.staging_dir / "checkpoint1c_manifest.json"
+            if replay_id != DEFAULT_REPLAY_ID:
+                manifest["replay_id"] = replay_id
+                manifest["validation"].pop("all_178_candidates_processed", None)
+                manifest["validation"]["all_candidates_processed"] = (
+                    len(target_events) == len(selections_by_event)
+                )
             write_json(manifest_path, manifest)
             _schema_validator(project_root, "checkpoint1c_manifest.schema.json").validate(
                 manifest
@@ -521,14 +581,14 @@ def run_checkpoint_1c(
                 for row in review_records
             ):
                 raise InputError("Checkpoint 1C Review Pack 缺少 candidate card")
-            if len(review_records) != 178 or contact_sheets["tile_count"] != 178:
-                raise InputError("Checkpoint 1C Review Pack 未完整涵蓋 178 candidates")
+            if len(review_records) != len(target_events) or contact_sheets["tile_count"] != len(target_events):
+                raise InputError("Checkpoint 1C Review Pack 未完整涵蓋 candidates")
             contact_index = load_json(
                 review_transaction.staging_dir / contact_sheets["index_path"]
             )
             review_ids = {str(row["event_id"]) for row in review_records}
             indexed_ids = {str(row["event_id"]) for row in contact_index["rows"]}
-            if indexed_ids != review_ids or len(contact_index["rows"]) != 178:
+            if indexed_ids != review_ids or len(contact_index["rows"]) != len(target_events):
                 raise InputError("Checkpoint 1C contact sheet index 無法一一追溯 candidates")
             if not all(
                 (review_transaction.staging_dir / row["page"]).is_file()

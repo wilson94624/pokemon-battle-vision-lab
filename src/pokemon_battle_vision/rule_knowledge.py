@@ -80,6 +80,12 @@ class PokemonRuleKnowledgeBase:
         self.target_rules_by_move = {
             str(row["move_id"]): row for row in self.payload["target_rules"]
         }
+        self.linked_observation_rules = list(
+            self.payload.get("linked_observation_rules", [])
+        )
+        self.single_observation_rules = list(
+            self.payload.get("single_observation_rules", [])
+        )
         self.type_chart = self.payload["type_effectiveness"]
         self.type_multipliers = {
             (str(row["attacking_type"]), str(row["defending_type"])): float(
@@ -95,6 +101,8 @@ class PokemonRuleKnowledgeBase:
                 self.payload["ability_rules"],
                 self.payload["explicit_rules"],
                 self.payload["target_rules"],
+                self.linked_observation_rules,
+                self.single_observation_rules,
             )
             for row in collection
         }
@@ -109,13 +117,22 @@ class PokemonRuleKnowledgeBase:
 
     @classmethod
     def from_project(cls, project_root: Path) -> "PokemonRuleKnowledgeBase":
+        return cls.from_version(project_root, "v1")
+
+    @classmethod
+    def from_version(
+        cls, project_root: Path, version_directory: str
+    ) -> "PokemonRuleKnowledgeBase":
         root = project_root.resolve()
-        directory = root / DEFAULT_RULE_KNOWLEDGE_DIR
+        directory = root / "knowledge" / "pokemon" / "rules" / version_directory
+        suffix = "" if version_directory == "v1" else "_{}".format(version_directory)
         return cls(
             directory / "rule_knowledge.json",
             directory / "manifest.json",
-            root / "schemas/pokemon_rule_knowledge.schema.json",
-            root / "schemas/pokemon_rule_knowledge_manifest.schema.json",
+            root / "schemas" / "pokemon_rule_knowledge{}.schema.json".format(suffix),
+            root
+            / "schemas"
+            / "pokemon_rule_knowledge_manifest{}.schema.json".format(suffix),
         )
 
     def _validate_internal_consistency(self) -> None:
@@ -129,6 +146,14 @@ class PokemonRuleKnowledgeBase:
             "explicit_rules": len(self.payload["explicit_rules"]),
             "target_rules": len(self.payload["target_rules"]),
         }
+        if "linked_observation_rules" in self.payload:
+            derived["linked_observation_rules"] = len(
+                self.linked_observation_rules
+            )
+        if "single_observation_rules" in self.payload:
+            derived["single_observation_rules"] = len(
+                self.single_observation_rules
+            )
         if counts != derived:
             raise InputError(
                 "Checkpoint 1I rule knowledge counts 不一致：{} != {}".format(
@@ -147,7 +172,9 @@ class PokemonRuleKnowledgeBase:
             "rule_ids_unique": [self.type_chart["rule_id"]]
             + [row["rule_id"] for row in self.payload["ability_rules"]]
             + [row["rule_id"] for row in self.payload["explicit_rules"]]
-            + [row["rule_id"] for row in self.payload["target_rules"]],
+            + [row["rule_id"] for row in self.payload["target_rules"]]
+            + [row["rule_id"] for row in self.linked_observation_rules]
+            + [row["rule_id"] for row in self.single_observation_rules],
             "type_effectiveness_keys_unique": [
                 (row["attacking_type"], row["defending_type"])
                 for row in self.type_chart["entries"]
@@ -168,7 +195,10 @@ class PokemonRuleKnowledgeBase:
             "species_ids_unique": True,
             "type_effectiveness_keys_unique": True,
         }
-        if self.manifest["validation"] != expected_validation:
+        if not all(
+            self.manifest["validation"].get(key) is value
+            for key, value in expected_validation.items()
+        ) or not all(self.manifest["validation"].values()):
             raise InputError("Checkpoint 1I rule knowledge validation manifest 不一致")
         if (
             self.payload["scope_guards"] != self.manifest["scope_guards"]
@@ -185,7 +215,10 @@ class PokemonRuleKnowledgeBase:
                 "ability_rules",
                 "explicit_rules",
                 "target_rules",
+                "linked_observation_rules",
+                "single_observation_rules",
             )
+            if key in derived
         ) + 1:
             raise InputError("Checkpoint 1I knowledge_id 重複")
         for row in self.knowledge_by_id.values():
@@ -269,6 +302,18 @@ class PokemonRuleKnowledgeBase:
 
     def knowledge(self, knowledge_id: str) -> Mapping[str, Any]:
         return self.knowledge_by_id[knowledge_id]
+
+    def linked_rules(self) -> Sequence[Mapping[str, Any]]:
+        return tuple(self.linked_observation_rules)
+
+    def single_rules(self) -> Sequence[Mapping[str, Any]]:
+        return tuple(self.single_observation_rules)
+
+    def knowledge_path(self, knowledge_id: str) -> str:
+        return "knowledge/pokemon/rules/{}/rule_knowledge.json#{}".format(
+            self.data_path.parent.name,
+            knowledge_id,
+        )
 
     @property
     def data_sha256(self) -> str:

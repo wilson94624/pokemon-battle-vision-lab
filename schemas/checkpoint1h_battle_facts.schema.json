@@ -74,7 +74,7 @@
       "required": ["checkpoint", "artifact_path", "record_id", "observation_kind", "evidence_role", "confidence", "timestamp", "upstream_record_ids"],
       "properties": {
         "checkpoint": {"enum": ["1D", "1G"]},
-        "artifact_path": {"type": "string", "pattern": "^outputs/checkpoint-1[dg]/"},
+        "artifact_path": {"type": "string", "pattern": "^outputs/(.*/)?checkpoint-1[dg]/"},
         "record_id": {"type": "string", "minLength": 1},
         "observation_kind": {"type": "string", "minLength": 1},
         "evidence_role": {"type": "string", "minLength": 1},

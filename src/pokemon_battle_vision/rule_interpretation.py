@@ -101,11 +101,7 @@ def _knowledge(
         knowledge_id=knowledge_id,
         knowledge_version=str(kb.payload["knowledge_version"]),
         knowledge_sha256=kb.data_sha256,
-        knowledge_path=(
-            "knowledge/pokemon/rules/v1/rule_knowledge.json#{}".format(
-                knowledge_id
-            )
-        ),
+        knowledge_path=kb.knowledge_path(knowledge_id),
         source_refs=tuple(str(value) for value in row["source_refs"]),
     )
 

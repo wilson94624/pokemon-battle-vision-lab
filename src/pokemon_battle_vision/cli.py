@@ -1,4 +1,4 @@
-"""Checkpoint 1A 至 1I commands。"""
+"""Checkpoint 1A 至 1J commands。"""
 
 import argparse
 import sys
@@ -13,6 +13,7 @@ from .checkpoint1f import run_checkpoint_1f
 from .checkpoint1g import run_checkpoint_1g
 from .checkpoint1h import run_checkpoint_1h
 from .checkpoint1i import run_checkpoint_1i
+from .checkpoint1j import run_checkpoint_1j
 from .pipeline import run_checkpoint_1a
 from .review_pack import build_review_pack
 from .roi import create_roi_approval
@@ -22,7 +23,7 @@ from .scanner import run_checkpoint_1b
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pokemon-battle-vision",
-        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1I",
+        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1J",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -90,6 +91,9 @@ def _parser() -> argparse.ArgumentParser:
     ocr_parser.add_argument("--video", type=Path, required=True)
     ocr_parser.add_argument("--checkpoint-1b-dir", type=Path, required=True)
     ocr_parser.add_argument("--checkpoint-1b-review-dir", type=Path, required=True)
+    ocr_parser.add_argument("--checkpoint-1a-dir", type=Path)
+    ocr_parser.add_argument("--roi-config", type=Path)
+    ocr_parser.add_argument("--replay-id", default="win-01")
     ocr_parser.add_argument("--output", type=Path, required=True)
     ocr_parser.add_argument("--review-output", type=Path, required=True)
 
@@ -100,6 +104,11 @@ def _parser() -> argparse.ArgumentParser:
     event_parser.add_argument("--project-root", type=Path, default=Path.cwd())
     event_parser.add_argument("--review", type=Path, required=True)
     event_parser.add_argument("--output", type=Path, required=True)
+    event_parser.add_argument("--checkpoint-1a-dir", type=Path)
+    event_parser.add_argument("--checkpoint-1b-dir", type=Path)
+    event_parser.add_argument("--checkpoint-1c-dir", type=Path)
+    event_parser.add_argument("--roi-config", type=Path)
+    event_parser.add_argument("--replay-id", default="win-01")
 
     timeline_parser = subparsers.add_parser(
         "checkpoint-1e",
@@ -154,6 +163,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     reconstruction_parser.add_argument("--checkpoint-1g-dir", type=Path, required=True)
     reconstruction_parser.add_argument("--output", type=Path, required=True)
+    reconstruction_parser.add_argument("--replay-id", default="win-01")
 
     interpretation_parser = subparsers.add_parser(
         "checkpoint-1i",
@@ -166,6 +176,23 @@ def _parser() -> argparse.ArgumentParser:
         "--checkpoint-1h-dir", type=Path, required=True
     )
     interpretation_parser.add_argument("--output", type=Path, required=True)
+    interpretation_parser.add_argument("--replay-id", default="win-01")
+
+    review_parser = subparsers.add_parser(
+        "checkpoint-1j",
+        help="建立 Rule Interpretation Human Review 與 evidence-backed coverage",
+    )
+    review_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    review_parser.add_argument("--checkpoint-1h-dir", type=Path, required=True)
+    review_parser.add_argument("--checkpoint-1i-dir", type=Path, required=True)
+    review_parser.add_argument("--output", type=Path, required=True)
+    review_parser.add_argument(
+        "--review-decisions",
+        type=Path,
+        help="可選：由既有 review_worksheet.csv 匯入人工 decisions",
+    )
+    review_parser.add_argument("--checkpoint-1g-dir", type=Path)
+    review_parser.add_argument("--replay-id", default="win-01")
     return parser
 
 
@@ -243,6 +270,9 @@ def main(argv: Optional[List[str]] = None) -> int:
                 checkpoint1b_review_dir=args.checkpoint_1b_review_dir,
                 output_dir=args.output,
                 review_output_dir=args.review_output,
+                checkpoint1a_dir=args.checkpoint_1a_dir,
+                roi_config_path=args.roi_config,
+                replay_id=args.replay_id,
             )
             print("Checkpoint 1C 已完成：{}".format(args.output))
             print("已處理 candidates：{}".format(manifest["processed_candidate_count"]))
@@ -254,6 +284,11 @@ def main(argv: Optional[List[str]] = None) -> int:
                 project_root=args.project_root,
                 review_path=args.review,
                 output_dir=args.output,
+                checkpoint1a_dir=args.checkpoint_1a_dir,
+                checkpoint1b_dir=args.checkpoint_1b_dir,
+                checkpoint1c_dir=args.checkpoint_1c_dir,
+                roi_config_path=args.roi_config,
+                replay_id=args.replay_id,
             )
             print("Checkpoint 1D 已完成：{}".format(args.output / "battle_events.json"))
             print("Battle Events：{}".format(manifest["event_count"]))
@@ -320,6 +355,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 checkpoint1e_review_dir=args.checkpoint_1e_review_dir,
                 checkpoint1g_dir=args.checkpoint_1g_dir,
                 output_dir=args.output,
+                replay_id=args.replay_id,
             )
             print("Checkpoint 1H 已完成：{}".format(args.output))
             print("Battle Facts：{}".format(manifest["counts"]["fact_count"]))
@@ -335,11 +371,31 @@ def main(argv: Optional[List[str]] = None) -> int:
                 project_root=args.project_root,
                 checkpoint1h_dir=args.checkpoint_1h_dir,
                 output_dir=args.output,
+                replay_id=args.replay_id,
             )
             print("Checkpoint 1I 已完成：{}".format(args.output))
             print("Rule Interpretations：{}".format(manifest["counts"]["interpretations"]))
             print("Supported：{}".format(manifest["counts"]["supported"]))
             print("Unresolved：{}".format(manifest["counts"]["unresolved"]))
+            return 0
+        if args.command == "checkpoint-1j":
+            manifest = run_checkpoint_1j(
+                project_root=args.project_root,
+                checkpoint1h_dir=args.checkpoint_1h_dir,
+                checkpoint1i_dir=args.checkpoint_1i_dir,
+                output_dir=args.output,
+                review_decisions_path=args.review_decisions,
+                checkpoint1g_dir=args.checkpoint_1g_dir,
+                replay_id=args.replay_id,
+            )
+            print("Checkpoint 1J 已完成：{}".format(args.output))
+            print("Review records：{}".format(manifest["counts"]["review_records"]))
+            print("Needs review：{}".format(manifest["counts"]["needs_review"]))
+            print(
+                "Expanded interpretations：{}".format(
+                    manifest["counts"]["expanded_interpretations"]
+                )
+            )
             return 0
         parser.error("未知 command")
     except CheckpointError as exc:

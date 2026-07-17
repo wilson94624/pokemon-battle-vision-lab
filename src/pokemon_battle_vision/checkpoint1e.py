@@ -145,6 +145,7 @@ def run_checkpoint_1e(
                 relations,
                 events,
                 sha256_file(timeline_path),
+                project_relative(output_dir / "battle_timeline.json", project_root),
             )
             _schema_validator(
                 project_root, "checkpoint1e_review_manifest.schema.json"

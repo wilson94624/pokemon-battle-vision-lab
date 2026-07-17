@@ -5,10 +5,10 @@
   "type": "object",
   "required": ["schema_version", "checkpoint", "kind", "record_count", "source_manifest_sha256", "contact_sheets", "records"],
   "properties": {
-    "schema_version": {"type": "string"}, "checkpoint": {"const": "1C"}, "kind": {"const": "checkpoint1c_human_review"}, "record_count": {"const": 178},
+    "schema_version": {"type": "string"}, "checkpoint": {"const": "1C"}, "kind": {"const": "checkpoint1c_human_review"}, "record_count": {"type": "integer", "minimum": 0},
     "source_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "contact_sheets": {"type": "object"},
     "records": {
-      "type": "array", "minItems": 178, "maxItems": 178,
+      "type": "array",
       "items": {
         "type": "object",
         "required": ["event_id", "event_type", "start_time", "end_time", "validation_label", "workflow_status", "ocr_text", "ocr_confidence", "consensus_confidence", "validation_confidence", "review_reasons", "supporting_result_ids", "duplicate_group_id", "possible_duplicate_of", "duplicate_confidence", "human_text", "human_decision", "human_action", "merge_with_event_id", "split_points", "reviewed_at", "reviewed_by", "review_card_path", "ocr_frame_count", "ocr_frame_ordinals", "ocr_frame_pts", "selected_frame_ordinal", "selected_variant_id", "supporting_frame_ordinals"],

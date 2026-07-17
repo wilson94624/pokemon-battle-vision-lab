@@ -20,6 +20,7 @@ from .config import load_json
 from .errors import InputError
 from .output_transaction import OutputTransaction, finalize_generated_output
 from .utils import project_relative, sha256_file, write_json
+from .replay import DEFAULT_REPLAY_ID, normalize_replay_id
 
 
 RECONSTRUCTION_VERSION = "0.1.0"
@@ -58,21 +59,31 @@ def _write_and_validate(
 def _evidence_reference_validation(
     source: Mapping[str, Any], facts: Sequence[BattleFact]
 ) -> bool:
+    paths = source.get(
+        "artifact_paths",
+        {
+            "events": "outputs/checkpoint-1d/battle_events.json",
+            "hp_changes": "outputs/checkpoint-1g/hp_changes.json",
+            "hp_observations": "outputs/checkpoint-1g/hp_observations.json",
+            "decision_cycles": "outputs/checkpoint-1g/decision_cycles.json",
+            "move_menu_observations": "outputs/checkpoint-1g/move_menu_observations.json",
+        },
+    )
     valid = {
-        "outputs/checkpoint-1d/battle_events.json": {
+        paths["events"]: {
             str(row["id"]) for row in source["events"]["events"]
         },
-        "outputs/checkpoint-1g/hp_changes.json": {
+        paths["hp_changes"]: {
             str(row["change_id"]) for row in source["hp_changes"]["changes"]
         },
-        "outputs/checkpoint-1g/hp_observations.json": {
+        paths["hp_observations"]: {
             str(row["observation_id"])
             for row in source["hp_observations"]["observations"]
         },
-        "outputs/checkpoint-1g/decision_cycles.json": {
+        paths["decision_cycles"]: {
             str(row["cycle_id"]) for row in source["decision_cycles"]["cycles"]
         },
-        "outputs/checkpoint-1g/move_menu_observations.json": {
+        paths["move_menu_observations"]: {
             str(row["candidate_id"])
             for row in source["move_menu_observations"]["observations"]
         },
@@ -214,6 +225,7 @@ def run_checkpoint_1h(
     checkpoint1e_review_dir: Path,
     checkpoint1g_dir: Path,
     output_dir: Path,
+    replay_id: str = DEFAULT_REPLAY_ID,
 ) -> Dict[str, Any]:
     project_root = project_root.resolve()
     inputs = [checkpoint1d_dir, checkpoint1e_dir, checkpoint1e_review_dir, checkpoint1g_dir]
@@ -226,6 +238,7 @@ def run_checkpoint_1h(
         if output_dir.is_absolute()
         else (project_root / output_dir).resolve()
     )
+    replay_id = normalize_replay_id(replay_id)
     if output_dir in {
         checkpoint1d_dir,
         checkpoint1e_dir,
@@ -399,6 +412,8 @@ def run_checkpoint_1h(
             "validation": validation,
             "scope_guards": scope_guards,
         }
+        if replay_id != DEFAULT_REPLAY_ID:
+            manifest["replay_id"] = replay_id
         _write_and_validate(
             project_root,
             transaction.staging_dir,

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "checkpoint1j_review_summary.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "status", "review_record_count", "review_status_counts", "certainty_counts", "origin_counts", "remaining_needs_review_ids", "accepted_ids", "rejected_ids", "deferred_ids"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"}, "kind": {"const": "interpretation_review_summary"},
+    "status": {"enum": ["pending_human_review", "complete"]}, "review_record_count": {"type": "integer", "minimum": 1},
+    "review_status_counts": {"type": "object", "additionalProperties": false, "required": ["accepted", "rejected", "needs_review", "deferred"], "properties": {"accepted": {"type": "integer", "minimum": 0}, "rejected": {"type": "integer", "minimum": 0}, "needs_review": {"type": "integer", "minimum": 0}, "deferred": {"type": "integer", "minimum": 0}}},
+    "certainty_counts": {"type": "object", "additionalProperties": false, "required": ["supported", "unresolved", "conflicted"], "properties": {"supported": {"type": "integer", "minimum": 0}, "unresolved": {"type": "integer", "minimum": 0}, "conflicted": {"type": "integer", "minimum": 0}}},
+    "origin_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "remaining_needs_review_ids": {"$ref": "#/$defs/ids"}, "accepted_ids": {"$ref": "#/$defs/ids"}, "rejected_ids": {"$ref": "#/$defs/ids"}, "deferred_ids": {"$ref": "#/$defs/ids"}
+  },
+  "$defs": {"ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^interpretation-review-[0-9]{4}$"}}}
+}

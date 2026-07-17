@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "checkpoint1j_review_statistics.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "total_review_record_count", "accepted_count", "rejected_count", "needs_review_count", "deferred_count", "supported_interpretation_count", "unresolved_interpretation_count", "conflicted_interpretation_count", "human_review_complete"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"}, "kind": {"const": "interpretation_review_statistics"},
+    "total_review_record_count": {"type": "integer", "minimum": 1}, "accepted_count": {"type": "integer", "minimum": 0}, "rejected_count": {"type": "integer", "minimum": 0}, "needs_review_count": {"type": "integer", "minimum": 0}, "deferred_count": {"type": "integer", "minimum": 0},
+    "supported_interpretation_count": {"type": "integer", "minimum": 0}, "unresolved_interpretation_count": {"type": "integer", "minimum": 0}, "conflicted_interpretation_count": {"type": "integer", "minimum": 0}, "human_review_complete": {"type": "boolean"}
+  }
+}

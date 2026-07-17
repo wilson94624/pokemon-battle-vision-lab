@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "approved_upstream_metadata_drift_registry",
+  "policy": "exact_hash_allowlist_for_user_approved_metadata_only_direct_payload_hashes_remain_blocking",
+  "records": [
+    {
+      "drift_id": "approved-drift-0001",
+      "consumer_checkpoint": "1G",
+      "source_path": "outputs/checkpoint-1e/checkpoint1e_manifest.json",
+      "frozen_snapshot_sha256": "a0aa0097a9d8515d08d04d6b27374edc51d1ec09ca9b97d2048a543c966546c1",
+      "approved_current_sha256": "1a49b6c066b65eaca4668ef6e73af46fd0533e4e9f8c870541966a7350b6264b",
+      "change_class": "human_review_metadata_and_manifest_hashes_only",
+      "status": "approved",
+      "authorization": "user_authorized_checkpoint1e_human_review_completion",
+      "reviewed_by": "wilson",
+      "reviewed_at": "2026-07-17T23:57:05+08:00",
+      "reason": "Checkpoint 1E Human Review 完成後只更新人工決策 metadata 與連動 manifest hashes；不改寫 1G direct payload。"
+    },
+    {
+      "drift_id": "approved-drift-0002",
+      "consumer_checkpoint": "1H",
+      "source_path": "outputs/checkpoint-1e-review/needs_review_relations.json",
+      "frozen_snapshot_sha256": "388108b227af208107490802e9bc229ced9d521cdb5ff17528a6cc2488f52cfd",
+      "approved_current_sha256": "6d735e878733949676d0bfbe5d8d43c89d88eea80714914816182974b4aef747",
+      "change_class": "human_review_metadata_and_manifest_hashes_only",
+      "status": "approved",
+      "authorization": "user_authorized_checkpoint1e_human_review_completion",
+      "reviewed_by": "wilson",
+      "reviewed_at": "2026-07-17T23:57:05+08:00",
+      "reason": "18 條 relation 的人工 accepted／rejected 決策與 reviewed_at 已獲使用者核准；1H facts 與 relations payload 未重建。"
+    },
+    {
+      "drift_id": "approved-drift-0003",
+      "consumer_checkpoint": "1H",
+      "source_path": "outputs/checkpoint-1e-review/review_manifest.json",
+      "frozen_snapshot_sha256": "759b3b77412fcd80409e7a34ebd2762a534289219b45923e496f91998a7fd527",
+      "approved_current_sha256": "a03caefc4c5b5a01ac9c531fab2fdaf9cb6802eea0f3042fd32f39aa6451117c",
+      "change_class": "human_review_metadata_and_manifest_hashes_only",
+      "status": "approved",
+      "authorization": "user_authorized_checkpoint1e_human_review_completion",
+      "reviewed_by": "wilson",
+      "reviewed_at": "2026-07-17T23:57:05+08:00",
+      "reason": "Review manifest 只同步獲核准的人工作業檔案 hashes 與 completion metadata。"
+    },
+    {
+      "drift_id": "approved-drift-0004",
+      "consumer_checkpoint": "1H",
+      "source_path": "outputs/checkpoint-1e-review/review_statistics.json",
+      "frozen_snapshot_sha256": "340ec4f103e02fcabb2089a8477724041d4d4513cc8389864983cf87e440d2af",
+      "approved_current_sha256": "a1a17ef012ac56c042c29e3667ce0d02f0cc4f181884ee10a15ac162cc88fc21",
+      "change_class": "human_review_metadata_and_manifest_hashes_only",
+      "status": "approved",
+      "authorization": "user_authorized_checkpoint1e_human_review_completion",
+      "reviewed_by": "wilson",
+      "reviewed_at": "2026-07-17T23:57:05+08:00",
+      "reason": "Review statistics 反映 14 accepted、4 rejected、2 accepted_unlinked 與零 remaining。"
+    },
+    {
+      "drift_id": "approved-drift-0005",
+      "consumer_checkpoint": "1H",
+      "source_path": "outputs/checkpoint-1e-review/review_summary.json",
+      "frozen_snapshot_sha256": "76a6e7ef5c926df24a4b08e9210be2702afcc5c684132b4549e23f537c745a3c",
+      "approved_current_sha256": "b5168d4af51064348feeb93d628918b0255d094f1b6a5d64e124e905a4745eca",
+      "change_class": "human_review_metadata_and_manifest_hashes_only",
+      "status": "approved",
+      "authorization": "user_authorized_checkpoint1e_human_review_completion",
+      "reviewed_by": "wilson",
+      "reviewed_at": "2026-07-17T23:57:05+08:00",
+      "reason": "Review summary 只保存獲核准的人工 decisions、notes 與 reviewed_at。"
+    },
+    {
+      "drift_id": "approved-drift-0006",
+      "consumer_checkpoint": "1H",
+      "source_path": "outputs/checkpoint-1e-review/unlinked_events.json",
+      "frozen_snapshot_sha256": "5aeef7c3d41961d86dcd39393555567d6c6a95c78146299b97f4ed9da735246f",
+      "approved_current_sha256": "6ac802ccb86f71452456c23294131a208a1ea799296cd99825c55ab0df818d54",
+      "change_class": "human_review_metadata_and_manifest_hashes_only",
+      "status": "approved",
+      "authorization": "user_authorized_checkpoint1e_human_review_completion",
+      "reviewed_by": "wilson",
+      "reviewed_at": "2026-07-17T23:57:05+08:00",
+      "reason": "timeline-0056 與 timeline-0063 維持 accepted_unlinked，沒有新增 parent relation。"
+    },
+    {
+      "drift_id": "approved-drift-0007",
+      "consumer_checkpoint": "1H",
+      "source_path": "outputs/checkpoint-1e/checkpoint1e_manifest.json",
+      "frozen_snapshot_sha256": "a0aa0097a9d8515d08d04d6b27374edc51d1ec09ca9b97d2048a543c966546c1",
+      "approved_current_sha256": "1a49b6c066b65eaca4668ef6e73af46fd0533e4e9f8c870541966a7350b6264b",
+      "change_class": "human_review_metadata_and_manifest_hashes_only",
+      "status": "approved",
+      "authorization": "user_authorized_checkpoint1e_human_review_completion",
+      "reviewed_by": "wilson",
+      "reviewed_at": "2026-07-17T23:57:05+08:00",
+      "reason": "Checkpoint 1E manifest 只同步 review manifest hash 與 human review completion metadata。"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "approved_upstream_metadata_drift.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "policy", "records"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "kind": {"const": "approved_upstream_metadata_drift_registry"},
+    "policy": {"const": "exact_hash_allowlist_for_user_approved_metadata_only_direct_payload_hashes_remain_blocking"},
+    "records": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["drift_id", "consumer_checkpoint", "source_path", "frozen_snapshot_sha256", "approved_current_sha256", "change_class", "status", "authorization", "reviewed_by", "reviewed_at", "reason"],
+        "properties": {
+          "drift_id": {"type": "string", "pattern": "^approved-drift-[0-9]{4}$"},
+          "consumer_checkpoint": {"enum": ["1G", "1H"]},
+          "source_path": {"type": "string", "minLength": 1},
+          "frozen_snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "approved_current_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "change_class": {"const": "human_review_metadata_and_manifest_hashes_only"},
+          "status": {"const": "approved"},
+          "authorization": {"type": "string", "minLength": 1},
+          "reviewed_by": {"type": "string", "minLength": 1},
+          "reviewed_at": {"type": "string", "format": "date-time"},
+          "reason": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

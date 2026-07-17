@@ -5,6 +5,7 @@ from pathlib import Path
 import jsonschema
 import pytest
 
+from pokemon_battle_vision.approved_drift import ApprovedDriftRegistry
 from pokemon_battle_vision.checkpoint1h import run_checkpoint_1h
 from pokemon_battle_vision.errors import InputError
 from pokemon_battle_vision.output_transaction import OutputTransaction
@@ -93,10 +94,16 @@ def test_turn_reconstruction_never_claims_official_turn_or_selected_move():
     assert len(hp_facts) == len(set(hp_facts)) == 103
 
 
-def test_frozen_source_hashes_still_match_manifest():
+def test_frozen_source_hashes_match_or_have_exact_drift_approval():
+    registry = ApprovedDriftRegistry.from_project(PROJECT)
     source = _json(OUTPUT / "checkpoint1h_manifest.json")["source"]
     for row in source.values():
-        assert sha256_file(PROJECT / row["path"]) == row["sha256"]
+        registry.verify(
+            "1H",
+            row["path"],
+            row["sha256"],
+            sha256_file(PROJECT / row["path"]),
+        )
 
 
 def test_generated_outputs_are_visible_and_have_no_conflict_artifacts():

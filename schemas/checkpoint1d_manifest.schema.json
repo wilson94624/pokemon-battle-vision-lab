@@ -10,6 +10,7 @@
     "kind": {"const": "checkpoint1d_manifest"},
     "status": {"const": "complete"},
     "generated_at": {"type": "string"},
+    "replay_id": {"type": "string", "minLength": 1},
     "parser_version": {"type": "string"},
     "input": {
       "type": "object",

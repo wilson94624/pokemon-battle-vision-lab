@@ -13,6 +13,7 @@ from .output_transaction import OutputTransaction, finalize_generated_output
 from .rule_interpretation import build_rule_interpretations
 from .rule_interpretation_models import INTERPRETATION_SCHEMA_VERSION, RuleInterpretation
 from .utils import project_relative, sha256_file, write_json
+from .replay import DEFAULT_REPLAY_ID, normalize_replay_id, resolve_project_path
 
 
 ENGINE_VERSION = "0.1.0"
@@ -284,11 +285,13 @@ def _audit_payload(
 
 
 def run_checkpoint_1i(
-    project_root: Path, checkpoint1h_dir: Path, output_dir: Path
+    project_root: Path, checkpoint1h_dir: Path, output_dir: Path,
+    replay_id: str = DEFAULT_REPLAY_ID,
 ) -> Dict[str, Any]:
     root = project_root.resolve()
-    source_dir = checkpoint1h_dir.resolve()
-    target = output_dir.resolve()
+    source_dir = resolve_project_path(root, checkpoint1h_dir)
+    target = resolve_project_path(root, output_dir)
+    replay_id = normalize_replay_id(replay_id)
     source = load_checkpoint1i_inputs(root, source_dir)
     facts = source["battle_facts"]["facts"]
     relations = source["battle_fact_relations"]["relations"]
@@ -427,6 +430,8 @@ def run_checkpoint_1i(
             "validation": validation,
             "scope_guards": audit_payload["scope_guards"],
         }
+        if replay_id != DEFAULT_REPLAY_ID:
+            manifest["replay_id"] = replay_id
         _validator(root, "checkpoint1i_manifest.schema.json").validate(manifest)
         write_json(transaction.staging_dir / "checkpoint1i_manifest.json", manifest)
         if not direct_inputs_unchanged(root, source["direct_hashes"]):

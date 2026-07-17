@@ -14,6 +14,7 @@ from .config import load_json
 from .errors import InputError
 from .output_transaction import OutputTransaction, finalize_generated_output
 from .utils import project_relative, sha256_file, write_json
+from .replay import DEFAULT_REPLAY_ID, normalize_replay_id, resolve_project_path
 
 
 PARSER_VERSION = "0.2.0"
@@ -39,13 +40,20 @@ def _schema_validator(project_root: Path, name: str) -> Draft202012Validator:
     return Draft202012Validator(schema)
 
 
-def _read_only_hashes(project_root: Path) -> Dict[str, Dict[str, str]]:
+def _read_only_hashes(
+    project_root: Path, inputs: Optional[Mapping[str, Path]] = None
+) -> Dict[str, Dict[str, str]]:
     hashes = {}
-    for name, relative in READ_ONLY_INPUTS.items():
-        path = project_root / relative
+    selected = inputs or {
+        name: project_root / relative for name, relative in READ_ONLY_INPUTS.items()
+    }
+    for name, path in selected.items():
         if not path.is_file():
             raise InputError("Checkpoint 1D read-only input 不存在：{}".format(path))
-        hashes[name] = {"path": relative, "sha256": sha256_file(path)}
+        hashes[name] = {
+            "path": project_relative(path.resolve(), project_root),
+            "sha256": sha256_file(path),
+        }
     return hashes
 
 
@@ -172,13 +180,39 @@ def run_checkpoint_1d(
     review_path: Path,
     output_dir: Path,
     parser: Optional[BattleEventParser] = None,
+    checkpoint1a_dir: Optional[Path] = None,
+    checkpoint1b_dir: Optional[Path] = None,
+    checkpoint1c_dir: Optional[Path] = None,
+    roi_config_path: Optional[Path] = None,
+    replay_id: str = DEFAULT_REPLAY_ID,
 ) -> Dict[str, Any]:
     project_root = project_root.resolve()
-    review_path = review_path.resolve()
-    output_dir = output_dir.resolve()
+    review_path = resolve_project_path(project_root, review_path)
+    output_dir = resolve_project_path(project_root, output_dir)
+    replay_id = normalize_replay_id(replay_id)
+    checkpoint1a_dir = resolve_project_path(project_root, checkpoint1a_dir or (project_root / "outputs/checkpoint-1a"))
+    checkpoint1b_dir = resolve_project_path(project_root, checkpoint1b_dir or (project_root / "outputs/checkpoint-1b"))
+    checkpoint1c_dir = resolve_project_path(project_root, checkpoint1c_dir or (project_root / "outputs/checkpoint-1c"))
+    roi_config_path = resolve_project_path(project_root, roi_config_path or (project_root / "configs/roi_2868x1320.json"))
     if not review_path.is_file():
         raise InputError("Checkpoint 1D review input 不存在：{}".format(review_path))
-    read_only_before = _read_only_hashes(project_root)
+    read_only_paths = {
+        "roi_config": roi_config_path,
+        "roi_approval": checkpoint1a_dir / "roi_approval.json",
+        "checkpoint1b_events": checkpoint1b_dir / "events.json",
+        "checkpoint1b_frames": checkpoint1b_dir / "frames.jsonl",
+        "checkpoint1c_manifest": checkpoint1c_dir / "checkpoint1c_manifest.json",
+        "checkpoint1c_raw": checkpoint1c_dir / "ocr_raw_results.jsonl",
+        "checkpoint1c_aggregates": checkpoint1c_dir / "ocr_aggregates.json",
+        "checkpoint1c_validations": checkpoint1c_dir / "text_validations.json",
+    }
+    # Detector/parser source files remain replay-independent frozen inputs.
+    read_only_paths.update({
+        name: project_root / relative
+        for name, relative in READ_ONLY_INPUTS.items()
+        if name not in read_only_paths
+    })
+    read_only_before = _read_only_hashes(project_root, read_only_paths)
     review_sha256_before = sha256_file(review_path)
     review_payload = load_json(review_path)
     _schema_validator(project_root, "checkpoint1c_review.schema.json").validate(
@@ -234,8 +268,8 @@ def run_checkpoint_1d(
         write_json(result_path, result)
         manifest = {
             "schema_version": "0.2.0",
-            "checkpoint": "1D",
-            "kind": "checkpoint1d_manifest",
+                "checkpoint": "1D",
+                "kind": "checkpoint1d_manifest",
             "status": "complete",
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "parser_version": PARSER_VERSION,
@@ -264,9 +298,11 @@ def run_checkpoint_1d(
                 "gui_created": False,
             },
         }
-        read_only_after = _read_only_hashes(project_root)
+        read_only_after = _read_only_hashes(project_root, read_only_paths)
         if read_only_after != read_only_before or sha256_file(review_path) != review_sha256_before:
             raise InputError("Checkpoint 1D 執行期間 read-only 1A／1B／1C input 發生變更")
+        if replay_id != DEFAULT_REPLAY_ID:
+            manifest["replay_id"] = replay_id
         _schema_validator(project_root, "checkpoint1d_manifest.schema.json").validate(
             manifest
         )

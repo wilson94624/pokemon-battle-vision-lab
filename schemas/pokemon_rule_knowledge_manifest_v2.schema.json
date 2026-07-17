@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pokemon_rule_knowledge_manifest_v2.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "knowledge_version", "kind", "status", "data", "counts", "validation", "scope_guards", "migration"],
+  "properties": {
+    "schema_version": {"const": "0.2.0"},
+    "knowledge_version": {"const": "pokemon-rule-coverage-2026.07.18-v2"},
+    "kind": {"const": "pokemon_rule_knowledge_manifest"},
+    "status": {"const": "complete"},
+    "data": {"$ref": "#/$defs/file"},
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sources", "moves", "species_types", "type_effectiveness_entries", "ability_rules", "explicit_rules", "target_rules", "linked_observation_rules", "single_observation_rules"],
+      "properties": {
+        "sources": {"const": 7}, "moves": {"const": 7}, "species_types": {"const": 2},
+        "type_effectiveness_entries": {"const": 5}, "ability_rules": {"const": 2},
+        "explicit_rules": {"const": 2}, "target_rules": {"const": 1},
+        "linked_observation_rules": {"const": 7}, "single_observation_rules": {"const": 2}
+      }
+    },
+    "validation": {"type": "object", "minProperties": 1, "additionalProperties": {"const": true}},
+    "scope_guards": {"type": "object", "minProperties": 1, "additionalProperties": {"const": false}},
+    "migration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["migration_kind", "previous_version", "existing_knowledge_semantics_changed", "added_knowledge_ids", "interpretation_regeneration"],
+      "properties": {
+        "migration_kind": {"const": "additive_existing_fact_coverage"},
+        "previous_version": {
+          "type": "object", "additionalProperties": false,
+          "required": ["knowledge_version", "data", "manifest"],
+          "properties": {
+            "knowledge_version": {"const": "pokemon-rule-foundation-2026.07.17-v1"},
+            "data": {"$ref": "#/$defs/file"},
+            "manifest": {"$ref": "#/$defs/file"}
+          }
+        },
+        "existing_knowledge_semantics_changed": {"const": false},
+        "added_knowledge_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "interpretation_regeneration": {
+          "type": "object", "additionalProperties": false,
+          "required": ["required_existing_interpretation_ids", "policy", "new_rule_ids"],
+          "properties": {
+            "required_existing_interpretation_ids": {"type": "array", "maxItems": 0},
+            "policy": {"const": "v1_interpretations_remain_immutable_v2_generates_new_coverage_only"},
+            "new_rule_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "schema", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "schema": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ from .checkpoint1f import _validate_inputs as validate_reviewed_timeline_inputs
 from .config import load_json
 from .errors import InputError
 from .pokemon_knowledge_base import PokemonKnowledgeBase
-from .utils import sha256_file
+from .utils import project_relative, sha256_file
 
 
 REQUIRED_1G_OUTPUTS = (
@@ -194,6 +194,13 @@ def load_checkpoint1h_inputs(
         str(knowledge_base.manifest_path): sha256_file(knowledge_base.manifest_path),
     }
     source["tracked_hashes"] = tracked
+    source["artifact_paths"] = {
+        "events": project_relative(checkpoint1d_dir / "battle_events.json", project_root),
+        "hp_changes": project_relative(checkpoint1g_dir / "hp_changes.json", project_root),
+        "hp_observations": project_relative(checkpoint1g_dir / "hp_observations.json", project_root),
+        "decision_cycles": project_relative(checkpoint1g_dir / "decision_cycles.json", project_root),
+        "move_menu_observations": project_relative(checkpoint1g_dir / "move_menu_observations.json", project_root),
+    }
     _validate_references(source)
     return source
 

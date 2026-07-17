@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1j_expanded_interpretations.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "interpretation_version", "immutability_policy", "knowledge_version", "knowledge_sha256", "interpretation_count", "certainty_counts", "interpretation_type_counts", "interpretations"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1J"},
+    "kind": {"const": "expanded_rule_interpretations"},
+    "interpretation_version": {"const": "0.1.0"},
+    "immutability_policy": {"const": "new_v2_interpretations_are_separate_existing_v1_interpretations_remain_unchanged"},
+    "knowledge_version": {"const": "pokemon-rule-coverage-2026.07.18-v2"},
+    "knowledge_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "interpretation_count": {"type": "integer", "minimum": 1},
+    "certainty_counts": {"$ref": "#/$defs/certaintyCounts"},
+    "interpretation_type_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "interpretations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/interpretation"}}
+  },
+  "$defs": {
+    "certaintyCounts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["supported", "unresolved", "conflicted"],
+      "properties": {"supported": {"type": "integer", "minimum": 0}, "unresolved": {"type": "integer", "minimum": 0}, "conflicted": {"type": "integer", "minimum": 0}}
+    },
+    "requirement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requirement_id", "description", "status", "source_fact_id", "observed_value"],
+      "properties": {
+        "requirement_id": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1},
+        "status": {"enum": ["satisfied", "missing", "contradicted"]},
+        "source_fact_id": {"type": ["string", "null"], "pattern": "^battle-fact-[0-9]{4}$"}, "observed_value": {}
+      }
+    },
+    "observedEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["fact_id", "fact_type", "timestamp", "observation_role", "evidence_record_ids"],
+      "properties": {
+        "fact_id": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"}, "fact_type": {"type": "string"},
+        "timestamp": {"type": "number", "minimum": 0}, "observation_role": {"type": "string"},
+        "evidence_record_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "knowledgeEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["knowledge_id", "knowledge_version", "knowledge_sha256", "knowledge_path", "source_refs"],
+      "properties": {
+        "knowledge_id": {"type": "string"}, "knowledge_version": {"type": "string"},
+        "knowledge_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "knowledge_path": {"type": "string", "pattern": "^knowledge/pokemon/rules/v2/"},
+        "source_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "interpretation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["interpretation_id", "sequence", "timestamp", "referenced_battle_fact_ids", "referenced_fact_relation_ids", "interpretation_type", "rule_id", "rule_version", "required_observations", "observed_evidence", "knowledge_evidence", "conclusion", "certainty", "confidence", "unresolved_reason"],
+      "properties": {
+        "interpretation_id": {"type": "string", "pattern": "^rule-interpretation-1j-[0-9]{4}$"},
+        "sequence": {"type": "integer", "minimum": 1}, "timestamp": {"type": "number", "minimum": 0},
+        "referenced_battle_fact_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"}},
+        "referenced_fact_relation_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^battle-fact-relation-[0-9]{4}$"}},
+        "interpretation_type": {"enum": ["STATUS_OUTCOME", "MOVE_FAILURE", "ABILITY_CONSEQUENCE", "FIELD_LIFECYCLE", "DAMAGE_CONSEQUENCE", "ITEM_CONSEQUENCE"]},
+        "rule_id": {"type": "string"}, "rule_version": {"type": "string"},
+        "required_observations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/requirement"}},
+        "observed_evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/observedEvidence"}},
+        "knowledge_evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/knowledgeEvidence"}},
+        "conclusion": {"type": "object", "additionalProperties": false, "required": ["code", "summary", "derived_values"], "properties": {"code": {"type": "string"}, "summary": {"type": "string"}, "derived_values": {"type": "object"}}},
+        "certainty": {"enum": ["supported", "unresolved", "conflicted"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "unresolved_reason": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

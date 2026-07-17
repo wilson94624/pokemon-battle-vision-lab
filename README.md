@@ -1,8 +1,8 @@
 # Pokémon Battle Vision Lab
 
-本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A 至 1I**：從 ROI、UI candidates、本機 OCR、BattleEvent、reviewed Timeline、Battle State 與 visual enrichment，逐層建立到 immutable、可追溯的 Battle Facts，再以版本化 Pokémon knowledge 建立獨立 Rule Interpretations。
+本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A 至 1J**：從 ROI、UI candidates、本機 OCR、BattleEvent、reviewed Timeline、Battle State 與 visual enrichment，逐層建立到 immutable、可追溯的 Battle Facts，再以版本化 Pokémon knowledge 建立獨立 Rule Interpretations 與分離的 Human Review。
 
-本專案不是網站、即時助手或戰術分析工具。Checkpoint 1H 只重建可觀察 Battle Facts；Checkpoint 1I 只解釋少量已有 facts，且不執行 Replay Analysis、AI Coach、完整 simulator、damage calculation、legality 或戰術評估。
+本專案不是網站、即時助手或戰術分析工具。Checkpoint 1H 只重建可觀察 Battle Facts；Checkpoint 1I／1J 只解釋及審查已有 facts，且不執行 Replay Analysis、AI Coach、完整 simulator、damage calculation、legality 或戰術評估。
 
 ## 唯一支援 profile
 
@@ -270,6 +270,33 @@ Checkpoint 1I 只讀 frozen Checkpoint 1H outputs 與本機版本化 [`knowledge
 
 正式小型 result set 包含 type effectiveness、Helping Hand target validity、明確 Protect／Disable outcome，以及 Good as Gold／Levitate immunity 的 evidence gate。缺少明確 target、failure outcome 或 observed ability 時保留 `unresolved`。輸出包括 `rule_interpretations.json`、`interpretation_review.json`、`checkpoint1i_audit.json` 與 manifest；完整資料流、integration audit、規則邊界與已知限制見 [`docs/checkpoint1i_architecture.md`](docs/checkpoint1i_architecture.md)。
 
+## 執行 Checkpoint 1J Interpretation Review and Rule Coverage
+
+Checkpoint 1J 只讀 frozen 1H facts／relations、immutable 1I interpretations、版本化 rule knowledge 與明確核准的 metadata drift registry。它建立獨立 Human Review records，不會回寫 interpretation 的 certainty、conclusion、observation provenance 或 knowledge provenance。
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1j \
+  --project-root . \
+  --checkpoint-1h-dir outputs/checkpoint-1h \
+  --checkpoint-1i-dir outputs/checkpoint-1i \
+  --output outputs/checkpoint-1j
+```
+
+首次輸出有 18 筆 review records：既有 1I 的 8 筆與 evidence-backed 1J expansion 的 10 筆；全部預設 `needs_review`，不會自動宣稱人工接受。人工可逐張閱讀 `review_pack/cards/*.md`，再編輯 `review_pack/review_worksheet.csv` 的 review 欄位，並以同一個單用途 command 匯入：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1j \
+  --project-root . \
+  --checkpoint-1h-dir outputs/checkpoint-1h \
+  --checkpoint-1i-dir outputs/checkpoint-1i \
+  --review-decisions outputs/checkpoint-1j/review_pack/review_worksheet.csv \
+  --output outputs/checkpoint-1j
+```
+
+`accepted`、`rejected`、`deferred` 與 `needs_review` 只描述人工決策；它們不會改變 generated certainty。接受 `unresolved` 必須使用 `unresolved_outcome_correct` issue code，表示人工接受「維持 unresolved」才是正確結果。Conflict review 另保留 observed conclusion、knowledge expectation、衝突欄位與 evidence refs，不允許覆寫原紀錄。
+
+1J 的 v2 knowledge 是 additive version：v1 data／manifest hashes 固定不變，新增規則只套用在已有且可明確驗證的 facts。時間相鄰的鬼火／威嚇／求雨案例只輸出 consistency、`causal_claim=false`；只有既有 `DAMAGE_FROM`／`STATUS_FROM` 等 active causal relation 才可形成 causal interpretation。完整架構、coverage decisions、drift policy 與人工流程見 [`docs/checkpoint1j_architecture.md`](docs/checkpoint1j_architecture.md)。
+
 ## 測試
 
 快速單元與整合測試：
@@ -284,6 +311,27 @@ Checkpoint 1I 只讀 frozen Checkpoint 1H outputs 與本機版本化 [`knowledge
 .venv/bin/python -m pytest -m slow -s
 ```
 
-slow tests 會使用安全的暫存 project `outputs/`：1A 驗證既有 Frozen Gate；1B 驗證 25,873 個來源 frames、5,918 個 10 Hz records、逐 sample diagnostics、17 個 regression windows、round-1 人工案例及其他 event type 固定數量；1B Review Pack 驗證一一對應、peak evidence、0.5 秒 coverage、dense audit 與 transaction cleanup；1C 以真實影片驗證單次順序解碼、178 candidates、本機繁中 OCR、schemas、Review Pack、frozen hashes 與 macOS visibility；1G 再跑一次完整 visual enrichment；1H 在獨立輸出目錄重建 213 facts；1I 逐檔比對 deterministic interpretation hashes 並重驗 direct 1H outputs 未變。
+slow tests 會使用安全的暫存 project `outputs/`：1A 驗證既有 Frozen Gate；1B 驗證 25,873 個來源 frames、5,918 個 10 Hz records、逐 sample diagnostics、17 個 regression windows、round-1 人工案例及其他 event type 固定數量；1B Review Pack 驗證一一對應、peak evidence、0.5 秒 coverage、dense audit 與 transaction cleanup；1C 以真實影片驗證單次順序解碼、178 candidates、本機繁中 OCR、schemas、Review Pack、frozen hashes 與 macOS visibility；1G 再跑一次完整 visual enrichment；1H 在獨立輸出目錄重建 213 facts；1I 逐檔比對 deterministic interpretation hashes 並重驗 direct 1H outputs；1J 另以正式 CLI 驗證 18 張 interpretation review cards、10 筆 expanded interpretations 與 frozen-input gates。
 
-注意：1H 完成後另一次 1E Human Review 只更新了 `reviewed_at` 與 review manifest hashes，因此既有 1G／1H「歷史 upstream snapshot 必須等於目前檔案」測試會明確回報 drift。Frozen 1G／1H payload 沒有因此重建或改寫；1I 以 direct 1H output hashes 作 blocking gate，並在 `checkpoint1i_audit.json` 完整列出六個 upstream metadata drift paths。
+注意：1H 完成後另一次 1E Human Review 只更新了人工 decision metadata 與連動 manifest hashes。1J 使用 `references/approved_upstream_metadata_drift.json` 的 exact old/new hash tuples 明確核准這些歷史 metadata drift；任何未列入的 drift 仍會失敗。Frozen 1G／1H payload hashes 與 direct 1H input hashes 始終是 blocking gates，既有 manifests 不會為了讓測試通過而重寫。
+
+## 多 replay 輸入
+
+`win-01` 仍使用原有的 `outputs/checkpoint-*` 路徑與 frozen 行為。第二支 replay 可使用獨立輸出 namespace（例如 `outputs/replays/official-02/`），並在 1C、1D、1H、1I、1J 指令傳入 `--replay-id official-02` 及對應的 checkpoint 目錄；各 checkpoint 會以傳入目錄建立 provenance 與 hash gate，不會讀取 `win-01` 的正式 outputs。
+
+例如 1C：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1c \
+  --project-root . \
+  --video samples/videos/official-02.mp4 \
+  --checkpoint-1a-dir outputs/replays/official-02/checkpoint-1a \
+  --checkpoint-1b-dir outputs/replays/official-02/checkpoint-1b \
+  --checkpoint-1b-review-dir outputs/replays/official-02/checkpoint-1b-review \
+  --roi-config configs/official-02-roi.json \
+  --output outputs/replays/official-02/checkpoint-1c \
+  --review-output outputs/replays/official-02/checkpoint-1c-review \
+  --replay-id official-02
+```
+
+候選數量、frame 數量與 Battle Facts 數量不再以 `win-01` 固定值作為 runtime gate；仍會驗證每個輸入自身的 record counts、hash、排序與 provenance。

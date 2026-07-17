@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "checkpoint1j_manifest.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "status", "engine_version", "source", "knowledge", "counts", "outputs", "review_pack", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"}, "kind": {"const": "checkpoint1j_manifest"}, "replay_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["complete_pending_human_review", "complete"]}, "engine_version": {"const": "0.1.0"},
+    "source": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/file"}},
+    "knowledge": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/file"}},
+    "counts": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 0}},
+    "outputs": {"type": "object", "minProperties": 8, "additionalProperties": {"$ref": "#/$defs/file"}},
+    "review_pack": {
+      "type": "object", "additionalProperties": false,
+      "required": ["index", "worksheet", "card_count", "cards"],
+      "properties": {
+        "index": {"$ref": "#/$defs/hashFile"}, "worksheet": {"$ref": "#/$defs/hashFile"},
+        "card_count": {"type": "integer", "minimum": 1},
+        "cards": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/hashFile"}}
+      }
+    },
+    "validation": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}},
+    "scope_guards": {"type": "object", "minProperties": 1, "additionalProperties": {"const": false}}
+  },
+  "$defs": {
+    "hashFile": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "file": {"type": "object", "additionalProperties": false, "required": ["path", "schema", "sha256"], "properties": {"path": {"type": "string"}, "schema": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+  }
+}

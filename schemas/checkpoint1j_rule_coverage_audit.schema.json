@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "checkpoint1j_rule_coverage_audit.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "source_battle_fact_count", "source_fact_relation_count", "source_fact_type_counts", "existing_interpretation_count", "expanded_interpretation_count", "policy", "adopted", "not_adopted"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "checkpoint": {"const": "1J"}, "kind": {"const": "rule_coverage_audit"},
+    "source_battle_fact_count": {"type": "integer", "minimum": 0}, "source_fact_relation_count": {"type": "integer", "minimum": 0},
+    "source_fact_type_counts": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 0}},
+    "existing_interpretation_count": {"type": "integer", "minimum": 0}, "expanded_interpretation_count": {"type": "integer", "minimum": 0},
+    "policy": {"const": "existing_explicit_evidence_only_no_hidden_information_no_simulator_inference"},
+    "adopted": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "not_adopted": {"type": "array", "minItems": 1, "items": {"type": "object"}}
+  }
+}
