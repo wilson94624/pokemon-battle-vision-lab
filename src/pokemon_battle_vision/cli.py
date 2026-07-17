@@ -1,4 +1,4 @@
-"""Checkpoint 1A／1B 與 Checkpoint 1C 本機 OCR commands。"""
+"""Checkpoint 1A 至 1H commands。"""
 
 import argparse
 import sys
@@ -10,6 +10,8 @@ from .checkpoint1c import run_checkpoint_1c
 from .checkpoint1d import run_checkpoint_1d
 from .checkpoint1e import run_checkpoint_1e
 from .checkpoint1f import run_checkpoint_1f
+from .checkpoint1g import run_checkpoint_1g
+from .checkpoint1h import run_checkpoint_1h
 from .pipeline import run_checkpoint_1a
 from .review_pack import build_review_pack
 from .roi import create_roi_approval
@@ -19,7 +21,7 @@ from .scanner import run_checkpoint_1b
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pokemon-battle-vision",
-        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1F",
+        description="Pokémon Battle Vision Milestone 1 — Checkpoint 1A 至 1H",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -118,6 +120,39 @@ def _parser() -> argparse.ArgumentParser:
     state_parser.add_argument("--timeline-review", type=Path, required=True)
     state_parser.add_argument("--output", type=Path, required=True)
     state_parser.add_argument("--review-output", type=Path, required=True)
+
+    visual_state_parser = subparsers.add_parser(
+        "checkpoint-1g",
+        help="融合 TEAM_PREVIEW、SELECTED_FOUR、MOVE_MENU、HP/status UI 與 1F sparse state",
+    )
+    visual_state_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    visual_state_parser.add_argument("--video", type=Path, required=True)
+    visual_state_parser.add_argument("--roi-config", type=Path, required=True)
+    visual_state_parser.add_argument("--checkpoint-1a-dir", type=Path, required=True)
+    visual_state_parser.add_argument("--checkpoint-1b-dir", type=Path, required=True)
+    visual_state_parser.add_argument("--checkpoint-1b-review-dir", type=Path, required=True)
+    visual_state_parser.add_argument("--checkpoint-1c-dir", type=Path, required=True)
+    visual_state_parser.add_argument("--checkpoint-1d-dir", type=Path, required=True)
+    visual_state_parser.add_argument("--checkpoint-1e-dir", type=Path, required=True)
+    visual_state_parser.add_argument("--checkpoint-1f-dir", type=Path, required=True)
+    visual_state_parser.add_argument("--output", type=Path, required=True)
+    visual_state_parser.add_argument("--review-output", type=Path, required=True)
+
+    reconstruction_parser = subparsers.add_parser(
+        "checkpoint-1h",
+        help=(
+            "從 frozen BattleEvent、reviewed Timeline 與 visual observations "
+            "重建 immutable Battle Facts"
+        ),
+    )
+    reconstruction_parser.add_argument("--project-root", type=Path, default=Path.cwd())
+    reconstruction_parser.add_argument("--checkpoint-1d-dir", type=Path, required=True)
+    reconstruction_parser.add_argument("--checkpoint-1e-dir", type=Path, required=True)
+    reconstruction_parser.add_argument(
+        "--checkpoint-1e-review-dir", type=Path, required=True
+    )
+    reconstruction_parser.add_argument("--checkpoint-1g-dir", type=Path, required=True)
+    reconstruction_parser.add_argument("--output", type=Path, required=True)
     return parser
 
 
@@ -244,6 +279,43 @@ def main(argv: Optional[List[str]] = None) -> int:
             print("Deltas：{}".format(manifest["delta_count"]))
             print("Conflicts：{}".format(manifest["conflict_count"]))
             print("Unresolved：{}".format(manifest["unresolved_update_count"]))
+            return 0
+        if args.command == "checkpoint-1g":
+            manifest = run_checkpoint_1g(
+                project_root=args.project_root,
+                video_path=args.video,
+                roi_config_path=args.roi_config,
+                checkpoint1a_dir=args.checkpoint_1a_dir,
+                checkpoint1b_dir=args.checkpoint_1b_dir,
+                checkpoint1b_review_dir=args.checkpoint_1b_review_dir,
+                checkpoint1c_dir=args.checkpoint_1c_dir,
+                checkpoint1d_dir=args.checkpoint_1d_dir,
+                checkpoint1e_dir=args.checkpoint_1e_dir,
+                checkpoint1f_dir=args.checkpoint_1f_dir,
+                output_dir=args.output,
+                review_output_dir=args.review_output,
+            )
+            print("Checkpoint 1G 已完成：{}".format(args.output))
+            print("Counts：{}".format(manifest["counts"]))
+            print("Review Pack：{}".format(args.review_output))
+            return 0
+        if args.command == "checkpoint-1h":
+            manifest = run_checkpoint_1h(
+                project_root=args.project_root,
+                checkpoint1d_dir=args.checkpoint_1d_dir,
+                checkpoint1e_dir=args.checkpoint_1e_dir,
+                checkpoint1e_review_dir=args.checkpoint_1e_review_dir,
+                checkpoint1g_dir=args.checkpoint_1g_dir,
+                output_dir=args.output,
+            )
+            print("Checkpoint 1H 已完成：{}".format(args.output))
+            print("Battle Facts：{}".format(manifest["counts"]["fact_count"]))
+            print("Fact Relations：{}".format(manifest["counts"]["fact_relations"]))
+            print(
+                "Ambiguous Turn Candidates：{}".format(
+                    manifest["counts"]["turn_candidates"]
+                )
+            )
             return 0
         parser.error("未知 command")
     except CheckpointError as exc:

@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","checkpoint","kind","status","blocking_human_review","page_counts","pages","indexes"],"properties":{"checkpoint":{"const":"1G"},"kind":{"const":"checkpoint1g_review_manifest"},"status":{"const":"complete"},"blocking_human_review":{"const":false},"pages":{"type":"object"}}}

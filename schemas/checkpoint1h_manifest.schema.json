@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1h_manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "status", "reconstruction_version", "outputs", "source", "counts", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1H"},
+    "kind": {"const": "checkpoint1h_manifest"},
+    "status": {"const": "complete"},
+    "reconstruction_version": {"type": "string"},
+    "outputs": {"type": "object", "additionalProperties": {"$ref": "#/$defs/file"}},
+    "source": {"type": "object", "additionalProperties": {"$ref": "#/$defs/source"}},
+    "counts": {"type": "object"},
+    "validation": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "scope_guards": {"type": "object", "additionalProperties": {"type": "boolean"}}
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "schema"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema": {"type": "string"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

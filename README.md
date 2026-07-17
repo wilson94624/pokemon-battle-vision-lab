@@ -1,8 +1,8 @@
 # Pokémon Battle Vision Lab
 
-本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A 至 1D.1**：1A 建立並核准 ROI Frozen Baseline；1B 建立 UI event candidates；1C 執行本機 Apple Vision OCR、Text Validation 與 Human Review；1D／1D.1 將已接受文字轉成經 quality audit 的 BattleEvent 中介格式。
+本 repository 是本地端 Python Computer Vision 研究型 prototype。目前實作 **Milestone 1 — Checkpoint 1A 至 1H**：從 ROI、UI candidates、本機 OCR、BattleEvent、reviewed Timeline、Battle State 與 visual enrichment，逐層建立到 immutable、可追溯的 Battle Facts 與 ambiguous turn candidates。
 
-本專案不是網站、即時助手或戰術分析工具。Checkpoint 1D 只建立 BattleEvent IR，不建立回合、Battle State、Replay Analysis 或戰術語意。
+本專案不是網站、即時助手或戰術分析工具。Checkpoint 1H 只重建可觀察 Battle Facts；不執行 Replay Analysis、AI Coach、simulator inference、規則推論或戰術評估。
 
 ## 唯一支援 profile
 
@@ -219,6 +219,44 @@ Checkpoint 1F 只讀取 frozen Checkpoint 1D BattleEvents、已完成審查的 C
 
 正式輸出包含 immutable `battle_state_snapshots.json`、逐 group `state_deltas.json`、`state_conflicts.json`、`state_audit.json`、manifest，以及 70 張 State Before → Event → Delta → State After review cards。Generator 的人工欄位預設為 `null`；正式 Human Review 已接受全部 46 張 `needs_review` cards，並另存 completion summary／statistics。Unresolved 與 conflict 仍保留原始證據，不會因人工接受而改寫 projection。資料模型、reducer registry、confidence／completeness 與 review 規則詳見 [`docs/checkpoint1f_architecture.md`](docs/checkpoint1f_architecture.md)，修改前的可行性與開源方案稽核見 [`docs/checkpoint1f_architecture_audit.md`](docs/checkpoint1f_architecture_audit.md)。
 
+## 執行 Checkpoint 1G Visual Battle State Enrichment
+
+Checkpoint 1G 保留 1F sparse state，另以一次全片順序解碼取得 Team Preview、Selected Four、31 個 Move Menu 與四個 HP/status slots，再建立非官方 Decision Cycle、canonical entity evidence edges 與 enriched snapshots：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1g \
+  --project-root . \
+  --video samples/videos/win-01.mp4 \
+  --roi-config configs/roi_2868x1320.json \
+  --checkpoint-1a-dir outputs/checkpoint-1a \
+  --checkpoint-1b-dir outputs/checkpoint-1b \
+  --checkpoint-1b-review-dir outputs/checkpoint-1b-review \
+  --checkpoint-1c-dir outputs/checkpoint-1c \
+  --checkpoint-1d-dir outputs/checkpoint-1d \
+  --checkpoint-1e-dir outputs/checkpoint-1e \
+  --checkpoint-1f-dir outputs/checkpoint-1f \
+  --output outputs/checkpoint-1g \
+  --review-output outputs/checkpoint-1g-review
+```
+
+精確 HP、OCR percentage 與 visual bar estimate 永遠分型；無直接事件證據時 HP change `cause=unknown`。`chosen_move`、`target` 與官方 turn 不會被猜測。Apple Vision probe 會以 production 相同的 `recognize()` batch path 實際辨識合成影像；probe 或任一正式 OCR job 失敗都會中止 paired transaction 並保留上一版正式輸出，不會靜默降級，也不會改用雲端或其他 OCR。Team／status OCR 可再由本機版本化 [`knowledge/pokemon/v1/`](knowledge/pokemon/v1/) 進行 exact normalized alias resolution，輸出 Top-K canonical species candidates 與 provenance；regulation metadata 不作為視覺辨識證據。兩個 outputs 以 paired transactional replacement 一起提交，並在完成前重驗 1A–1F hashes、schemas、102 BattleEvents traceability、71 個 base snapshots mapping 與 macOS visibility。架構與限制見 [`docs/checkpoint1g_architecture.md`](docs/checkpoint1g_architecture.md)，修改前 audit 與研究來源見 [`docs/checkpoint1g_architecture_audit.md`](docs/checkpoint1g_architecture_audit.md)，Apple Vision runtime 根因與 MRE 見 [`docs/apple_vision_runtime_recovery.md`](docs/apple_vision_runtime_recovery.md)。
+
+## 執行 Checkpoint 1H Battle Event Reconstruction
+
+Checkpoint 1H 只讀 frozen 1D BattleEvents、reviewed 1E Timeline／Relations 與 1G HP／identity／decision-cycle observations，建立 immutable Battle Facts：
+
+```bash
+.venv/bin/pokemon-battle-vision checkpoint-1h \
+  --project-root . \
+  --checkpoint-1d-dir outputs/checkpoint-1d \
+  --checkpoint-1e-dir outputs/checkpoint-1e \
+  --checkpoint-1e-review-dir outputs/checkpoint-1e-review \
+  --checkpoint-1g-dir outputs/checkpoint-1g \
+  --output outputs/checkpoint-1h
+```
+
+正式 baseline 包含 213 個 facts：102 個文字事件一對一 facts、103 個既存 `HP_CHANGED` facts、8 個 ambiguous `TURN_BOUNDARY` facts；另保留 50 條 1E relation，其中 46 條 active、4 條 human-rejected inactive。每個 fact 至少一筆 observation provenance，Knowledge Base 只正規化已觀察 identity，不建立事件或帶入 Regulation legality。Move Menu 只支援 decision boundary，永遠不代表 selected move；8 個 turn candidates 的 `official_turn_number=null`。完整資料責任、schemas、relation／turn policy 與限制見 [`docs/checkpoint1h_architecture.md`](docs/checkpoint1h_architecture.md)。
+
 ## 測試
 
 快速單元與整合測試：
@@ -233,4 +271,4 @@ Checkpoint 1F 只讀取 frozen Checkpoint 1D BattleEvents、已完成審查的 C
 .venv/bin/python -m pytest -m slow -s
 ```
 
-slow tests 會使用安全的暫存 project `outputs/`：1A 驗證既有 Frozen Gate；1B 驗證 25,873 個來源 frames、5,918 個 10 Hz records、逐 sample diagnostics、17 個 regression windows、round-1 人工案例及其他 event type 固定數量；1B Review Pack 驗證一一對應、peak evidence、0.5 秒 coverage、dense audit 與 transaction cleanup；1C 以真實影片驗證單次順序解碼、178 candidates、本機繁中 OCR、schemas、Review Pack、frozen hashes 與 macOS visibility。
+slow tests 會使用安全的暫存 project `outputs/`：1A 驗證既有 Frozen Gate；1B 驗證 25,873 個來源 frames、5,918 個 10 Hz records、逐 sample diagnostics、17 個 regression windows、round-1 人工案例及其他 event type 固定數量；1B Review Pack 驗證一一對應、peak evidence、0.5 秒 coverage、dense audit 與 transaction cleanup；1C 以真實影片驗證單次順序解碼、178 candidates、本機繁中 OCR、schemas、Review Pack、frozen hashes 與 macOS visibility；1G 再跑一次完整 visual enrichment；1H 在獨立輸出目錄重建 213 facts，逐檔比對 deterministic hashes 並重驗所有 frozen source hashes。

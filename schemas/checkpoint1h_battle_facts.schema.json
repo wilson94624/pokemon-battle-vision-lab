@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1h_battle_facts.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "immutability_policy", "fact_count", "fact_type_counts", "source_counts", "facts"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1H"},
+    "kind": {"const": "battle_facts"},
+    "immutability_policy": {"const": "derived_records_are_not_mutated_in_place"},
+    "fact_count": {"type": "integer", "minimum": 0},
+    "fact_type_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "source_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["battle_events", "hp_changes", "turn_boundaries"],
+      "properties": {
+        "battle_events": {"type": "integer", "minimum": 0},
+        "hp_changes": {"type": "integer", "minimum": 0},
+        "turn_boundaries": {"type": "integer", "minimum": 0}
+      }
+    },
+    "facts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/fact"}
+    }
+  },
+  "$defs": {
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fact_id", "sequence", "fact_type", "timestamp", "start_time", "end_time", "certainty", "confidence", "participants", "attributes", "evidence", "source_timeline_ids", "source_relation_ids", "source_decision_cycle_ids", "reconstruction_rule_id"],
+      "properties": {
+        "fact_id": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "fact_type": {"enum": ["MOVE_USED", "MOVE_RESOLVED", "DAMAGE_OBSERVED", "SWITCH_IN", "ABILITY_ACTIVATED", "ITEM_ACTIVATED", "STATUS_APPLIED", "STATUS_REMOVED", "STATUS_CHANGED", "STAT_CHANGED", "WEATHER_STARTED", "WEATHER_ENDED", "WEATHER_CHANGED", "TERRAIN_STARTED", "TERRAIN_ENDED", "TERRAIN_CHANGED", "FIELD_EFFECT_STARTED", "FIELD_EFFECT_ENDED", "FIELD_EFFECT_UPDATED", "SIDE_CONDITION_STARTED", "SIDE_CONDITION_ENDED", "SIDE_CONDITION_UPDATED", "VOLATILE_STATUS_APPLIED", "VOLATILE_STATUS_REMOVED", "VOLATILE_STATUS_UPDATED", "TRANSFORMATION_OCCURRED", "HP_CHANGED", "KO", "BATTLE_ENDED", "TURN_BOUNDARY", "UNRESOLVED_EVENT"]},
+        "timestamp": {"type": "number", "minimum": 0},
+        "start_time": {"type": "number", "minimum": 0},
+        "end_time": {"type": "number", "minimum": 0},
+        "certainty": {"enum": ["observed", "ambiguous", "unknown"]},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "participants": {"type": "array", "items": {"$ref": "#/$defs/participant"}},
+        "attributes": {"type": "object"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+        "source_timeline_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^timeline-[0-9]{4}$"}},
+        "source_relation_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^relation-[0-9]{4}$"}},
+        "source_decision_cycle_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^decision-cycle-[0-9]{3}$"}},
+        "reconstruction_rule_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "participant_kind", "observed_name", "side", "entity_id", "canonical_species_id", "canonical_name", "resolution_status", "confidence", "entity_candidate_ids", "species_candidates", "resolution_source_ids"],
+      "properties": {
+        "role": {"type": "string", "minLength": 1},
+        "participant_kind": {"enum": ["pokemon", "trainer"]},
+        "observed_name": {"type": "string", "minLength": 1},
+        "side": {"enum": ["player", "opponent", "unknown"]},
+        "entity_id": {"type": ["string", "null"]},
+        "canonical_species_id": {"type": ["integer", "null"], "minimum": 1},
+        "canonical_name": {"type": ["string", "null"]},
+        "resolution_status": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "entity_candidate_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "species_candidates": {"type": "array", "items": {"type": "object"}},
+        "resolution_source_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint", "artifact_path", "record_id", "observation_kind", "evidence_role", "confidence", "timestamp", "upstream_record_ids"],
+      "properties": {
+        "checkpoint": {"enum": ["1D", "1G"]},
+        "artifact_path": {"type": "string", "pattern": "^outputs/checkpoint-1[dg]/"},
+        "record_id": {"type": "string", "minLength": 1},
+        "observation_kind": {"type": "string", "minLength": 1},
+        "evidence_role": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "timestamp": {"type": "number", "minimum": 0},
+        "upstream_record_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    }
+  }
+}

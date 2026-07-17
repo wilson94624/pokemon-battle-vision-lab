@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","checkpoint","kind","entity_count","entities"],"properties":{"checkpoint":{"const":"1G"},"kind":{"const":"pokemon_entities"},"entities":{"type":"array","items":{"type":"object","required":["entity_id","species","side","aliases","source_ids","conflicts"]},"uniqueItems":true}}}

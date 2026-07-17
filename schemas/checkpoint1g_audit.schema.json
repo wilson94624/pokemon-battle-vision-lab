@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","checkpoint","kind","status","visual_source_audit","counts","validation","scope_guards","limitations"],"properties":{"checkpoint":{"const":"1G"},"kind":{"const":"checkpoint1g_audit"},"status":{"const":"complete"},"validation":{"type":"object"}}}

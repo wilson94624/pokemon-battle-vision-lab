@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1h_reconstructed_turns.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "policy", "opening_segment", "turn_candidate_count", "turn_candidates"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1H"},
+    "kind": {"const": "reconstructed_turn_candidates"},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["boundary_source", "official_turn_inferred", "opening_segment_is_turn", "selected_move_inferred_from_menu"],
+      "properties": {
+        "boundary_source": {"type": "string"},
+        "official_turn_inferred": {"const": false},
+        "opening_segment_is_turn": {"const": false},
+        "selected_move_inferred_from_menu": {"const": false}
+      }
+    },
+    "opening_segment": {"$ref": "#/$defs/opening"},
+    "turn_candidate_count": {"type": "integer", "minimum": 0},
+    "turn_candidates": {"type": "array", "items": {"$ref": "#/$defs/turn"}}
+  },
+  "$defs": {
+    "fact_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"}},
+    "timeline_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^timeline-[0-9]{4}$"}},
+    "opening": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["segment_type", "source_cycle_id", "start_time", "end_time", "official_turn_number", "is_official_turn_number", "event_fact_ids", "hp_change_fact_ids", "source_timeline_ids"],
+      "properties": {
+        "segment_type": {"const": "opening_segment"},
+        "source_cycle_id": {"type": "string"},
+        "start_time": {"type": "number"},
+        "end_time": {"type": "number"},
+        "official_turn_number": {"type": "null"},
+        "is_official_turn_number": {"const": false},
+        "event_fact_ids": {"$ref": "#/$defs/fact_ids"},
+        "hp_change_fact_ids": {"$ref": "#/$defs/fact_ids"},
+        "source_timeline_ids": {"$ref": "#/$defs/timeline_ids"}
+      }
+    },
+    "turn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["turn_candidate_id", "source_cycle_id", "source_cycle_index", "start_time", "end_time", "official_turn_number", "is_official_turn_number", "reconstruction_status", "confidence", "start_boundary_fact_id", "event_fact_ids", "hp_change_fact_ids", "source_timeline_ids", "boundary_evidence", "limitations"],
+      "properties": {
+        "turn_candidate_id": {"type": "string", "pattern": "^turn-candidate-[0-9]{3}$"},
+        "source_cycle_id": {"type": "string"},
+        "source_cycle_index": {"type": "integer", "minimum": 2},
+        "start_time": {"type": "number"},
+        "end_time": {"type": "number"},
+        "official_turn_number": {"type": "null"},
+        "is_official_turn_number": {"const": false},
+        "reconstruction_status": {"const": "ambiguous"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "start_boundary_fact_id": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"},
+        "event_fact_ids": {"$ref": "#/$defs/fact_ids"},
+        "hp_change_fact_ids": {"$ref": "#/$defs/fact_ids"},
+        "source_timeline_ids": {"$ref": "#/$defs/timeline_ids"},
+        "boundary_evidence": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    }
+  }
+}

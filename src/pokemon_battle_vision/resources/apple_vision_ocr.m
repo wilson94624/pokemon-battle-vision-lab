@@ -41,7 +41,11 @@ static NSDictionary *recognizeJob(NSDictionary *job) {
     CGImageRef image = loadImage(path);
     if (image == NULL) return errorResult(jobID, @"cannot load image");
 
-    VNRecognizeTextRequest *request = [[VNRecognizeTextRequest alloc] init];
+    __block NSError *completionError = nil;
+    VNRecognizeTextRequest *request = [[VNRecognizeTextRequest alloc]
+        initWithCompletionHandler:^(VNRequest *completedRequest, NSError *error) {
+            completionError = error;
+        }];
     request.revision = VNRecognizeTextRequestRevision3;
     request.recognitionLevel = VNRequestTextRecognitionLevelAccurate;
     request.recognitionLanguages = @[@"zh-Hant"];
@@ -51,9 +55,13 @@ static NSDictionary *recognizeJob(NSDictionary *job) {
     NSError *requestError = nil;
     BOOL success = [handler performRequests:@[request] error:&requestError];
     CGImageRelease(image);
-    if (!success) {
-        NSString *message = requestError.localizedDescription ?: @"Vision request failed without NSError";
+    NSError *effectiveError = requestError ?: completionError;
+    if (!success || effectiveError != nil) {
+        NSString *message = effectiveError.localizedDescription ?: @"Vision request failed without NSError";
         return errorResult(jobID, message);
+    }
+    if (request.results == nil) {
+        return errorResult(jobID, @"Vision request returned nil results without NSError");
     }
 
     NSArray<VNRecognizedTextObservation *> *observations = [request.results sortedArrayUsingComparator:^NSComparisonResult(VNRecognizedTextObservation *left, VNRecognizedTextObservation *right) {
@@ -69,7 +77,11 @@ static NSDictionary *recognizeJob(NSDictionary *job) {
     NSMutableArray<NSString *> *strings = [NSMutableArray array];
     double weightedConfidence = 0.0;
     NSUInteger totalCharacters = 0;
-    for (VNRecognizedTextObservation *observation in observations) {
+    for (id value in observations) {
+        if (![value isKindOfClass:[VNRecognizedTextObservation class]]) {
+            return errorResult(jobID, @"Vision request returned an unexpected result type");
+        }
+        VNRecognizedTextObservation *observation = (VNRecognizedTextObservation *)value;
         VNRecognizedText *candidate = [observation topCandidates:1].firstObject;
         if (candidate == nil || candidate.string.length == 0) continue;
         CGRect box = observation.boundingBox;

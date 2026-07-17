@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pokemon-battle-vision.local/schemas/pokemon_knowledge_base_manifest.schema.json",
+  "title": "Pokémon Knowledge Base Manifest",
+  "type": "object",
+  "required": ["schema_version", "knowledge_base_version", "kind", "status", "data", "counts", "sources", "validation", "scope_guards"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "knowledge_base_version": {"type": "string", "minLength": 1},
+    "kind": {"const": "pokemon_knowledge_base_manifest"},
+    "status": {"const": "complete"},
+    "data": {
+      "type": "object",
+      "required": ["path", "sha256", "schema"],
+      "properties": {
+        "path": {"const": "pokemon_knowledge_base.json"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "schema": {"const": "schemas/pokemon_knowledge_base.schema.json"}
+      },
+      "additionalProperties": false
+    },
+    "counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "sources": {"type": "array", "minItems": 4, "items": {"type": "object"}},
+    "validation": {"type": "object", "additionalProperties": {"const": true}},
+    "scope_guards": {
+      "type": "object",
+      "required": ["image_assets_vendored", "embeddings_created", "vector_database_created", "model_trained", "meta_usage_used_as_visual_evidence"],
+      "additionalProperties": {"const": false}
+    }
+  },
+  "additionalProperties": false
+}

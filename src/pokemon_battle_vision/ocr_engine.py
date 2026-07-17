@@ -3,8 +3,10 @@
 import hashlib
 import json
 import os
+import struct
 import subprocess
 import tempfile
+import zlib
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Sequence
 
@@ -15,6 +17,32 @@ from .errors import DependencyError
 APPLE_VISION_ENGINE = "apple_vision_vnrecognizetextrequest"
 APPLE_VISION_REVISION = "VNRecognizeTextRequestRevision3"
 APPLE_VISION_LANGUAGE = "zh-Hant"
+
+
+def _png_chunk(kind: bytes, payload: bytes) -> bytes:
+    checksum = zlib.crc32(kind + payload) & 0xFFFFFFFF
+    return struct.pack(">I", len(payload)) + kind + payload + struct.pack(">I", checksum)
+
+
+def _runtime_probe_png() -> bytes:
+    """建立固定 RGB PNG；probe 必須實際進入與 production 相同的 Vision path。"""
+
+    width, height = 320, 96
+    background = bytes((24, 32, 43)) * width
+    foreground = bytes((244, 244, 244)) * 176
+    rows = []
+    for y in range(height):
+        row = bytearray(background)
+        if 34 <= y < 43 or 54 <= y < 63:
+            row[72 * 3 : 248 * 3] = foreground
+        rows.append(b"\x00" + bytes(row))
+    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + _png_chunk(b"IHDR", header)
+        + _png_chunk(b"IDAT", zlib.compress(b"".join(rows), level=9))
+        + _png_chunk(b"IEND", b"")
+    )
 
 
 class AppleVisionOcrEngine:
@@ -98,6 +126,28 @@ class AppleVisionOcrEngine:
             raise DependencyError("Apple Vision OCR probe 回傳非 JSON") from exc
         if not payload.get("available"):
             raise DependencyError("Apple Vision 不支援固定繁體中文語言 zh-Hant")
+        # capability query 不足以證明 production runtime 可配置 pixel buffer／模型。
+        # 使用同一個 recognize() batch path 執行一張固定影像，避免假陽性 probe。
+        with tempfile.TemporaryDirectory(prefix="pokemon-battle-vision-probe-") as directory:
+            image_path = Path(directory) / "runtime-probe.png"
+            image_path.write_bytes(_runtime_probe_png())
+            result = self.recognize(
+                [{"job_id": "apple-vision-runtime-probe", "image_path": str(image_path)}]
+            )[0]
+        if result.error is not None:
+            raise DependencyError(
+                "Apple Vision production runtime probe 失敗（與 production 共用 recognize path）：{}".format(
+                    result.error
+                )
+            )
+        payload.update(
+            {
+                "runtime_path_verified": True,
+                "runtime_probe_job_id": result.job_id,
+                "runtime_probe_error": None,
+                "runtime_probe_result_count": len(result.lines),
+            }
+        )
         return payload
 
     def recognize(self, jobs: Sequence[Mapping[str, str]]) -> List[OcrEngineResult]:
@@ -150,4 +200,3 @@ class AppleVisionOcrEngine:
             )
             for payload in payloads
         ]
-

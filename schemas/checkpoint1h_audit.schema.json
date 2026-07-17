@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1h_audit.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "status", "counts", "source_mapping", "validation", "scope_guards", "research_sources", "limitations"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1H"},
+    "kind": {"const": "checkpoint1h_audit"},
+    "status": {"const": "complete"},
+    "counts": {"type": "object"},
+    "source_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["battle_event_to_fact", "hp_change_to_fact", "decision_cycle_to_boundary_fact"],
+      "properties": {
+        "battle_event_to_fact": {"type": "array", "items": {"$ref": "#/$defs/map"}},
+        "hp_change_to_fact": {"type": "array", "items": {"$ref": "#/$defs/map"}},
+        "decision_cycle_to_boundary_fact": {"type": "array", "items": {"$ref": "#/$defs/map"}}
+      }
+    },
+    "validation": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "scope_guards": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "research_sources": {"type": "array", "items": {"type": "object", "required": ["url", "decision"], "properties": {"url": {"type": "string"}, "decision": {"enum": ["adopted", "referenced", "rejected"]}, "use": {"type": "string"}}}},
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "map": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "fact_id"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "fact_id": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"}
+      }
+    }
+  }
+}

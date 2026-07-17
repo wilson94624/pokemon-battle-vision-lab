@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "checkpoint1h_battle_fact_relations.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checkpoint", "kind", "relation_count", "active_relation_count", "rejected_relation_count", "relations"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "checkpoint": {"const": "1H"},
+    "kind": {"const": "battle_fact_relations"},
+    "relation_count": {"type": "integer", "minimum": 0},
+    "active_relation_count": {"type": "integer", "minimum": 0},
+    "rejected_relation_count": {"type": "integer", "minimum": 0},
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fact_relation_id", "sequence", "relation_type", "from_fact_id", "to_fact_id", "active", "causal_claim", "confidence", "review_resolution", "source_relation_id", "source_timeline_id", "source_rule_id", "source_evidence", "reconstruction_rule_id"],
+        "properties": {
+          "fact_relation_id": {"type": "string", "pattern": "^battle-fact-relation-[0-9]{4}$"},
+          "sequence": {"type": "integer", "minimum": 1},
+          "relation_type": {"type": "string", "minLength": 1},
+          "from_fact_id": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"},
+          "to_fact_id": {"type": "string", "pattern": "^battle-fact-[0-9]{4}$"},
+          "active": {"type": "boolean"},
+          "causal_claim": {"type": "boolean"},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "review_resolution": {"enum": ["auto_accepted", "accepted", "rejected"]},
+          "source_relation_id": {"type": "string", "pattern": "^relation-[0-9]{4}$"},
+          "source_timeline_id": {"type": ["string", "null"]},
+          "source_rule_id": {"type": "string", "minLength": 1},
+          "source_evidence": {"type": "array", "items": {"type": "string"}},
+          "reconstruction_rule_id": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

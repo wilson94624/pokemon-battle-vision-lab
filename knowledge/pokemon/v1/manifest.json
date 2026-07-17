@@ -1,0 +1,110 @@
+{
+  "counts": {
+    "aliases": 5039,
+    "champions_mega_forms": 75,
+    "forms": 1654,
+    "pokeapi_forms": 1579,
+    "regulation_entries": 235,
+    "species": 1025,
+    "sprite_metadata": 1351
+  },
+  "data": {
+    "path": "pokemon_knowledge_base.json",
+    "schema": "schemas/pokemon_knowledge_base.schema.json",
+    "sha256": "837f686d0765286eb8e273a8d31096e881832048a45c7192521465e1639e6f49"
+  },
+  "kind": "pokemon_knowledge_base_manifest",
+  "knowledge_base_version": "2026.07.17",
+  "schema_version": "0.1.0",
+  "scope_guards": {
+    "embeddings_created": false,
+    "image_assets_vendored": false,
+    "meta_usage_used_as_visual_evidence": false,
+    "model_trained": false,
+    "vector_database_created": false
+  },
+  "sources": [
+    {
+      "input_sha256": {
+        "pokeapi_languages.csv": "fbb60019a6a461783d5671a995d5f590db61792a273e90faa0ed630d102a19b8",
+        "pokemon_form_names.csv": "f496066d02fab12c18d10cce0af2f748d09cb7e296ecc784cc8682f8c4da8625",
+        "pokemon_forms.csv": "404f77a5033ed01df2b2cfb229f465bd086b7bbaa6b813834c228e4fbc578694",
+        "pokemon_species.csv": "9878f19c0637095cdd9a4134b4aac8fb2b64776d3bdc599aa68f15c3a011b87c",
+        "pokemon_species_names.csv": "5d7b06270a31bdc51424be6032fc04a3a3c0ae7ac40af4aea69c1a2954ca1e7e"
+      },
+      "license": "BSD-3-Clause",
+      "revision": "e21557dd4cd0fefe7cb1f946bf9080e38a2e3ba4",
+      "source_id": "pokeapi",
+      "status": "adopted",
+      "url": "https://github.com/PokeAPI/pokeapi",
+      "usage": [
+        "canonical_species_ids",
+        "forms",
+        "traditional_chinese_names"
+      ]
+    },
+    {
+      "input_sha256": {
+        "showdown_aliases.ts": "74fb99dad6085eb0d6e4ac42e58c1d6d6427a46adc40c7d87579cc4bf9851707",
+        "showdown_pokedex.ts": "0aba8712ababae8e356bdd9d6c6ffa73a5169d39a3ac831a853ae88fe653e6bc"
+      },
+      "license": "MIT",
+      "revision": "f0327afadabd7688829b1d3046872017a7bdc1c3",
+      "source_id": "pokemon-showdown",
+      "status": "adopted",
+      "url": "https://github.com/smogon/pokemon-showdown",
+      "usage": [
+        "canonical_aliases",
+        "form_aliases"
+      ]
+    },
+    {
+      "input_sha256": {
+        "sprites_default_tree.json": "4304d593ebe32c346d89d3692602cebc9216a0f964d3cb2b81153939c5aee6b9",
+        "sprites_gen8_icons_tree.json": "e50ccffb16cbb9834fc8d105007b2725fe48e711bae7ffc93c2fca595a7b5159",
+        "sprites_home_tree.json": "1ed7dc3378e5dde52382a7f05645b3a10d5b90c943e8cf765e6c643e1ba0fb3c",
+        "sprites_official_artwork_tree.json": "5bc080be8fd6ccc1ae209f941204a22b0815d70d87fa96cafb48aac9c053d464",
+        "sprites_showdown_tree.json": "7307fdb277308856b69e75dab5ef0d55596a815c116c38678d372ad276fb4d6e"
+      },
+      "license": "not_declared_at_pinned_commit",
+      "revision": "bf4c47ac82c33b330e33d98b8882d1cedb2f53e7",
+      "source_id": "pokeapi-sprites",
+      "status": "metadata_only",
+      "url": "https://github.com/PokeAPI/sprites",
+      "usage": [
+        "sprite_path_metadata",
+        "icon_path_metadata"
+      ]
+    },
+    {
+      "input_sha256": {
+        "champions_regulation_ma_news.html": "9ade165187c7fa492786ba6d2ed4c720c617c0445680b3d7fe61b2d0e2448e3d",
+        "champions_regulation_mb.html": "8b0c6db8dcd403bb1f5453c1c6f9ac35c80192762219a308c80023375a93d617",
+        "champions_regulation_mb_news.html": "62e2971931025ae8cf9cfff9d07835363e69a4dd0ea676bb495695b53cf04084"
+      },
+      "license": "official_site_all_rights_reserved",
+      "revision": "regulation-m-b-2026-06-17",
+      "source_id": "pokemon-champions",
+      "status": "adopted_factual_metadata_only",
+      "url": "https://champions-news.pokemon-home.com/en/page/776.html",
+      "usage": [
+        "regulation_availability",
+        "mega_form_availability"
+      ]
+    }
+  ],
+  "status": "complete",
+  "validation": {
+    "aliases_unique": true,
+    "form_keys_unique": true,
+    "known_zh_hant_aliases_present": true,
+    "pokeapi_form_count_complete": true,
+    "regulation_codes_unique": true,
+    "regulation_species_traceable": true,
+    "schema_valid": true,
+    "species_ids_complete": true,
+    "species_ids_unique": true,
+    "sprite_ids_unique": true,
+    "traditional_chinese_names_complete": true
+  }
+}
