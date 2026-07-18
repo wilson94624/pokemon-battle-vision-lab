@@ -1,0 +1,157 @@
+{
+  "schema_version": "0.1.0",
+  "profile_id": "pokemon-champions-doubles-zh-tw-2868x1320-v1",
+  "coordinate_space": "rotation 後 2868×1320 raw video display frame；左上原點；normalized [0,1]",
+  "status": "pending_human_approval",
+  "calibration_revision": 4,
+  "supersedes": "configs/roi_2868x1320.json",
+  "correction": "selected_four 改為涵蓋我方完整六列 roster；任意四列皆可帶有 1–4 選擇順序標記。",
+  "design_reference": {
+    "policy": "design-reference screenshots 的彩框不是 ground truth；本設定為 raw-frame overlay 待審初稿",
+    "screenshot_canvas": {
+      "width": 3680,
+      "height": 1818
+    },
+    "measured_game_content_rect": {
+      "x": 112,
+      "y": 76,
+      "width": 3456,
+      "height": 1594
+    },
+    "derivation": "沿用 revision 3 已核對 ROI；selected_four 修正為完整 player roster 六列，明確排除固定底部四列假設。"
+  },
+  "display_dimensions": {
+    "width": 2868,
+    "height": 1320
+  },
+  "rois": {
+    "team_preview_player": {
+      "x": 0.118,
+      "y": 0.049,
+      "width": 0.242,
+      "height": 0.873,
+      "purpose": "隊伍預覽的我方六隻可用 roster；不判定已選四隻或選擇順序"
+    },
+    "team_preview_opponent": {
+      "x": 0.729,
+      "y": 0.038,
+      "width": 0.169,
+      "height": 0.807,
+      "purpose": "隊伍預覽的對方六隻"
+    },
+    "selected_four": {
+      "x": 0.118,
+      "y": 0.049,
+      "width": 0.242,
+      "height": 0.873,
+      "purpose": "隊伍選擇確認畫面的我方完整六列 roster；辨識任意四列旁的 1–4 選擇順序標記"
+    },
+    "player_status": {
+      "x": 0.059,
+      "y": 0.773,
+      "width": 0.387,
+      "height": 0.208,
+      "purpose": "左下我方兩個場上狀態與操作 highlight"
+    },
+    "opponent_status": {
+      "x": 0.555,
+      "y": 0.017,
+      "width": 0.383,
+      "height": 0.174,
+      "purpose": "右上對方兩個場上狀態"
+    },
+    "move_menu": {
+      "x": 0.690,
+      "y": 0.420,
+      "width": 0.240,
+      "height": 0.460,
+      "purpose": "辨識右側四招、招式圖示與有效程度提示；排除底部返回按鈕"
+    },
+    "battle_text": {
+      "x": 0.196,
+      "y": 0.663,
+      "width": 0.535,
+      "height": 0.160,
+      "purpose": "辨識完整戰鬥文字底板與最多兩行文字，降低角色、地板與背景動畫干擾"
+    },
+    "player_trigger_notification": {
+      "x": 0.025781,
+      "y": 0.422750,
+      "width": 0.352344,
+      "height": 0.202037,
+      "side": "player",
+      "purpose": "獨立辨識左側我方特性或道具觸發通知，輸出觸發方、寶可夢、特性或道具、觸發名稱、raw text 與 timestamp",
+      "recognition_fields": [
+        "trigger_side",
+        "pokemon",
+        "ability_or_item",
+        "trigger_name",
+        "raw_text",
+        "timestamp"
+      ],
+      "must_remain_separate_from": [
+        "battle_text"
+      ],
+      "validation": {
+        "status": "provisional_unverified",
+        "positive_example_verified": false,
+        "reason": "目前影片尚未確認左側正例；ROI 僅依使用者提供截圖中的左側標示框建立，待未來正例重新驗證。"
+      }
+    },
+    "opponent_trigger_notification": {
+      "x": 0.644531,
+      "y": 0.421053,
+      "width": 0.303906,
+      "height": 0.183362,
+      "side": "opponent",
+      "purpose": "獨立辨識右側對手特性或道具觸發通知，輸出觸發方、寶可夢、特性或道具、觸發名稱、raw text 與 timestamp",
+      "recognition_fields": [
+        "trigger_side",
+        "pokemon",
+        "ability_or_item",
+        "trigger_name",
+        "raw_text",
+        "timestamp"
+      ],
+      "must_remain_separate_from": [
+        "battle_text"
+      ],
+      "validation": {
+        "status": "positive_example_verified",
+        "positive_example_verified": true,
+        "video_path": "samples/videos/win-01.mp4",
+        "frame_ordinal": 21515,
+        "pts_sec": 452.558333,
+        "observed_raw_text": "烈咬陸鯊使用了生命寶珠！"
+      }
+    },
+    "result_player_banner": {
+      "x": 0.150,
+      "y": 0.430,
+      "width": 0.245,
+      "height": 0.370,
+      "purpose": "辨識我方 WIN 與主要勝利圖形，不負責玩家名稱"
+    },
+    "result_opponent_banner": {
+      "x": 0.620,
+      "y": 0.535,
+      "width": 0.220,
+      "height": 0.220,
+      "purpose": "辨識對方 LOSE 與主要結果圖形，不負責玩家名稱"
+    },
+    "result_player_name": {
+      "x": 0.195,
+      "y": 0.855,
+      "width": 0.205,
+      "height": 0.075,
+      "purpose": "只辨識結算畫面底部的我方玩家名稱"
+    },
+    "result_opponent_name": {
+      "x": 0.590,
+      "y": 0.855,
+      "width": 0.215,
+      "height": 0.075,
+      "purpose": "只辨識結算畫面底部的對方玩家名稱"
+    }
+  }
+}

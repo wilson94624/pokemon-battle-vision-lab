@@ -80,7 +80,9 @@ outputs/checkpoint-1a/
 
 ## ROI 人工核准 gate
 
-`configs/roi_2868x1320.json` 是由 design-reference screenshots 推導的 normalized 初稿，不是 ground truth。主流程把 ROI 映射到 rotation 後 raw video anchors，產生六張 anchor overlays，另有一張 trigger notification 正例 overlay；核准集合共七張。產生流程仍會先以 `pending_human_approval` 停止，只有獨立 approval command 能建立核准紀錄。
+`configs/roi_2868x1320.json` 是 win-01 canonical artifacts 鎖定的 calibration revision 3，不得覆寫。revision 3 的 `selected_four` 曾把 win-01 當時恰好位於下方四列的選擇狀態誤當成通用幾何。新 replay onboarding 必須改用 `configs/roi_2868x1320_v2.json`（calibration revision 4），並在自己的 1A namespace 重新產生 overlays、完成人工核准；它仍屬相同 2868×1320 supported profile。
+
+Team Preview 與 Team Selection 在畫面上共用完整六列 player roster 幾何，但語意保持分離：前者觀察六隻可用 roster，後者觀察任意四個非必然連續列上的 1–4 順序標記。主流程把 ROI 映射到 rotation 後 raw video anchors，產生六張 anchor overlays，另有一張 trigger notification 正例 overlay；核准集合共七張。產生流程仍會先以 `pending_human_approval` 停止，只有獨立 approval command 能建立核准紀錄。
 
 請人工逐張檢查：
 
@@ -328,7 +330,7 @@ slow tests 會使用安全的暫存 project `outputs/`：1A 驗證既有 Frozen 
   --checkpoint-1a-dir outputs/replays/official-02/checkpoint-1a \
   --checkpoint-1b-dir outputs/replays/official-02/checkpoint-1b \
   --checkpoint-1b-review-dir outputs/replays/official-02/checkpoint-1b-review \
-  --roi-config configs/official-02-roi.json \
+  --roi-config configs/roi_2868x1320_v2.json \
   --output outputs/replays/official-02/checkpoint-1c \
   --review-output outputs/replays/official-02/checkpoint-1c-review \
   --replay-id official-02

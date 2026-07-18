@@ -20,7 +20,7 @@ local versioned Pokémon KB exact alias resolution
 
 ## Parser 與 tracker 責任
 
-- `team_selection_parser.py`：每側六格 partial roster、Selected Four UI order、icon fingerprint candidate edge。可讀文字只做 Unicode NFKC 後的 exact alias resolution，保存 Top-K canonical species candidates；低於 acceptance threshold 只輸出 `unresolved_candidate`，不合併 entity。
+- `team_selection_parser.py`：每側六列 partial roster；Selected Four 保存完整六列 evidence，從任意非連續列的可見 1–4 marker 建立 selection order，再以同 roster row 建立可追溯 candidate edge。marker 證據不足時維持 partial／unknown。可讀物種文字只做 Unicode NFKC 後的 exact alias resolution，保存 Top-K canonical species candidates；低於 acceptance threshold 只輸出 `unresolved_candidate`，不合併 entity。
 - `move_menu_parser.py`：31 個 candidate 各一 observation。raw OCR、保守 fuzzy correction、selecting slot evidence 與 rejection reason 都保留；`chosen_move`／`target` 預設 unknown。
 - `hp_status_tracker.py` 與 `visual_state_tracking.py`：精確數字、OCR %、visual bar estimate 分型。visual bar 必須同時看到固定面板長白色 outline 與健康色 horizontal run；0.5 秒相鄰值做 median，面板消失不清 slot。
 - `entity_resolution.py`：優先使用 KB canonical species ID，但不以名稱作唯一 key；同 side duplicate species 不合併。所有 accepted 或 unresolved candidate edges 都保存 rule、confidence 與 provenance。

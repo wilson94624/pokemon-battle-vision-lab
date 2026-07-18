@@ -7,7 +7,11 @@ from typing import Any, Dict, Mapping, Optional, Sequence
 
 import jsonschema
 
-from .checkpoint1g_frame_extractor import derived_visual_rois, extract_visual_frames
+from .checkpoint1g_frame_extractor import (
+    derived_visual_rois,
+    extract_visual_frames,
+    selection_roi_covers_full_player_roster,
+)
 from .checkpoint1g_models import OcrObservation
 from .checkpoint1g_planning import build_visual_frame_requests
 from .checkpoint1g_review import build_checkpoint1g_review
@@ -122,13 +126,23 @@ def _run_ocr(engine, extracted) -> Dict[str, OcrObservation]:
             )
         )
     observations = {}
+    frames_by_request = {row.request.request_id: row for row in extracted}
     for result in results:
+        frame = frames_by_request[result.job_id]
+        preprocessing = [
+            (
+                "selected_four_marker_band"
+                if frame.request.role == "selected_four"
+                else "raw_approved_roi"
+            ),
+            "bicubic_2x_when_crop_height_below_360",
+        ]
         observations[result.job_id] = OcrObservation(
             request_id=result.job_id,
             raw_text=result.raw_text,
             confidence=result.confidence,
             lines=result.lines,
-            preprocessing=["raw_approved_roi", "bicubic_2x_when_crop_height_below_360"],
+            preprocessing=preprocessing,
             error=result.error,
         )
     if len(observations) != len(jobs):
@@ -197,12 +211,15 @@ def run_checkpoint_1g(
         checkpoint1a_dir / "frame_timestamps.npz", video_sha256
     )
     _, normalized_rois = load_roi_config(roi_config_path)
-    rois = derived_visual_rois(
-        pixel_rois(
-            normalized_rois,
-            int(metadata["display_dimensions"]["width"]),
-            int(metadata["display_dimensions"]["height"]),
-        )
+    base_rois = pixel_rois(
+        normalized_rois,
+        int(metadata["display_dimensions"]["width"]),
+        int(metadata["display_dimensions"]["height"]),
+    )
+    selected_four_full_roster = selection_roi_covers_full_player_roster(base_rois)
+    rois = derived_visual_rois(base_rois)
+    selected_four_row_count = len(
+        [name for name in rois if name.startswith("selected_four:slot")]
     )
     candidates_payload = load_json(checkpoint1b_dir / "events.json")
     review_payload = load_json(checkpoint1b_review_dir / "candidate_review.json")
@@ -214,7 +231,14 @@ def run_checkpoint_1g(
     battle_events = battle_events_payload["events"]
     timeline_groups = timeline_payload["groups"]
     base_snapshots = snapshots_payload["snapshots"]
-    requests = build_visual_frame_requests(events, review_records, timeline_groups, timestamp_index)
+    requests = build_visual_frame_requests(
+        events,
+        review_records,
+        timeline_groups,
+        timestamp_index,
+        selected_four_row_count=selected_four_row_count,
+        selected_four_marker_ocr=selected_four_full_roster,
+    )
     engine = ocr_engine or AppleVisionOcrEngine()
     probe = engine.probe() if hasattr(engine, "probe") else {"available": True, "engine": "injected_test_engine"}
 
@@ -235,7 +259,9 @@ def run_checkpoint_1g(
             menu_status_frames = [row for row in extracted if row.request.role == "menu_status"]
             status_frames = [row for row in extracted if row.request.role == "status_sample"]
             roster = parse_team_roster(team_frames, ocr_by_request, knowledge_base)
-            selected, initial_edges = parse_selected_four(selected_frames, roster)
+            selected, initial_edges = parse_selected_four(
+                selected_frames, roster, ocr_by_request
+            )
             move_candidates = [row for row in events if row["type"] == "MOVE_MENU"]
             move_lexicon = sorted(
                 {
@@ -279,7 +305,10 @@ def run_checkpoint_1g(
             cycle_event_ids = [event_id for row in cycles["cycles"] for event_id in row["battle_event_ids"]]
             validations = {
                 "team_preview_candidates_processed": roster["source_candidate_count"] == candidate_counts["TEAM_PREVIEW"],
-                "selected_four_candidates_processed": len({row["source_candidate_id"] for row in selected["player_selected"]}) == candidate_counts["SELECTED_FOUR"],
+                "selected_four_candidates_processed": selected.get(
+                    "source_candidate_count",
+                    len({row["source_candidate_id"] for row in selected["player_selected"]}),
+                ) == candidate_counts["SELECTED_FOUR"],
                 "move_menu_candidates_processed": menus["observation_count"] == candidate_counts["MOVE_MENU"],
                 "move_menu_candidate_ids_unique": _id_unique(menus["observations"], "candidate_id"),
                 "hp_timestamps_monotonic": _monotonic(hp["observations"], "timestamp"),

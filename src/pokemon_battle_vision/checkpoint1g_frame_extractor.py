@@ -61,10 +61,41 @@ def derived_visual_rois(base: Mapping[str, PixelRoi]) -> Dict[str, PixelRoi]:
 
     vertical_with_margins("team_preview_player", 6, 0.07, 0.13)
     vertical_with_margins("team_preview_opponent", 6, 0.07, 0.12)
-    vertical("selected_four", 4)
+    if selection_roi_covers_full_player_roster(base):
+        # Team Selection 與 Team Preview 語意不同，但六列在同一畫面位置。
+        vertical_with_margins("selected_four", 6, 0.07, 0.13)
+    else:
+        # frozen revision 3 的窄 ROI 只供既有 canonical artifact 重現。
+        roster = base["team_preview_player"]
+        roster_height = roster.height - round(roster.height * 0.07) - round(
+            roster.height * 0.13
+        )
+        legacy_visible_rows = max(
+            1,
+            min(
+                6,
+                round(base["selected_four"].height / (roster_height / 6.0)),
+            ),
+        )
+        vertical("selected_four", legacy_visible_rows)
     horizontal("player_status", 2)
     horizontal("opponent_status", 2)
     return result
+
+
+def selection_roi_covers_full_player_roster(
+    base: Mapping[str, PixelRoi],
+) -> bool:
+    """確認 Team Selection ROI 已涵蓋 player roster 的完整六列。"""
+
+    selected = base["selected_four"]
+    roster = base["team_preview_player"]
+    return (
+        selected.x <= roster.x
+        and selected.y <= roster.y
+        and selected.x2 >= roster.x2
+        and selected.y2 >= roster.y2
+    )
 
 
 def extract_visual_frames(
@@ -143,11 +174,25 @@ def extract_visual_frames(
                 crop_path = work_dir / crop_relative
                 if request.run_ocr:
                     crop_path.parent.mkdir(parents=True, exist_ok=True)
-                    scale = 2 if crop.shape[0] < 360 else 1
+                    ocr_crop = crop
+                    if request.role == "selected_four":
+                        height, width = crop.shape[:2]
+                        # 只送入順序 marker 窄帶；完整六列 crop 仍另存為 evidence。
+                        ocr_crop = crop[
+                            int(height * 0.05) : int(height * 0.95),
+                            int(width * 0.30) : int(width * 0.50),
+                        ]
+                    scale = 2 if ocr_crop.shape[0] < 360 else 1
                     ocr_crop = (
-                        cv2.resize(crop, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+                        cv2.resize(
+                            ocr_crop,
+                            None,
+                            fx=scale,
+                            fy=scale,
+                            interpolation=cv2.INTER_CUBIC,
+                        )
                         if scale > 1
-                        else crop
+                        else ocr_crop
                     )
                     crop_path.write_bytes(encode_image(ocr_crop, "png"))
                 evidence_relative = None

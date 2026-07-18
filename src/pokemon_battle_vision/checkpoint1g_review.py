@@ -154,19 +154,36 @@ def build_checkpoint1g_review(
         "team_preview",
         per_page=12,
     )
+    selected_review_rows = selected.get("row_observations")
     selected_pages = _build_evidence_sheet(
         output_dir,
         "Selected Four",
-        [
-            {
-                "path": row["evidence_path"],
-                "label": "order {}".format(row["selection_order"]),
-                "detail": row.get("species") or row["visual_identity"],
-            }
-            for row in selected["player_selected"]
-        ],
+        (
+            [
+                {
+                    "path": row["evidence_path"],
+                    "label": "row {} | order {}".format(
+                        row["roster_row"],
+                        row["selection_order"] if row["selection_order"] is not None else "unknown",
+                    ),
+                    "detail": "marker {} | OCR {}".format(
+                        row["marker_status"], row["marker_raw_text"] or "empty"
+                    ),
+                }
+                for row in selected_review_rows
+            ]
+            if selected_review_rows is not None
+            else [
+                {
+                    "path": row["evidence_path"],
+                    "label": "order {}".format(row["selection_order"]),
+                    "detail": row.get("species") or row["visual_identity"],
+                }
+                for row in selected["player_selected"]
+            ]
+        ),
         "selected_four",
-        per_page=4,
+        per_page=6 if selected_review_rows is not None else 4,
     )
     menu_pages = _build_evidence_sheet(
         output_dir,

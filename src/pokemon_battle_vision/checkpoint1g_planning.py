@@ -35,6 +35,8 @@ def build_visual_frame_requests(
     review_records: Sequence[Mapping[str, Any]],
     timeline_groups: Sequence[Mapping[str, Any]],
     index: FrameTimestampIndex,
+    selected_four_row_count: int,
+    selected_four_marker_ocr: bool,
 ) -> List[VisualFrameRequest]:
     review_by_id = {str(row["candidate_id"]): row for row in review_records}
     requests: List[VisualFrameRequest] = []
@@ -57,13 +59,16 @@ def build_visual_frame_requests(
                         )
                     )
         elif event["type"] == "SELECTED_FOUR":
-            for slot_index in range(1, 5):
+            if selected_four_row_count <= 0:
+                raise ValueError("SELECTED_FOUR roster row count 必須大於零")
+            for slot_index in range(1, selected_four_row_count + 1):
+                request_label = "row" if selected_four_marker_ocr else "slot"
                 requests.append(
                     _request(
-                        "selected-four-slot{}".format(slot_index), candidate_id,
+                        "selected-four-{}{}".format(request_label, slot_index), candidate_id,
                         "selected_four", "selected_four:slot{}".format(slot_index),
                         ordinal, index, side="player", slot="slot{}".format(slot_index),
-                        run_ocr=False, keep_evidence=True,
+                        run_ocr=selected_four_marker_ocr, keep_evidence=True,
                     )
                 )
         else:
